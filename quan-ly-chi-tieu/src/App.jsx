@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
 // =================================================================
 // PHẦN 1: CẤU HÌNH, THƯ VIỆN VÀ CÁC HẰNG SỐ
 // =================================================================
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, addDoc, setDoc, deleteDoc, onSnapshot, serverTimestamp, query, orderBy } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInAnonymously, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 // Chart.js và wrapper cho React
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PointElement, LineElement, BarElement } from 'chart.js';
