@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 // =================================================================
 // PHẦN 1: CẤU HÌNH, THƯ VIỆN VÀ CÁC HẰNG SỐ
@@ -18,6 +19,17 @@ import "react-datepicker/dist/react-datepicker.css";
 
 // Đăng ký các thành phần cần thiết cho Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PointElement, LineElement, BarElement);
+
+const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+        await signInWithPopup(auth, provider);
+        // Đăng nhập thành công, user object trong App.js sẽ được cập nhật
+    } catch (error) {
+        console.error("Lỗi đăng nhập Google:", error);
+        // Xử lý lỗi đăng nhập
+    }
+};
 
 // Cấu hình Firebase
 const firebaseConfig = {
