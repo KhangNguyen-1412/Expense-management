@@ -43,6 +43,8 @@ export const SettingsView = () => {
     disablePinLock,
     openSetPinDialog,
     openDeleteDataDialog,
+    isVoiceFeedbackEnabled,
+    toggleVoiceFeedback,
   } = useAppContext();
 
   return (
@@ -83,6 +85,15 @@ export const SettingsView = () => {
                 openSetPinDialog();
               }
             }}
+          />
+        </SettingRow>
+        <SettingRow
+          title="Phản hồi bằng giọng nói"
+          description="Bật/tắt giọng nói của trợ lý khi nhận dạng."
+        >
+          <ToggleSwitch
+            checked={isVoiceFeedbackEnabled}
+            onChange={toggleVoiceFeedback}
           />
         </SettingRow>
         <div className="pt-6">

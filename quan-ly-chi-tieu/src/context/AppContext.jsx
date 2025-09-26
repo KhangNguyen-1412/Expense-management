@@ -39,6 +39,10 @@ export const AppProvider = ({ children }) => {
     () => localStorage.getItem("pin_enabled") === "true"
   );
 
+  const [isVoiceFeedbackEnabled, setIsVoiceFeedbackEnabled] = useState(
+    () => localStorage.getItem("voice_feedback_enabled") !== "false" // Mặc định là bật
+  );
+
   const [selectedBudgetDate, setSelectedBudgetDate] = useState(new Date());
 
   // Sử dụng các custom hook để quản lý state và logic
@@ -271,6 +275,14 @@ export const AppProvider = ({ children }) => {
     return false;
   };
 
+  const toggleVoiceFeedback = useCallback(() => {
+    setIsVoiceFeedbackEnabled((prev) => {
+      const newValue = !prev;
+      localStorage.setItem("voice_feedback_enabled", newValue);
+      return newValue;
+    });
+  }, []);
+
   const handleSignOut = useCallback(() => {
     setIsSignOutConfirmOpen(true);
   }, []);
@@ -342,6 +354,8 @@ export const AppProvider = ({ children }) => {
     unlockApp,
     SPENDING_CATEGORIES,
     formatCurrency,
+    isVoiceFeedbackEnabled,
+    toggleVoiceFeedback,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

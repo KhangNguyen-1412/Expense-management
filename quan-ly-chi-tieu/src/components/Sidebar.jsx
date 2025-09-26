@@ -2,7 +2,7 @@ import React from "react";
 import { handleGoogleSignIn } from "../config/firebase";
 import { useAppContext } from "../context/AppContext";
 
-export const Sidebar = () => {
+export const Sidebar = ({ isListening, toggleListening }) => {
   const {
     activeView,
     setActiveView,
@@ -48,6 +48,11 @@ export const Sidebar = () => {
       icon: "M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17-.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-1.92 3.32c-.12.2-.07.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l1.92-3.32c.12-.2.07-.47-.12-.61l-2.01-1.58zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z",
     },
   ];
+
+  const micOnIcon =
+    "M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z";
+  const micOffIcon =
+    "M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1.2-9.1c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 6.2c0 .66-.53 1.2-1.19 1.2s-1.2-.54-1.2-1.2V4.9zm6.3 6.2c0 .55.45 1 1 1s1-.45 1-1h-2zm-1.1 4.3c-2.76 0-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2.1c-.55 2.22-2.48 4-4.9 4zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9L19.73 21 21 19.73 4.27 3z";
 
   return (
     <aside className="w-20 lg:w-64 bg-white dark:bg-slate-900 flex-shrink-0 p-4 lg:p-6 flex flex-col items-center lg:items-stretch shadow-2xl dark:shadow-none transition-all duration-300">
@@ -160,6 +165,28 @@ export const Sidebar = () => {
             <span className="hidden lg:inline">{item.label}</span>
           </button>
         ))}
+        {/* Nút micro */}
+        <button
+          onClick={toggleListening}
+          className={`flex items-center justify-center lg:justify-start text-lg font-semibold p-3 rounded-xl transition-all duration-200 transform hover:scale-105 ${
+            isListening
+              ? "bg-red-600 text-white shadow-lg shadow-red-200 dark:shadow-red-500/50 animate-pulse"
+              : "text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800"
+          }`}
+          aria-label={isListening ? "Dừng ghi âm" : "Ghi âm giao dịch"}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 lg:mr-3"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d={isListening ? micOffIcon : micOnIcon} />
+          </svg>
+          <span className="hidden lg:inline">
+            {isListening ? "Đang ghi..." : "Ghi âm"}
+          </span>
+        </button>
       </nav>
       <div className="mt-auto w-full">
         {!user?.isAnonymous && (

@@ -8,7 +8,7 @@ import { BudgetView } from "../views/BudgetView";
 import { StatisticsView } from "../views/StatisticsView";
 import { SettingsView } from "../views/SettingsView";
 
-export const MainContent = () => {
+export const MainContent = ({ voiceTransaction }) => {
   const {
     activeView,
     authError,
@@ -67,7 +67,12 @@ export const MainContent = () => {
     case "settings":
       return <SettingsView />;
     case "add":
-      return <AddTransactionView onAddTransaction={handleAddTransaction} />;
+      return (
+        <AddTransactionView
+          onAddTransaction={handleAddTransaction}
+          voiceTransaction={voiceTransaction}
+        />
+      );
     case "budget":
       return (
         <BudgetView

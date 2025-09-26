@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Sidebar } from "./Sidebar";
 import { MainContent } from "./MainContent";
@@ -9,8 +9,291 @@ import { DeleteDataDialog } from "./DeleteDataDialog";
 import { SetPinDialog } from "./SetPinDialog";
 import { PinLockScreen } from "./PinLockScreen";
 
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+if (recognition) {
+  recognition.continuous = true;
+  recognition.lang = "vi-VN";
+  recognition.interimResults = false;
+}
+
+const convertVietnameseNumberToDigits = (text) => {
+  const numberMap = {
+    không: 0,
+    một: 1,
+    hai: 2,
+    ba: 3,
+    tư: 4,
+    bốn: 4,
+    năm: 5,
+    sáu: 6,
+    bảy: 7,
+    tám: 8,
+    chín: 9,
+    mười: 10,
+    mươi: 10,
+    trăm: 100,
+    nghìn: 1000,
+    ngàn: 1000,
+    triệu: 1000000,
+    tỷ: 1000000000,
+  };
+
+  // Chuẩn hóa các từ đặc biệt
+  let processedText = text
+    .toLowerCase()
+    .replace(/lăm/g, "năm") // hai mươi lăm -> hai mươi năm
+    .replace(/mốt/g, "một") // hai mươi mốt -> hai mươi một
+    .replace(/linh/g, ""); // một trăm linh năm -> một trăm năm
+
+  // Xử lý "rưỡi"
+  if (processedText.includes("rưỡi")) {
+    // triệu rưỡi -> 1.5 triệu, trăm rưỡi -> 150 (nghìn)
+    processedText = processedText.replace(/(\w+)\s+rưỡi/g, (match, p1) => {
+      if (p1 === "triệu") return "1.5 triệu";
+      if (p1 === "tỷ") return "1.5 tỷ";
+      // "trăm rưỡi" -> 150 nghìn, "hai trăm rưỡi" -> 250 nghìn
+      if (p1 === "trăm") return "150 nghìn";
+      const prevWord = processedText.split(" ").slice(-2, -1)[0];
+      if (numberMap[prevWord]) {
+        return `${numberMap[prevWord]}50 nghìn`; // hai trăm rưỡi
+      }
+      return match;
+    });
+    processedText = processedText.replace("rưỡi", "");
+  }
+
+  const words = processedText.split(/\s+/).filter(Boolean);
+  let total = 0;
+  let currentNumber = 0;
+
+  for (const word of words) {
+    const num = parseFloat(word.replace(",", ".")); // Hỗ trợ "1,5" hoặc "1.5"
+    if (!isNaN(num) && isFinite(num)) {
+      currentNumber = currentNumber === 0 ? num : currentNumber * num;
+      continue;
+    }
+
+    const value = numberMap[word];
+    if (value) {
+      if (value >= 1000) {
+        // nghìn, triệu, tỷ
+        total += (currentNumber || 1) * value;
+        currentNumber = 0;
+      } else if (value === 100) {
+        // trăm
+        currentNumber = (currentNumber || 1) * value;
+      } else {
+        // số từ 0-10
+        currentNumber += value;
+      }
+    }
+  }
+
+  total += currentNumber;
+
+  // Nếu chỉ nói "hai trăm", "năm trăm" -> hiểu là 200.000, 500.000
+  if (
+    total < 1000 &&
+    total >= 100 &&
+    (text.includes("trăm") || text.includes("nghìn") || text.includes("ngàn"))
+  ) {
+    return total * 1000;
+  }
+
+  return total;
+};
+
+/**
+ * Helper function to speak text using the browser's Speech Synthesis API.
+ * @param {string} text The text to be spoken.
+ */
+const speak = (text, isEnabled) => {
+  if (isEnabled && "speechSynthesis" in window) {
+    window.speechSynthesis.cancel(); // Stop any previous speech
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "vi-VN"; // Set language to Vietnamese
+    window.speechSynthesis.speak(utterance);
+  }
+};
+
 export const AppLayout = () => {
-  const { theme, isAppLocked } = useAppContext();
+  const {
+    isAppLocked,
+    budgets,
+    addTransaction,
+    showToast,
+    setActiveView,
+    isVoiceFeedbackEnabled,
+    // Giả sử bạn có các hàm và state này trong context để cập nhật form
+    // Nếu không, bạn cần truyền chúng xuống từ AppLayout hoặc quản lý trong MainContent
+    // setFormContent,
+    // setFormAmount,
+    // setFormCategory,
+  } = useAppContext();
+  const [isListening, setIsListening] = useState(false);
+  const [voiceTransaction, setVoiceTransaction] = useState(null);
+
+  const processVoiceCommand = useCallback(
+    (transcript) => {
+      console.log("Transcript:", transcript);
+      const lowerCaseTranscript = transcript.toLowerCase();
+
+      // Xử lý từ khóa "hủy"
+      if (lowerCaseTranscript.includes("hủy")) {
+        setVoiceTransaction(null);
+        speak("Đã hủy", isVoiceFeedbackEnabled);
+        showToast("Đã hủy các thông tin vừa nhập.", "info");
+        return; // Dừng xử lý
+      }
+
+      let updatedTransaction = voiceTransaction ? { ...voiceTransaction } : {};
+
+      // Xác định loại giao dịch (thu nhập/chi tiêu)
+      const isIncome =
+        lowerCaseTranscript.includes("thu nhập") ||
+        lowerCaseTranscript.includes("khoản thu");
+      const transactionType = isIncome ? "income" : "expense";
+      const transactionTypeName = isIncome ? "Thu nhập" : "Chi tiêu";
+
+      // Tìm tên giao dịch
+      const nameMatch = lowerCaseTranscript.match(
+        /(?:giao dịch|khoản thu|thu nhập) (?:có tên là|tên là|là) (.+?)(?: với số tiền| và số tiền| với danh mục|$)/
+      );
+      if (nameMatch && nameMatch[1]) {
+        const content = nameMatch[1].trim();
+        updatedTransaction.content = content;
+        const feedback = `Đã nhận diện tên ${transactionTypeName}: ${content}`;
+        showToast(feedback);
+        speak(feedback, isVoiceFeedbackEnabled);
+      }
+
+      // Tìm số tiền
+      const amountMatch = lowerCaseTranscript.match(
+        /(?:với số tiền là|số tiền là|là) (.+?) (?:đồng|và|$)/
+      );
+      if (amountMatch && amountMatch[1]) {
+        const amountText = amountMatch[1].trim();
+        let amount = 0;
+        // Ưu tiên nhận dạng số trước
+        const digitsOnly = amountText.replace(/[.,\s]/g, "");
+        if (/^\d+$/.test(digitsOnly)) {
+          amount = parseFloat(digitsOnly);
+        } else {
+          // Nếu không phải là số, thử chuyển đổi từ chữ
+          amount = convertVietnameseNumberToDigits(amountText);
+        }
+
+        if (amount > 0) {
+          updatedTransaction.amount = amount;
+          const feedback = `Đã nhận diện số tiền: ${amount.toLocaleString(
+            "vi-VN"
+          )} đồng`;
+          showToast(feedback.replace(" đồng", "đ"));
+          speak(feedback, isVoiceFeedbackEnabled);
+        }
+      }
+
+      // Tìm danh mục
+      const categoryMatch = lowerCaseTranscript.match(
+        /(?:với danh mục là|danh mục là|là) (.+?)(?: và|$)/
+      );
+      if (categoryMatch && categoryMatch[1]) {
+        const categoryName = categoryMatch[1].trim().toLowerCase();
+        // Giả sử danh mục thu nhập và chi tiêu đều nằm trong `budgets`
+        // Bạn có thể cần điều chỉnh logic này nếu chúng được lưu riêng
+        const foundBudget = budgets.find(
+          (b) => b.name.toLowerCase() === categoryName
+        );
+        if (foundBudget) {
+          updatedTransaction.categoryId = foundBudget.id;
+          const feedback = `Đã nhận diện danh mục: ${foundBudget.name}`;
+          showToast(feedback);
+          speak(feedback, isVoiceFeedbackEnabled);
+        } else {
+          const feedback = `Không tìm thấy danh mục ${categoryName}`;
+          showToast(`${feedback}`, "error");
+          speak(feedback, isVoiceFeedbackEnabled);
+        }
+      }
+
+      // Xác nhận thêm giao dịch
+      if (lowerCaseTranscript.includes("ok")) {
+        if (updatedTransaction.content && updatedTransaction.amount) {
+          const newTransaction = {
+            ...updatedTransaction,
+            type: transactionType,
+            date: new Date(),
+          };
+          addTransaction(newTransaction);
+          const feedback = `Đã thêm giao dịch ${transactionTypeName}`;
+          showToast(`${feedback}...`, "success");
+          speak(feedback, isVoiceFeedbackEnabled);
+          setVoiceTransaction(null); // Reset sau khi thêm
+          setIsListening(false); // Dừng lắng nghe
+        } else {
+          const feedback = "Vui lòng cung cấp đủ tên và số tiền.";
+          showToast(feedback, "error");
+          speak(feedback, isVoiceFeedbackEnabled);
+        }
+        return; // Dừng xử lý sau khi OK
+      }
+
+      setVoiceTransaction(updatedTransaction);
+    },
+    [
+      voiceTransaction,
+      budgets,
+      addTransaction,
+      showToast,
+      setActiveView,
+      isVoiceFeedbackEnabled,
+    ] // Thêm các dependency nếu cần
+  );
+
+  useEffect(() => {
+    if (!recognition) return;
+
+    const handleResult = (event) => {
+      const transcript = event.results[event.results.length - 1][0].transcript;
+      processVoiceCommand(transcript);
+    };
+
+    if (isListening) {
+      recognition.addEventListener("result", handleResult);
+      recognition.start();
+    } else {
+      recognition.removeEventListener("result", handleResult);
+      recognition.stop();
+    }
+
+    return () => {
+      recognition.removeEventListener("result", handleResult);
+      recognition.stop();
+    };
+  }, [isListening, processVoiceCommand]);
+
+  const toggleListening = () => {
+    if (!recognition) {
+      showToast(
+        "Trình duyệt của bạn không hỗ trợ nhận dạng giọng nói.",
+        "error"
+      );
+      return;
+    }
+    if (!isListening) {
+      setActiveView("add"); // Tự động chuyển sang tab "Thêm Mới"
+      const feedback = "Bắt đầu ghi âm";
+      setVoiceTransaction({}); // Bắt đầu một giao dịch mới
+      showToast(`${feedback}...`, "info");
+      speak(feedback, isVoiceFeedbackEnabled);
+    } else {
+      showToast("Đã dừng ghi âm.", "info");
+    }
+    setIsListening((prevState) => !prevState);
+  };
 
   if (isAppLocked) return <PinLockScreen />;
 
@@ -27,13 +310,9 @@ export const AppLayout = () => {
                 .dark .react-datepicker__day--selected, .dark .react-datepicker__day--in-selecting-range, .dark .react-datepicker__day--in-range { background-color: #4f46e5; }
                 .dark .react-datepicker__day--disabled { color: #64748b; }
             `}</style>
-      <Sidebar
-      // Không cần truyền props nữa
-      />
+      <Sidebar isListening={isListening} toggleListening={toggleListening} />
       <main className="flex-1 p-6 sm:p-10 overflow-y-auto">
-        <MainContent
-        // Không cần truyền props nữa
-        />
+        <MainContent voiceTransaction={voiceTransaction} />
       </main>
       <ConfirmDialog />
       <UndoToast />
