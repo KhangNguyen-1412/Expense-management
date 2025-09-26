@@ -146,6 +146,29 @@ export const Sidebar = () => {
         </>
       )}
 
+      <nav className="flex flex-col space-y-3 w-full">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setActiveView(item.id)}
+            className={`flex items-center justify-center lg:justify-start text-lg font-semibold p-3 rounded-xl transition-all duration-200 transform hover:scale-105 ${
+              activeView === item.id
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-500/50"
+                : "text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800"
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 lg:mr-3"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d={item.icon} />
+            </svg>
+            <span className="hidden lg:inline">{item.label}</span>
+          </button>
+        ))}
+      </nav>
       <div className="mt-auto" />
     </aside>
   );
