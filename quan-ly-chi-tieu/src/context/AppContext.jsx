@@ -66,7 +66,7 @@ export const AppProvider = ({ children }) => {
     isLoading: isLoadingAnalysis,
     error: analysisError,
     handleAnalyzeSpending,
-  } = useGeminiAnalysis(transactions);
+  } = useGeminiAnalysis(transactions, formatCurrency);
   const {
     addTransaction,
     deleteTransaction,

@@ -1,12 +1,23 @@
 import { useState } from "react";
-import { formatCurrency } from "../utils/formatCurrency";
+// ❌ XÓA DÒNG IMPORT GÂY RA PHỤ THUỘC VÒNG
+// import { formatCurrency } from "../utils/formatCurrency";
 
-export const useGeminiAnalysis = (transactions) => {
+// ✅ TRUYỀN HÀM formatCurrency VÀO NHƯ MỘT THAM SỐ
+export const useGeminiAnalysis = (transactions, formatCurrency) => {
   const [analysis, setAnalysis] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleAnalyzeSpending = async () => {
+    // Thêm một kiểm tra để đảm bảo formatCurrency đã được cung cấp
+    if (typeof formatCurrency !== "function") {
+      const errorMessage =
+        "Lỗi: Hàm formatCurrency chưa được cung cấp cho useGeminiAnalysis.";
+      console.error(errorMessage);
+      setError(errorMessage);
+      return;
+    }
+
     if (transactions.length === 0) {
       setError("Không có giao dịch nào để phân tích.");
       setAnalysis("");
@@ -20,6 +31,7 @@ export const useGeminiAnalysis = (transactions) => {
       .map(
         (t) =>
           `- ${t.text}: ${formatCurrency(t.amount)}${
+            // ✅ Vẫn sử dụng bình thường
             t.category ? ` (Hạng mục: ${t.category})` : ""
           }`
       )
@@ -35,7 +47,7 @@ Dữ liệu giao dịch:
 ${transactionList}`;
 
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // Lấy API Key từ biến môi trường
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
       const payload = {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
