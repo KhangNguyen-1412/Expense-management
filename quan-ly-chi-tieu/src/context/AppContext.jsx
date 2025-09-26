@@ -248,17 +248,18 @@ export const AppProvider = ({ children }) => {
 
   const handleSetBudgets = useCallback(
     async (newBudgets) => {
-      if (!user || !selectedBudgetDate) return;
+      if (!user || !selectedBudgetDate) return; // Guard clause
       const year = selectedBudgetDate.getFullYear();
       const month = String(selectedBudgetDate.getMonth() + 1).padStart(2, "0");
       const budgetDocId = `${year}-${month}`;
       await setDoc(
         doc(db, `users/${user.uid}/budgets`, budgetDocId),
-        newBudgets
+        newBudgets,
+        { merge: true } // Sử dụng merge để không ghi đè các tháng khác
       );
-      alert("Đã lưu ngân sách thành công!");
+      showToast("Đã lưu ngân sách thành công!", "success");
     },
-    [user, selectedBudgetDate]
+    [user, selectedBudgetDate, showToast]
   );
 
   const handleStartEdit = useCallback((transaction) => {

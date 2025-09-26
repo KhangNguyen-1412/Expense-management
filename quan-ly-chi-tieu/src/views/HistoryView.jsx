@@ -118,11 +118,12 @@ export const HistoryView = () => {
 
     try {
       const newTransactions = await importFromCSV(file);
-      await addMultipleTransactions(newTransactions);
-      showToast(
-        `Đã nhập thành công ${newTransactions.length} giao dịch!`,
-        "success"
-      );
+      const count = await addMultipleTransactions(newTransactions);
+      if (count > 0) {
+        showToast(`Đã nhập thành công ${count} giao dịch!`, "success");
+      } else {
+        showToast("Không có giao dịch nào được nhập.", "info");
+      }
     } catch (error) {
       console.error("Lỗi khi nhập file CSV:", error);
       showToast(`Đã xảy ra lỗi khi nhập file: ${error.message}`, "error");
