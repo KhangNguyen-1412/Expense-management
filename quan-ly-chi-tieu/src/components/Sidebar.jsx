@@ -56,79 +56,96 @@ export const Sidebar = () => {
       </h1>
 
       {user && (
-        <div className="hidden lg:block mb-10">
-          {user.isAnonymous ? (
-            <button
-              onClick={handleGoogleSignIn}
-              className="w-full bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition-colors text-sm font-semibold flex items-center justify-center gap-2"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 48 48">
-                <path
-                  fill="#EA4335"
-                  d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-                ></path>
-                <path
-                  fill="#4285F4"
-                  d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
-                ></path>
-                <path
-                  fill="#FBBC05"
-                  d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
-                ></path>
-                <path
-                  fill="#34A853"
-                  d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-                ></path>
-                <path fill="none" d="M0 0h48v48H0z"></path>
-              </svg>
-              Đăng nhập Google
-            </button>
-          ) : (
-            <div className="text-center flex flex-col items-center gap-2">
-              <div className="flex items-center gap-3">
-                <img
-                  src={user.photoURL}
-                  alt="Avatar"
-                  className="w-10 h-10 rounded-full border-2 border-indigo-300"
-                />
-                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 truncate">
-                  {user.displayName}
-                </p>
-              </div>
+        <>
+          {/* Desktop User/Login Info */}
+          <div className="hidden lg:block mb-10">
+            {user.isAnonymous ? (
               <button
-                onClick={handleSignOut}
-                className="text-xs text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 underline transition-colors"
+                onClick={handleGoogleSignIn}
+                className="w-full bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition-colors text-sm font-semibold flex items-center justify-center gap-2"
               >
-                Đăng xuất
+                <svg className="w-4 h-4" viewBox="0 0 48 48">
+                  <path
+                    fill="#EA4335"
+                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                  ></path>
+                  <path
+                    fill="#4285F4"
+                    d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                  ></path>
+                  <path
+                    fill="#FBBC05"
+                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                  ></path>
+                  <path
+                    fill="#34A853"
+                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                  ></path>
+                  <path fill="none" d="M0 0h48v48H0z"></path>
+                </svg>
+                Đăng nhập Google
               </button>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="text-center flex flex-col items-center gap-2">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={user.photoURL}
+                    alt="Avatar"
+                    className="w-10 h-10 rounded-full border-2 border-indigo-300"
+                  />
+                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 truncate">
+                    {user.displayName}
+                  </p>
+                </div>
+                <button
+                  onClick={handleSignOut}
+                  className="text-xs text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 underline transition-colors"
+                >
+                  Đăng xuất
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile User/Login Info */}
+          <div className="lg:hidden mb-10">
+            {user.isAnonymous ? (
+              <button
+                onClick={handleGoogleSignIn}
+                className="p-3 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700"
+                aria-label="Đăng nhập Google"
+              >
+                <svg className="w-6 h-6" viewBox="0 0 48 48">
+                  <path
+                    fill="#EA4335"
+                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                  ></path>
+                  <path
+                    fill="#4285F4"
+                    d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                  ></path>
+                  <path
+                    fill="#FBBC05"
+                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                  ></path>
+                  <path
+                    fill="#34A853"
+                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                  ></path>
+                  <path fill="none" d="M0 0h48v48H0z"></path>
+                </svg>
+              </button>
+            ) : (
+              <img
+                src={user.photoURL}
+                alt="Avatar"
+                className="w-12 h-12 rounded-full border-2 border-indigo-300"
+              />
+            )}
+          </div>
+        </>
       )}
 
-      <nav className="flex flex-col space-y-3 w-full">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveView(item.id)}
-            className={`flex items-center justify-center lg:justify-start text-lg font-semibold p-3 rounded-xl transition-all duration-200 transform hover:scale-105 ${
-              activeView === item.id
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-500/50"
-                : "text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800"
-            }`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 lg:mr-3"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d={item.icon} />
-            </svg>
-            <span className="hidden lg:inline">{item.label}</span>
-          </button>
-        ))}
-      </nav>
       <div className="mt-auto" />
     </aside>
   );
