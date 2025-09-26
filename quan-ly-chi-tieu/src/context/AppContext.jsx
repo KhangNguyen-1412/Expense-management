@@ -267,7 +267,7 @@ export const AppProvider = ({ children }) => {
       setTransactionToEdit(transaction);
       setActiveView("add");
     },
-    [setActiveView]
+    [setActiveView, setTransactionToEdit]
   );
 
   const handleUpdateTransaction = useCallback(
@@ -276,14 +276,14 @@ export const AppProvider = ({ children }) => {
       setTransactionToEdit(null);
       setActiveView("history");
     },
-    [updateTransaction, setActiveView]
+    [updateTransaction, setActiveView, setTransactionToEdit]
   );
 
   const cancelEdit = useCallback(() => {
     setTransactionToEdit(null);
     // Quay lại màn hình trước đó, hoặc mặc định là history
     setActiveView("history");
-  }, [setActiveView]);
+  }, [setActiveView, setTransactionToEdit]);
 
   const handleCopyTransaction = useCallback(
     async (transactionToCopy) => {
