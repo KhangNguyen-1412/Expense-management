@@ -1,6 +1,8 @@
 import {
   addDoc,
   deleteDoc,
+  updateDoc,
+  writeBatch,
   doc,
   collection,
   serverTimestamp,
@@ -22,7 +24,7 @@ export const useTransactions = (user) => {
 
   const deleteTransaction = async (id) => {
     if (!user) return;
-    await firestoreDeleteDoc(doc(db, `users/${user.uid}/transactions`, id));
+    await deleteDoc(doc(db, `users/${user.uid}/transactions`, id));
   };
 
   const updateTransaction = async (id, updatedData) => {
