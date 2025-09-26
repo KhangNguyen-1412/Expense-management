@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db, handleSignOut as firebaseSignOut } from "../config/firebase";
-import { formatCurrency } from "../utils/formatCurrency";
+import { formatCurrency as formatCurrencyUtil } from "../utils/formatCurrency";
 import { SPENDING_CATEGORIES } from "../constants/categories";
 
 // Custom Hooks
@@ -380,6 +380,11 @@ export const AppProvider = ({ children }) => {
   const confirmSignOut = useCallback(() => {
     firebaseSignOut();
     setIsSignOutConfirmOpen(false);
+  }, []);
+
+  const formatCurrency = useCallback((amount) => {
+    // Hàm này giờ đây không còn phụ thuộc vào context, giúp tránh lỗi circular dependency
+    return formatCurrencyUtil(amount);
   }, []);
 
   const cancelSignOut = useCallback(() => {
