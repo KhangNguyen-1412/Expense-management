@@ -1,31 +1,59 @@
-import React, { useState } from "react";
-import { SPENDING_CATEGORIES } from "../constants/categories";
+import React, { useState, useEffect } from "react";
+import { useAppContext } from "../context/AppContext";
 
-export const AddTransactionView = ({ onAddTransaction }) => {
+export const AddTransactionView = () => {
+  const {
+    handleAddTransaction,
+    handleUpdateTransaction,
+    transactionToEdit,
+    cancelEdit,
+    SPENDING_CATEGORIES,
+  } = useAppContext();
+
+  const isEditing = !!transactionToEdit;
+
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState(SPENDING_CATEGORIES[0]);
 
+  // Cập nhật form khi transactionToEdit thay đổi
+  useEffect(() => {
+    if (isEditing) {
+      setText(transactionToEdit.text);
+      setAmount(String(transactionToEdit.amount));
+      setCategory(transactionToEdit.category || SPENDING_CATEGORIES[0]);
+    } else {
+      // Reset form khi không còn ở chế độ edit hoặc khi thêm mới
+      setText("");
+      setAmount("");
+      setCategory(SPENDING_CATEGORIES[0]);
+    }
+  }, [transactionToEdit, isEditing, SPENDING_CATEGORIES]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (text.trim() === "" || amount.trim() === "") {
-      alert("Vui lòng nhập nội dung và số tiền.");
+      alert("Vui lòng nhập đầy đủ nội dung và số tiền.");
       return;
     }
-    onAddTransaction({
+
+    const transactionData = {
       text,
       amount: +amount,
       category: +amount < 0 ? category : null,
-    });
-    setText("");
-    setAmount("");
-    setCategory(SPENDING_CATEGORIES[0]);
+    };
+
+    if (isEditing) {
+      handleUpdateTransaction(transactionToEdit.id, transactionData);
+    } else {
+      handleAddTransaction(transactionData);
+    }
   };
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-lg mx-auto">
       <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
-        Thêm giao dịch mới
+        {isEditing ? "Chỉnh sửa giao dịch" : "Thêm giao dịch mới"}
       </h3>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
@@ -85,9 +113,20 @@ export const AddTransactionView = ({ onAddTransaction }) => {
             </select>
           </div>
         )}
-        <button className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all duration-300 text-lg">
-          Thêm giao dịch
-        </button>
+        <div className="flex gap-4">
+          {isEditing && (
+            <button
+              type="button"
+              onClick={cancelEdit}
+              className="w-full bg-slate-200 dark:bg-slate-600 text-slate-800 dark:text-slate-200 font-bold py-3 px-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-all duration-300 text-lg"
+            >
+              Hủy
+            </button>
+          )}
+          <button className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all duration-300 text-lg">
+            {isEditing ? "Cập nhật" : "Thêm giao dịch"}
+          </button>
+        </div>
       </form>
     </div>
   );
