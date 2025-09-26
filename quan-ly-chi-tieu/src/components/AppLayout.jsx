@@ -7,6 +7,7 @@ import { UndoToast } from "./UndoToast";
 import { BudgetWarningToast } from "./BudgetWarningToast";
 import { DeleteDataDialog } from "./DeleteDataDialog";
 import { SetPinDialog } from "./SetPinDialog";
+import { VoiceGuideDialog } from "./VoiceGuideDialog";
 import { PinLockScreen } from "./PinLockScreen";
 
 const SpeechRecognition =
@@ -141,6 +142,7 @@ export const AppLayout = () => {
   } = useAppContext();
   const [isListening, setIsListening] = useState(false);
   const [voiceTransaction, setVoiceTransaction] = useState(null);
+  const [isVoiceGuideOpen, setIsVoiceGuideOpen] = useState(false);
 
   const processVoiceCommand = useCallback(
     (transcript) => {
@@ -324,7 +326,11 @@ export const AppLayout = () => {
                 .dark .react-datepicker__day--selected, .dark .react-datepicker__day--in-selecting-range, .dark .react-datepicker__day--in-range { background-color: #4f46e5; }
                 .dark .react-datepicker__day--disabled { color: #64748b; }
             `}</style>
-      <Sidebar isListening={isListening} toggleListening={toggleListening} />
+      <Sidebar
+        isListening={isListening}
+        toggleListening={toggleListening}
+        openVoiceGuide={() => setIsVoiceGuideOpen(true)}
+      />
       <main className="flex-1 p-6 sm:p-10 overflow-y-auto">
         <MainContent voiceTransaction={voiceTransaction} />
       </main>
@@ -333,6 +339,10 @@ export const AppLayout = () => {
       <BudgetWarningToast />
       <DeleteDataDialog />
       <SetPinDialog />
+      <VoiceGuideDialog
+        isOpen={isVoiceGuideOpen}
+        onClose={() => setIsVoiceGuideOpen(false)}
+      />
     </div>
   );
 };
