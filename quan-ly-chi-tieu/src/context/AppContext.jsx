@@ -54,10 +54,12 @@ export const AppProvider = ({ children }) => {
   // Sử dụng các custom hook để quản lý state và logic
   const { theme, toggleTheme } = useTheme();
   const { user, authError, isLoadingAuth } = useAuth();
-  const { transactions, budgets, goals, isLoadingData } = useFirestoreData(
-    user,
-    selectedBudgetDate
-  );
+  const {
+    transactions,
+    budgets,
+    goals = [], // Cung cấp giá trị mặc định là một mảng rỗng
+    isLoadingData,
+  } = useFirestoreData(user, selectedBudgetDate);
   const { income, expense, total } = useTransactionCalculations(transactions);
   const {
     analysis,
