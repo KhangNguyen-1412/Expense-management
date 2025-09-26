@@ -7,8 +7,8 @@ export const useGeminiAnalysis = (transactions) => {
   const [error, setError] = useState("");
 
   const handleAnalyzeSpending = async () => {
-    if (transactions.filter((t) => t.amount < 0).length === 0) {
-      setError("Không có giao dịch CHI TIÊU nào để phân tích.");
+    if (transactions.length === 0) {
+      setError("Không có giao dịch nào để phân tích.");
       setAnalysis("");
       return;
     }
@@ -25,10 +25,11 @@ export const useGeminiAnalysis = (transactions) => {
       )
       .join("\n");
 
-    const prompt = `Với vai trò là một chuyên gia tài chính cá nhân, hãy phân tích danh sách giao dịch sau của người dùng Việt Nam. Dựa vào dữ liệu, hãy:
-1. Đưa ra nhận xét tổng quan về tình hình tài chính.
-2. Xác định các hạng mục chi tiêu lớn nhất và phân tích xem có điểm nào bất thường không.
-3. Đưa ra 2-3 lời khuyên cụ thể, hữu ích để giúp họ tối ưu hóa chi tiêu.
+    const prompt = `Với vai trò là một chuyên gia tài chính cá nhân, hãy phân tích danh sách giao dịch (bao gồm cả thu nhập và chi tiêu) sau của người dùng Việt Nam. Dựa vào dữ liệu, hãy:
+1. Đưa ra nhận xét tổng quan về tình hình tài chính (tỷ lệ thu/chi, dòng tiền).
+2. Xác định các nguồn thu nhập chính và các hạng mục chi tiêu lớn nhất.
+3. Phân tích xem có điểm nào bất thường hoặc cơ hội nào để cải thiện không (ví dụ: chi tiêu không cần thiết, cơ hội tăng thu nhập).
+4. Đưa ra 2-3 lời khuyên cụ thể, hữu ích để giúp họ quản lý tài chính tốt hơn.
 Vui lòng trả lời bằng tiếng Việt, giọng văn khích lệ, và sử dụng định dạng HTML (<strong>, <ul>, <li>, <p>).
 Dữ liệu giao dịch:
 ${transactionList}`;

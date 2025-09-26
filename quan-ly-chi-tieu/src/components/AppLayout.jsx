@@ -169,9 +169,9 @@ export const AppLayout = () => {
         /(?:giao dịch|khoản thu|thu nhập) (?:có tên là|tên là|là) (.+?)(?: với số tiền| và số tiền| với danh mục|$)/
       );
       if (nameMatch && nameMatch[1]) {
-        const content = nameMatch[1].trim();
-        updatedTransaction.content = content;
-        const feedback = `Đã nhận diện tên ${transactionTypeName}: ${content}`;
+        const text = nameMatch[1].trim();
+        updatedTransaction.text = text; // Sửa 'content' thành 'text'
+        const feedback = `Đã nhận diện tên ${transactionTypeName}: ${text}`;
         showToast(feedback);
         speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
       }
@@ -228,7 +228,8 @@ export const AppLayout = () => {
 
       // Xác nhận thêm giao dịch
       if (lowerCaseTranscript.includes("ok")) {
-        if (updatedTransaction.content && updatedTransaction.amount) {
+        if (updatedTransaction.text && updatedTransaction.amount) {
+          // Sửa 'content' thành 'text'
           const newTransaction = {
             ...updatedTransaction,
             type: transactionType,
