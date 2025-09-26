@@ -210,8 +210,9 @@ export const AppLayout = () => {
         const categoryName = categoryMatch[1].trim().toLowerCase();
         // Giả sử danh mục thu nhập và chi tiêu đều nằm trong `budgets`
         // Bạn có thể cần điều chỉnh logic này nếu chúng được lưu riêng
-        const foundBudget = budgets.find(
-          (b) => b.name.toLowerCase() === categoryName
+        // Chuyển đổi object budgets thành mảng các giá trị để sử dụng .find()
+        const foundBudget = Object.values(budgets).find(
+          (budget) => budget.name.toLowerCase() === categoryName
         );
         if (foundBudget) {
           updatedTransaction.categoryId = foundBudget.id;
