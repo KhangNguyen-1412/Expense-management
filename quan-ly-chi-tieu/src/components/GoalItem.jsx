@@ -1,39 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAppContext } from "../context/AppContext";
-import { ContributeToGoalDialog } from "./ContributeToGoalDialog";
-import { EditGoalDialog } from "./EditGoalDialog";
-import { GoalHistoryDialog } from "./GoalHistoryDialog";
 
-export const GoalItem = ({ goal }) => {
-  const { formatCurrency, handleDeleteGoal } = useAppContext();
-  const [isContributeOpen, setIsContributeOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+export const GoalItem = ({
+  goal,
+  onContribute,
+  onEdit,
+  onHistory,
+  onDelete,
+}) => {
+  const { formatCurrency } = useAppContext();
 
   const progress =
     goal.targetAmount > 0 ? (goal.currentAmount / goal.targetAmount) * 100 : 0;
 
   return (
     <>
-      <ContributeToGoalDialog
-        isOpen={isContributeOpen}
-        onClose={() => setIsContributeOpen(false)}
-        goal={goal}
-      />
-      <EditGoalDialog
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        goal={goal}
-      />
-      <GoalHistoryDialog
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
-        goal={goal}
-      />
       <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg transition-all duration-200 hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600">
         <div
           className="flex justify-between items-start cursor-pointer"
-          onClick={() => setIsHistoryOpen(true)}
+          onClick={onHistory}
         >
           <div className="flex-grow">
             <div className="flex items-center gap-2">
@@ -59,14 +44,14 @@ export const GoalItem = ({ goal }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              onClick={() => setIsContributeOpen(true)}
+              onClick={onContribute}
               disabled={progress >= 100}
               className="px-3 py-1.5 text-sm bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transition-colors disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed"
             >
               Gửi tiền
             </button>
             <button
-              onClick={() => setIsEditOpen(true)}
+              onClick={onEdit}
               className="p-2 text-slate-500 dark:text-slate-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-500 rounded-full transition-colors"
               aria-label="Chỉnh sửa mục tiêu"
             >
@@ -86,7 +71,7 @@ export const GoalItem = ({ goal }) => {
               </svg>
             </button>
             <button
-              onClick={() => handleDeleteGoal(goal.id, goal.name)}
+              onClick={onDelete}
               className="p-2 text-slate-500 dark:text-slate-400 hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-500 rounded-full transition-colors"
               aria-label="Xóa mục tiêu"
             >

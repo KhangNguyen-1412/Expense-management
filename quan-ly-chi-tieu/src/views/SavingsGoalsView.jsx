@@ -3,14 +3,26 @@ import { useAppContext } from "../context/AppContext";
 import { AddGoalDialog } from "../components/AddGoalDialog";
 import { GoalItem } from "../components/GoalItem";
 import { CompletedGoalsDialog } from "../components/CompletedGoalsDialog";
+import { ContributeToGoalDialog } from "../components/ContributeToGoalDialog";
+import { EditGoalDialog } from "../components/EditGoalDialog";
+import { GoalHistoryDialog } from "../components/GoalHistoryDialog";
 
 export const SavingsGoalsView = () => {
-  const { goals, isLoadingData } = useAppContext();
+  const { goals, isLoadingData, handleDeleteGoal } = useAppContext();
   const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
+  const [selectedGoal, setSelectedGoal] = useState(null);
+  const [dialogState, setDialogState] = useState({
+    contribute: false,
+    edit: false,
+    history: false,
+  });
 
   const hasCompletedGoals = useMemo(
-    () => goals.some((g) => g.currentAmount >= g.targetAmount),
+    () =>
+      goals.some(
+        (g) => g.currentAmount >= g.targetAmount && g.targetAmount > 0
+      ),
     [goals]
   );
 
@@ -23,6 +35,21 @@ export const SavingsGoalsView = () => {
       <CompletedGoalsDialog
         isOpen={isReportOpen}
         onClose={() => setIsReportOpen(false)}
+      />
+      <ContributeToGoalDialog
+        isOpen={dialogState.contribute}
+        onClose={() => setDialogState({ ...dialogState, contribute: false })}
+        goal={selectedGoal}
+      />
+      <EditGoalDialog
+        isOpen={dialogState.edit}
+        onClose={() => setDialogState({ ...dialogState, edit: false })}
+        goal={selectedGoal}
+      />
+      <GoalHistoryDialog
+        isOpen={dialogState.history}
+        onClose={() => setDialogState({ ...dialogState, history: false })}
+        goal={selectedGoal}
       />
       <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6">
         <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
@@ -68,7 +95,23 @@ export const SavingsGoalsView = () => {
         {!isLoadingData && goals.length > 0 && (
           <div className="space-y-4">
             {goals.map((goal) => (
-              <GoalItem key={goal.id} goal={goal} />
+              <GoalItem
+                key={goal.id}
+                goal={goal}
+                onContribute={() => {
+                  setSelectedGoal(goal);
+                  setDialogState({ ...dialogState, contribute: true });
+                }}
+                onEdit={() => {
+                  setSelectedGoal(goal);
+                  setDialogState({ ...dialogState, edit: true });
+                }}
+                onHistory={() => {
+                  setSelectedGoal(goal);
+                  setDialogState({ ...dialogState, history: true });
+                }}
+                onDelete={() => handleDeleteGoal(goal.id, goal.name)}
+              />
             ))}
           </div>
         )}
