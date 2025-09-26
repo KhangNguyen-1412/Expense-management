@@ -169,6 +169,11 @@ export const AppProvider = ({ children }) => {
     [transactions, deleteTransaction, addTransaction]
   );
 
+  const showToast = useCallback((message, type = "info") => {
+    // Đây là một hàm giả định, bạn cần thay thế bằng logic toast thực tế của mình
+    console.log(`Toast: [${type}] ${message}`);
+  }, []);
+
   const handleSetBudgets = useCallback(
     async (newBudgets) => {
       if (!user || !selectedBudgetDate) return;
@@ -354,6 +359,7 @@ export const AppProvider = ({ children }) => {
     unlockApp,
     SPENDING_CATEGORIES,
     formatCurrency,
+    showToast,
     isVoiceFeedbackEnabled,
     toggleVoiceFeedback,
   };
