@@ -39,6 +39,9 @@ export const SettingsView = () => {
     subscribeToPush,
     unsubscribeFromPush,
     user,
+    isPinLockEnabled,
+    disablePinLock,
+    openSetPinDialog,
     openDeleteDataDialog,
   } = useAppContext();
 
@@ -67,6 +70,21 @@ export const SettingsView = () => {
             />
           </SettingRow>
         )}
+        <SettingRow
+          title="Khóa bằng mã PIN"
+          description="Yêu cầu nhập mã PIN mỗi khi mở ứng dụng."
+        >
+          <ToggleSwitch
+            checked={isPinLockEnabled}
+            onChange={() => {
+              if (isPinLockEnabled) {
+                disablePinLock();
+              } else {
+                openSetPinDialog();
+              }
+            }}
+          />
+        </SettingRow>
         <div className="pt-6">
           <button
             onClick={openDeleteDataDialog}

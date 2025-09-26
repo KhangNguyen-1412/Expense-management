@@ -6,9 +6,14 @@ import { ConfirmDialog } from "./ConfirmDialog";
 import { UndoToast } from "./UndoToast";
 import { BudgetWarningToast } from "./BudgetWarningToast";
 import { DeleteDataDialog } from "./DeleteDataDialog";
+import { SetPinDialog } from "./SetPinDialog";
+import { PinLockScreen } from "./PinLockScreen";
 
 export const AppLayout = () => {
-  const { theme } = useAppContext(); // Chỉ cần theme để style
+  const { theme, isAppLocked } = useAppContext();
+
+  if (isAppLocked) return <PinLockScreen />;
+
   return (
     <div className="flex h-screen bg-slate-100 dark:bg-slate-950 font-sans">
       <style>{`
@@ -34,6 +39,7 @@ export const AppLayout = () => {
       <UndoToast />
       <BudgetWarningToast />
       <DeleteDataDialog />
+      <SetPinDialog />
     </div>
   );
 };

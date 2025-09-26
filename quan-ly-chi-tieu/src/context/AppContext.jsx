@@ -31,6 +31,14 @@ export const AppProvider = ({ children }) => {
   const [lastUndoableAction, setLastUndoableAction] = useState(null);
   const [budgetWarnings, setBudgetWarnings] = useState([]);
   const [isDeleteDataConfirmOpen, setIsDeleteDataConfirmOpen] = useState(false);
+  const [isSetPinOpen, setIsSetPinOpen] = useState(false);
+  const [isPinLockEnabled, setIsPinLockEnabled] = useState(
+    () => localStorage.getItem("pin_enabled") === "true"
+  );
+  const [isAppLocked, setIsAppLocked] = useState(
+    () => localStorage.getItem("pin_enabled") === "true"
+  );
+
   const [selectedBudgetDate, setSelectedBudgetDate] = useState(new Date());
 
   // Sử dụng các custom hook để quản lý state và logic
@@ -239,6 +247,30 @@ export const AppProvider = ({ children }) => {
   const openDeleteDataDialog = () => setIsDeleteDataConfirmOpen(true);
   const closeDeleteDataDialog = () => setIsDeleteDataConfirmOpen(false);
 
+  const openSetPinDialog = () => setIsSetPinOpen(true);
+  const closeSetPinDialog = () => setIsSetPinOpen(false);
+
+  const enablePinLock = (pin) => {
+    localStorage.setItem("user_pin", pin);
+    localStorage.setItem("pin_enabled", "true");
+    setIsPinLockEnabled(true);
+  };
+
+  const disablePinLock = () => {
+    localStorage.removeItem("user_pin");
+    localStorage.setItem("pin_enabled", "false");
+    setIsPinLockEnabled(false);
+  };
+
+  const unlockApp = (pin) => {
+    const storedPin = localStorage.getItem("user_pin");
+    if (pin === storedPin) {
+      setIsAppLocked(false);
+      return true;
+    }
+    return false;
+  };
+
   const handleSignOut = useCallback(() => {
     setIsSignOutConfirmOpen(true);
   }, []);
@@ -300,6 +332,14 @@ export const AppProvider = ({ children }) => {
     isDeleteDataConfirmOpen,
     openDeleteDataDialog,
     closeDeleteDataDialog,
+    isSetPinOpen,
+    openSetPinDialog,
+    closeSetPinDialog,
+    isPinLockEnabled,
+    enablePinLock,
+    disablePinLock,
+    isAppLocked,
+    unlockApp,
     SPENDING_CATEGORIES,
     formatCurrency,
   };
