@@ -170,7 +170,7 @@ export const AppProvider = ({ children }) => {
       await addTransaction(transactionData);
       setActiveView("history");
     },
-    [addTransaction]
+    [addTransaction, setActiveView]
   );
 
   const handleDeleteTransaction = useCallback(
@@ -193,7 +193,7 @@ export const AppProvider = ({ children }) => {
         onUndo: onUndo,
       });
     },
-    [transactions, deleteTransaction, addTransaction]
+    [transactions, deleteTransaction, addTransaction, setLastUndoableAction]
   );
 
   const handleAddGoal = useCallback(
@@ -201,7 +201,7 @@ export const AppProvider = ({ children }) => {
       await addGoal(goalData);
       showToast("Đã tạo mục tiêu mới!", "success");
     },
-    [addGoal]
+    [addGoal, showToast]
   );
 
   const handleDeleteGoal = useCallback(
@@ -238,7 +238,7 @@ export const AppProvider = ({ children }) => {
       });
       showToast(`Đã gửi ${formatCurrency(amount)} vào mục tiêu!`, "success");
     },
-    [contributeToGoal, addTransaction]
+    [contributeToGoal, addTransaction, formatCurrency, showToast]
   );
 
   const showToast = useCallback((message, type = "info") => {
@@ -262,10 +262,13 @@ export const AppProvider = ({ children }) => {
     [user, selectedBudgetDate, showToast]
   );
 
-  const handleStartEdit = useCallback((transaction) => {
-    setTransactionToEdit(transaction);
-    setActiveView("add");
-  }, []);
+  const handleStartEdit = useCallback(
+    (transaction) => {
+      setTransactionToEdit(transaction);
+      setActiveView("add");
+    },
+    [setActiveView]
+  );
 
   const handleUpdateTransaction = useCallback(
     async (id, updatedData) => {
@@ -273,14 +276,14 @@ export const AppProvider = ({ children }) => {
       setTransactionToEdit(null);
       setActiveView("history");
     },
-    [updateTransaction]
+    [updateTransaction, setActiveView]
   );
 
   const cancelEdit = useCallback(() => {
     setTransactionToEdit(null);
     // Quay lại màn hình trước đó, hoặc mặc định là history
     setActiveView("history");
-  }, []);
+  }, [setActiveView]);
 
   const handleCopyTransaction = useCallback(
     async (transactionToCopy) => {
@@ -290,7 +293,7 @@ export const AppProvider = ({ children }) => {
       // Tự động chuyển đến màn hình lịch sử để người dùng thấy giao dịch vừa được sao chép
       setActiveView("history");
     },
-    [addTransaction]
+    [addTransaction, setActiveView]
   );
 
   const handleMergeTransactions = useCallback(
@@ -317,7 +320,7 @@ export const AppProvider = ({ children }) => {
         });
       }
     },
-    [transactions, mergeTransactions, revertMerge]
+    [transactions, mergeTransactions, revertMerge, setLastUndoableAction]
   );
 
   const handleDeleteAllData = useCallback(() => {
