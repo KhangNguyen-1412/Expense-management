@@ -45,6 +45,9 @@ export const SettingsView = () => {
     openDeleteDataDialog,
     isVoiceFeedbackEnabled,
     toggleVoiceFeedback,
+    availableVoices,
+    selectedVoiceURI,
+    handleSelectVoice,
   } = useAppContext();
 
   return (
@@ -96,6 +99,25 @@ export const SettingsView = () => {
             onChange={toggleVoiceFeedback}
           />
         </SettingRow>
+        {availableVoices.length > 0 && (
+          <SettingRow
+            title="Giọng nói của trợ lý"
+            description="Chọn giọng nam hoặc nữ (nếu có)."
+          >
+            <select
+              value={selectedVoiceURI || ""}
+              onChange={(e) => handleSelectVoice(e.target.value)}
+              className="w-48 p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow"
+            >
+              <option value="">Mặc định của trình duyệt</option>
+              {availableVoices.map((voice) => (
+                <option key={voice.voiceURI} value={voice.voiceURI}>
+                  {voice.name}
+                </option>
+              ))}
+            </select>
+          </SettingRow>
+        )}
         <div className="pt-6">
           <button
             onClick={openDeleteDataDialog}

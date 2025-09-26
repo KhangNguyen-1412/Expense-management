@@ -43,6 +43,11 @@ export const AppProvider = ({ children }) => {
     () => localStorage.getItem("voice_feedback_enabled") !== "false" // Mặc định là bật
   );
 
+  const [availableVoices, setAvailableVoices] = useState([]);
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState(
+    () => localStorage.getItem("selected_voice_uri") || null
+  );
+
   const [selectedBudgetDate, setSelectedBudgetDate] = useState(new Date());
 
   // Sử dụng các custom hook để quản lý state và logic
@@ -136,6 +141,24 @@ export const AppProvider = ({ children }) => {
 
     setBudgetWarnings(warnings);
   }, [selectedMonthCategorySpending, budgets]);
+
+  // Effect để lấy danh sách giọng nói có sẵn
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = window.speechSynthesis
+        .getVoices()
+        .filter((v) => v.lang === "vi-VN");
+      setAvailableVoices(voices);
+    };
+
+    // Danh sách giọng nói được tải không đồng bộ.
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices(); // Gọi một lần để thử tải ngay lập tức
+
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
 
   // Các hàm xử lý sự kiện (event handlers)
   const handleAddTransaction = useCallback(
@@ -288,6 +311,15 @@ export const AppProvider = ({ children }) => {
     });
   }, []);
 
+  const handleSelectVoice = useCallback((uri) => {
+    if (uri) {
+      localStorage.setItem("selected_voice_uri", uri);
+    } else {
+      localStorage.removeItem("selected_voice_uri");
+    }
+    setSelectedVoiceURI(uri);
+  }, []);
+
   const handleSignOut = useCallback(() => {
     setIsSignOutConfirmOpen(true);
   }, []);
@@ -362,6 +394,9 @@ export const AppProvider = ({ children }) => {
     showToast,
     isVoiceFeedbackEnabled,
     toggleVoiceFeedback,
+    availableVoices,
+    selectedVoiceURI,
+    handleSelectVoice,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -110,11 +110,16 @@ const convertVietnameseNumberToDigits = (text) => {
  * Helper function to speak text using the browser's Speech Synthesis API.
  * @param {string} text The text to be spoken.
  */
-const speak = (text, isEnabled) => {
+const speak = (text, isEnabled, selectedVoiceURI) => {
   if (isEnabled && "speechSynthesis" in window) {
     window.speechSynthesis.cancel(); // Stop any previous speech
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "vi-VN"; // Set language to Vietnamese
+    if (selectedVoiceURI) {
+      const voices = window.speechSynthesis.getVoices();
+      const selectedVoice = voices.find((v) => v.voiceURI === selectedVoiceURI);
+      if (selectedVoice) utterance.voice = selectedVoice;
+    }
     window.speechSynthesis.speak(utterance);
   }
 };
@@ -127,6 +132,7 @@ export const AppLayout = () => {
     showToast,
     setActiveView,
     isVoiceFeedbackEnabled,
+    selectedVoiceURI,
     // Giả sử bạn có các hàm và state này trong context để cập nhật form
     // Nếu không, bạn cần truyền chúng xuống từ AppLayout hoặc quản lý trong MainContent
     // setFormContent,
@@ -144,7 +150,7 @@ export const AppLayout = () => {
       // Xử lý từ khóa "hủy"
       if (lowerCaseTranscript.includes("hủy")) {
         setVoiceTransaction(null);
-        speak("Đã hủy", isVoiceFeedbackEnabled);
+        speak("Đã hủy", isVoiceFeedbackEnabled, selectedVoiceURI);
         showToast("Đã hủy các thông tin vừa nhập.", "info");
         return; // Dừng xử lý
       }
@@ -167,7 +173,7 @@ export const AppLayout = () => {
         updatedTransaction.content = content;
         const feedback = `Đã nhận diện tên ${transactionTypeName}: ${content}`;
         showToast(feedback);
-        speak(feedback, isVoiceFeedbackEnabled);
+        speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
       }
 
       // Tìm số tiền
@@ -192,7 +198,7 @@ export const AppLayout = () => {
             "vi-VN"
           )} đồng`;
           showToast(feedback.replace(" đồng", "đ"));
-          speak(feedback, isVoiceFeedbackEnabled);
+          speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
         }
       }
 
@@ -211,11 +217,11 @@ export const AppLayout = () => {
           updatedTransaction.categoryId = foundBudget.id;
           const feedback = `Đã nhận diện danh mục: ${foundBudget.name}`;
           showToast(feedback);
-          speak(feedback, isVoiceFeedbackEnabled);
+          speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
         } else {
           const feedback = `Không tìm thấy danh mục ${categoryName}`;
           showToast(`${feedback}`, "error");
-          speak(feedback, isVoiceFeedbackEnabled);
+          speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
         }
       }
 
@@ -230,13 +236,13 @@ export const AppLayout = () => {
           addTransaction(newTransaction);
           const feedback = `Đã thêm giao dịch ${transactionTypeName}`;
           showToast(`${feedback}...`, "success");
-          speak(feedback, isVoiceFeedbackEnabled);
+          speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
           setVoiceTransaction(null); // Reset sau khi thêm
           setIsListening(false); // Dừng lắng nghe
         } else {
           const feedback = "Vui lòng cung cấp đủ tên và số tiền.";
           showToast(feedback, "error");
-          speak(feedback, isVoiceFeedbackEnabled);
+          speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
         }
         return; // Dừng xử lý sau khi OK
       }
@@ -250,29 +256,35 @@ export const AppLayout = () => {
       showToast,
       setActiveView,
       isVoiceFeedbackEnabled,
+      selectedVoiceURI,
     ] // Thêm các dependency nếu cần
   );
 
+  // Effect này chỉ để quản lý việc bắt đầu và dừng recognition
   useEffect(() => {
     if (!recognition) return;
+    if (isListening) {
+      recognition.start();
+    } else {
+      recognition.stop();
+    }
+    return () => {
+      recognition.stop();
+    };
+  }, [isListening]);
+
+  // Effect này chỉ để lắng nghe kết quả và gọi hàm xử lý
+  useEffect(() => {
+    if (!recognition || !isListening) return;
 
     const handleResult = (event) => {
-      const transcript = event.results[event.results.length - 1][0].transcript;
+      const transcript =
+        event.results[event.results.length - 1][0].transcript.trim();
       processVoiceCommand(transcript);
     };
 
-    if (isListening) {
-      recognition.addEventListener("result", handleResult);
-      recognition.start();
-    } else {
-      recognition.removeEventListener("result", handleResult);
-      recognition.stop();
-    }
-
-    return () => {
-      recognition.removeEventListener("result", handleResult);
-      recognition.stop();
-    };
+    recognition.addEventListener("result", handleResult);
+    return () => recognition.removeEventListener("result", handleResult);
   }, [isListening, processVoiceCommand]);
 
   const toggleListening = () => {
@@ -288,7 +300,7 @@ export const AppLayout = () => {
       const feedback = "Bắt đầu ghi âm";
       setVoiceTransaction({}); // Bắt đầu một giao dịch mới
       showToast(`${feedback}...`, "info");
-      speak(feedback, isVoiceFeedbackEnabled);
+      speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
     } else {
       showToast("Đã dừng ghi âm.", "info");
     }
