@@ -9,7 +9,7 @@ import { CSVGuideDialog } from "../components/CSVGuideDialog";
 import { MergeTransactionsDialog } from "../components/MergeTransactionsDialog";
 
 export const HistoryView = () => {
-  const { transactions, isLoadingData, addMultipleTransactions } =
+  const { transactions, isLoadingData, addMultipleTransactions, showToast } =
     useAppContext();
   const [filter, setFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -94,7 +94,7 @@ export const HistoryView = () => {
 
   const handleExport = () => {
     if (filteredTransactions.length === 0) {
-      alert("Không có dữ liệu để xuất.");
+      showToast("Không có dữ liệu để xuất.", "info");
       return;
     }
     exportToCSV(
@@ -119,10 +119,13 @@ export const HistoryView = () => {
     try {
       const newTransactions = await importFromCSV(file);
       await addMultipleTransactions(newTransactions);
-      alert(`Đã nhập thành công ${newTransactions.length} giao dịch!`);
+      showToast(
+        `Đã nhập thành công ${newTransactions.length} giao dịch!`,
+        "success"
+      );
     } catch (error) {
       console.error("Lỗi khi nhập file CSV:", error);
-      alert(`Đã xảy ra lỗi khi nhập file: ${error.message}`);
+      showToast(`Đã xảy ra lỗi khi nhập file: ${error.message}`, "error");
     } finally {
       event.target.value = null; // Reset file input để có thể chọn lại cùng file
     }
