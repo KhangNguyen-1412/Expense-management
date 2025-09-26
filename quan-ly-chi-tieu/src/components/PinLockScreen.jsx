@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useAppContext } from "../context/AppContext";
 
@@ -21,15 +21,36 @@ export const PinLockScreen = () => {
     }
   }, [pin, unlockApp]);
 
-  const handleKeyClick = (key) => {
-    if (pin.length < PIN_LENGTH) {
-      setPin(pin + key);
-    }
-  };
+  const handleKeyClick = useCallback(
+    (key) => {
+      if (String(key).match(/^[0-9]$/)) {
+        setPin((prevPin) =>
+          prevPin.length < PIN_LENGTH ? prevPin + key : prevPin
+        );
+      }
+    },
+    [PIN_LENGTH]
+  );
 
-  const handleDelete = () => {
-    setPin(pin.slice(0, -1));
-  };
+  const handleDelete = useCallback(() => {
+    setPin((prevPin) => prevPin.slice(0, -1));
+  }, []);
+
+  // Lắng nghe sự kiện bàn phím để nhập PIN
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key >= "0" && event.key <= "9") {
+        handleKeyClick(event.key);
+      } else if (event.key === "Backspace") {
+        handleDelete();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyClick, handleDelete]);
 
   const PinDot = ({ filled }) => (
     <div
