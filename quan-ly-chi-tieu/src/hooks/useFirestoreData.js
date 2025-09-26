@@ -11,10 +11,14 @@ import { db } from "../config/firebase";
 export const useFirestoreData = (user, date) => {
   const [transactions, setTransactions] = useState([]);
   const [budgets, setBudgets] = useState({});
+  const [goals, setGoals] = useState([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
 
   useEffect(() => {
     if (!user || !date) {
+      setTransactions([]);
+      setBudgets({});
+      setGoals([]);
       setIsLoadingData(false);
       return;
     }
@@ -36,11 +40,19 @@ export const useFirestoreData = (user, date) => {
       setBudgets(docSnapshot.exists() ? docSnapshot.data() : {});
     });
 
+    const goalsColRef = collection(db, `users/${user.uid}/goals`);
+    const goalsQuery = query(goalsColRef, orderBy("createdAt", "desc"));
+    const unsubscribeGoals = onSnapshot(goalsQuery, (snapshot) => {
+      setGoals(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      // We can keep isLoadingData tied to transactions load
+    });
+
     return () => {
       unsubscribeTrans();
       unsubscribeBudgets();
+      unsubscribeGoals();
     };
   }, [user, date]);
 
-  return { transactions, budgets, isLoadingData };
+  return { transactions, budgets, goals, isLoadingData };
 };
