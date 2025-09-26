@@ -2,7 +2,7 @@ import React from "react";
 import { handleGoogleSignIn } from "../config/firebase";
 import { useAppContext } from "../context/AppContext";
 
-export const Sidebar = ({ isListening, toggleListening, openVoiceGuide }) => {
+export const Sidebar = ({ isListening, toggleListening }) => {
   const {
     activeView,
     setActiveView,
@@ -166,49 +166,27 @@ export const Sidebar = ({ isListening, toggleListening, openVoiceGuide }) => {
           </button>
         ))}
         {/* Nút micro */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={toggleListening}
-            className={`flex-grow flex items-center justify-center lg:justify-start text-lg font-semibold p-3 rounded-xl transition-all duration-200 transform hover:scale-105 ${
-              isListening
-                ? "bg-red-600 text-white shadow-lg shadow-red-200 dark:shadow-red-500/50 animate-pulse"
-                : "text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800"
-            }`}
-            aria-label={isListening ? "Dừng ghi âm" : "Ghi âm giao dịch"}
+        <button
+          onClick={toggleListening}
+          className={`flex items-center justify-center lg:justify-start text-lg font-semibold p-3 rounded-xl transition-all duration-200 transform hover:scale-105 ${
+            isListening
+              ? "bg-red-600 text-white shadow-lg shadow-red-200 dark:shadow-red-500/50 animate-pulse"
+              : "text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800"
+          }`}
+          aria-label={isListening ? "Dừng ghi âm" : "Ghi âm giao dịch"}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 lg:mr-3"
+            viewBox="0 0 24 24"
+            fill="currentColor"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 lg:mr-3"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d={isListening ? micOffIcon : micOnIcon} />
-            </svg>
-            <span className="hidden lg:inline">
-              {isListening ? "Đang ghi..." : "Ghi âm"}
-            </span>
-          </button>
-          <button
-            onClick={openVoiceGuide}
-            className="p-3 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800 transition-colors"
-            aria-label="Hướng dẫn ghi âm"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </button>
-        </div>
+            <path d={isListening ? micOffIcon : micOnIcon} />
+          </svg>
+          <span className="hidden lg:inline">
+            {isListening ? "Đang ghi..." : "Ghi âm"}
+          </span>
+        </button>
       </nav>
       <div className="mt-auto w-full">
         {!user?.isAnonymous && (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
+import { VoiceGuideDialog } from "../components/VoiceGuideDialog";
 
 export const AddTransactionView = () => {
   const {
@@ -15,6 +16,7 @@ export const AddTransactionView = () => {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState(SPENDING_CATEGORIES[0]);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   // Cập nhật form khi transactionToEdit thay đổi
   useEffect(() => {
@@ -52,9 +54,23 @@ export const AddTransactionView = () => {
 
   return (
     <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-lg mx-auto">
-      <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
-        {isEditing ? "Chỉnh sửa giao dịch" : "Thêm giao dịch mới"}
-      </h3>
+      <VoiceGuideDialog
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
+      />
+      <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
+          {isEditing ? "Chỉnh sửa giao dịch" : "Thêm giao dịch mới"}
+        </h3>
+        {!isEditing && (
+          <button
+            onClick={() => setIsGuideOpen(true)}
+            className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+          >
+            Xem hướng dẫn ghi âm
+          </button>
+        )}
+      </div>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label
