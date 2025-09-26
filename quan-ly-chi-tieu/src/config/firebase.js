@@ -5,6 +5,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   linkWithPopup,
+  signInWithCredential,
+  GoogleAuthProvider as AuthProvider, // Alias to avoid confusion
   signOut,
 } from "firebase/auth";
 
@@ -40,15 +42,24 @@ export const handleGoogleSignIn = async () => {
     }
   } catch (error) {
     if (error.code === "auth/credential-already-in-use") {
-      // Lỗi này xảy ra khi tài khoản Google đã được liên kết với một người dùng khác.
-      // Bạn có thể xử lý phức tạp hơn bằng cách cho phép người dùng đăng nhập vào tài khoản cũ
-      // và chuyển dữ liệu, nhưng cách đơn giản nhất là thông báo cho họ.
-      alert(
-        "Tài khoản Google này đã được sử dụng. Vui lòng đăng nhập bằng tài khoản đó hoặc chọn một tài khoản Google khác."
-      );
-      console.error("Lỗi liên kết tài khoản:", error);
+      // This error means the Google account is already linked to another user.
+      // We can sign the user in with that existing account.
+      console.log("Tài khoản Google đã tồn tại, đang tiến hành đăng nhập...");
+      try {
+        // Get the credential from the error
+        const credential = AuthProvider.credentialFromError(error);
+        // Sign in with the existing credential
+        await signInWithCredential(auth, credential);
+        console.log("Đăng nhập thành công vào tài khoản đã có.");
+      } catch (signInError) {
+        console.error("Lỗi khi đăng nhập bằng tài khoản đã có:", signInError);
+        alert(
+          "Tài khoản Google này đã được sử dụng. Không thể tự động đăng nhập."
+        );
+      }
     } else {
       console.error("Lỗi đăng nhập Google:", error);
+      alert("Đã xảy ra lỗi khi đăng nhập bằng Google.");
     }
   }
 };
