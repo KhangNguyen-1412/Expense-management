@@ -88,11 +88,19 @@ export const Sidebar = () => {
             ) : (
               <div className="text-center flex flex-col items-center gap-2">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={user.photoURL}
-                    alt="Avatar"
-                    className="w-10 h-10 rounded-full border-2 border-indigo-300"
-                  />
+                  <div className="flex flex-col items-center gap-2">
+                    <img
+                      src={user.photoURL}
+                      alt="Avatar"
+                      className="w-12 h-12 rounded-full border-2 border-indigo-300"
+                    />
+                    <button
+                      onClick={handleSignOut}
+                      className="text-xs text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 underline transition-colors"
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
                   <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 truncate">
                     {user.displayName}
                   </p>
