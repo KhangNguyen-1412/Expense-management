@@ -76,7 +76,7 @@ export const AppProvider = ({ children }) => {
     revertMerge,
     deleteAllUserData,
   } = useTransactions(user);
-  const { addGoal, deleteGoal, contributeToGoal } = useGoals(user);
+  const { addGoal, deleteGoal, contributeToGoal, updateGoal } = useGoals(user);
   const {
     isSupported: isPushSupported,
     isSubscribed: isPushSubscribed,
@@ -202,6 +202,28 @@ export const AppProvider = ({ children }) => {
       showToast("Đã tạo mục tiêu mới!", "success");
     },
     [addGoal]
+  );
+
+  const handleDeleteGoal = useCallback(
+    (goalId, goalName) => {
+      if (window.confirm(`Bạn có chắc chắn muốn xóa mục tiêu "${goalName}"?`)) {
+        deleteGoal(goalId);
+        showToast(`Đã xóa mục tiêu "${goalName}".`, "success");
+      }
+    },
+    [deleteGoal, showToast]
+  );
+
+  const handleUpdateGoal = useCallback(
+    async (goalId, updatedData) => {
+      if (updatedData.targetAmount < 0) {
+        showToast("Số tiền mục tiêu không thể là số âm.", "error");
+        return;
+      }
+      await updateGoal(goalId, updatedData);
+      showToast("Đã cập nhật mục tiêu!", "success");
+    },
+    [updateGoal, showToast]
   );
 
   const handleContributeToGoal = useCallback(
@@ -382,6 +404,8 @@ export const AppProvider = ({ children }) => {
     handleAnalyzeSpending,
     handleAddTransaction,
     handleAddGoal,
+    handleUpdateGoal,
+    handleDeleteGoal,
     handleContributeToGoal,
     handleDeleteTransaction,
     handleSetBudgets,
@@ -419,7 +443,10 @@ export const AppProvider = ({ children }) => {
     disablePinLock,
     isAppLocked,
     unlockApp,
-    SPENDING_CATEGORIES,
+    // Đảm bảo "Tiết kiệm" luôn có trong danh sách để có thể đặt ngân sách
+    SPENDING_CATEGORIES: Array.from(
+      new Set([...SPENDING_CATEGORIES, "Tiết kiệm"])
+    ),
     formatCurrency,
     showToast,
     isVoiceFeedbackEnabled,

@@ -37,5 +37,11 @@ export const useGoals = (user) => {
     await updateDoc(goalDoc, { currentAmount: increment(amount) });
   };
 
-  return { addGoal, deleteGoal, contributeToGoal };
+  const updateGoal = async (id, updatedData) => {
+    if (!user) return;
+    const goalDoc = doc(db, `users/${user.uid}/goals`, id);
+    await updateDoc(goalDoc, updatedData);
+  };
+
+  return { addGoal, deleteGoal, contributeToGoal, updateGoal };
 };
