@@ -211,14 +211,14 @@ export const AppLayout = () => {
       if (categoryMatch && categoryMatch[1]) {
         const categoryName = categoryMatch[1].trim().toLowerCase();
         // Giả sử danh mục thu nhập và chi tiêu đều nằm trong `budgets`
-        // Bạn có thể cần điều chỉnh logic này nếu chúng được lưu riêng
-        // Chuyển đổi object budgets thành mảng các giá trị để sử dụng .find()
-        const foundBudget = Object.values(budgets).find(
-          (budget) => budget.name.toLowerCase() === categoryName
+        // Tìm kiếm trong danh sách tên (key) của các ngân sách
+        const foundBudgetName = Object.keys(budgets).find(
+          (budgetName) => budgetName.toLowerCase() === categoryName
         );
-        if (foundBudget) {
-          updatedTransaction.categoryId = foundBudget.id;
-          const feedback = `Đã nhận diện danh mục: ${foundBudget.name}`;
+
+        if (foundBudgetName) {
+          updatedTransaction.categoryId = foundBudgetName; // Lưu lại tên danh mục
+          const feedback = `Đã nhận diện danh mục: ${foundBudgetName}`;
           showToast(feedback);
           speak(feedback, isVoiceFeedbackEnabled, selectedVoiceURI);
         } else {
