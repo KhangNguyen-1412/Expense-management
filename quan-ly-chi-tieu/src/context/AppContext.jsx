@@ -164,6 +164,11 @@ export const AppProvider = ({ children }) => {
     };
   }, []);
 
+  const showToast = useCallback((message, type = "info") => {
+    // Đây là một hàm giả định, bạn cần thay thế bằng logic toast thực tế của mình
+    console.log(`Toast: [${type}] ${message}`);
+  }, []);
+
   // Các hàm xử lý sự kiện (event handlers)
   const handleAddTransaction = useCallback(
     async (transactionData) => {
@@ -240,11 +245,6 @@ export const AppProvider = ({ children }) => {
     },
     [contributeToGoal, addTransaction, formatCurrency, showToast]
   );
-
-  const showToast = useCallback((message, type = "info") => {
-    // Đây là một hàm giả định, bạn cần thay thế bằng logic toast thực tế của mình
-    console.log(`Toast: [${type}] ${message}`);
-  }, []);
 
   const handleSetBudgets = useCallback(
     async (newBudgets) => {
