@@ -18,6 +18,7 @@ import { useFirestoreData } from "../hooks/useFirestoreData";
 import { useTransactionCalculations } from "../hooks/useTransactionCalculations";
 import { useTransactions } from "../hooks/useTransactions";
 import { useGeminiAnalysis } from "../hooks/useGeminiAnalysis";
+import { useGoals } from "../hooks/useGoals";
 import { usePushNotifications } from "../hooks/usePushNotifications";
 
 // 1. Tạo Context
@@ -53,7 +54,7 @@ export const AppProvider = ({ children }) => {
   // Sử dụng các custom hook để quản lý state và logic
   const { theme, toggleTheme } = useTheme();
   const { user, authError, isLoadingAuth } = useAuth();
-  const { transactions, budgets, isLoadingData } = useFirestoreData(
+  const { transactions, budgets, goals, isLoadingData } = useFirestoreData(
     user,
     selectedBudgetDate
   );
@@ -73,6 +74,7 @@ export const AppProvider = ({ children }) => {
     revertMerge,
     deleteAllUserData,
   } = useTransactions(user);
+  const { addGoal, deleteGoal, contributeToGoal } = useGoals(user);
   const {
     isSupported: isPushSupported,
     isSubscribed: isPushSubscribed,
@@ -190,6 +192,29 @@ export const AppProvider = ({ children }) => {
       });
     },
     [transactions, deleteTransaction, addTransaction]
+  );
+
+  const handleAddGoal = useCallback(
+    async (goalData) => {
+      await addGoal(goalData);
+      showToast("Đã tạo mục tiêu mới!", "success");
+    },
+    [addGoal]
+  );
+
+  const handleContributeToGoal = useCallback(
+    async (goalId, goalName, amount) => {
+      // Thêm tiền vào mục tiêu
+      await contributeToGoal(goalId, amount);
+      // Tạo một giao dịch chi tiêu tương ứng để cân bằng sổ sách
+      await addTransaction({
+        text: `Gửi tiền vào mục tiêu: ${goalName}`,
+        amount: -amount, // Đây là một khoản chi
+        category: "Tiết kiệm", // Hạng mục đặc biệt cho tiết kiệm
+      });
+      showToast(`Đã gửi ${formatCurrency(amount)} vào mục tiêu!`, "success");
+    },
+    [contributeToGoal, addTransaction]
   );
 
   const showToast = useCallback((message, type = "info") => {
@@ -344,6 +369,7 @@ export const AppProvider = ({ children }) => {
     isLoadingAuth,
     transactions,
     budgets,
+    goals,
     isLoadingData,
     income,
     expense,
@@ -353,6 +379,8 @@ export const AppProvider = ({ children }) => {
     analysisError,
     handleAnalyzeSpending,
     handleAddTransaction,
+    handleAddGoal,
+    handleContributeToGoal,
     handleDeleteTransaction,
     handleSetBudgets,
     handleSignOut,

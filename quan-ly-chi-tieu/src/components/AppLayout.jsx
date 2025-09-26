@@ -8,6 +8,11 @@ import { BudgetWarningToast } from "./BudgetWarningToast";
 import { DeleteDataDialog } from "./DeleteDataDialog";
 import { SetPinDialog } from "./SetPinDialog";
 import { PinLockScreen } from "./PinLockScreen";
+import {
+  voiceCommandPatterns,
+  actionKeywords,
+  incomeKeywords,
+} from "../constants/voiceCommands";
 
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -148,7 +153,7 @@ export const AppLayout = () => {
       const lowerCaseTranscript = transcript.toLowerCase();
 
       // Xử lý từ khóa "hủy"
-      if (lowerCaseTranscript.includes("hủy")) {
+      if (lowerCaseTranscript.includes(actionKeywords.cancel)) {
         setVoiceTransaction(null);
         speak("Đã hủy", isVoiceFeedbackEnabled, selectedVoiceURI);
         showToast("Đã hủy các thông tin vừa nhập.", "info");
@@ -158,16 +163,14 @@ export const AppLayout = () => {
       let updatedTransaction = voiceTransaction ? { ...voiceTransaction } : {};
 
       // Xác định loại giao dịch (thu nhập/chi tiêu)
-      const isIncome =
-        lowerCaseTranscript.includes("thu nhập") ||
-        lowerCaseTranscript.includes("khoản thu");
+      const isIncome = incomeKeywords.some((keyword) =>
+        lowerCaseTranscript.includes(keyword)
+      );
       const transactionType = isIncome ? "income" : "expense";
       const transactionTypeName = isIncome ? "Thu nhập" : "Chi tiêu";
 
       // Tìm tên giao dịch
-      const nameMatch = lowerCaseTranscript.match(
-        /(?:giao dịch|khoản thu|thu nhập) (?:có tên là|tên là|là) (.+?)(?: với số tiền| và số tiền| với danh mục|$)/
-      );
+      const nameMatch = transcript.match(voiceCommandPatterns.getName);
       if (nameMatch && nameMatch[1]) {
         const text = nameMatch[1].trim();
         updatedTransaction.text = text; // Sửa 'content' thành 'text'
@@ -177,9 +180,7 @@ export const AppLayout = () => {
       }
 
       // Tìm số tiền
-      const amountMatch = lowerCaseTranscript.match(
-        /(?:với số tiền là|số tiền là|là) (.+?) (?:đồng|và|$)/
-      );
+      const amountMatch = transcript.match(voiceCommandPatterns.getAmount);
       if (amountMatch && amountMatch[1]) {
         const amountText = amountMatch[1].trim();
         let amount = 0;
@@ -203,9 +204,7 @@ export const AppLayout = () => {
       }
 
       // Tìm danh mục
-      const categoryMatch = lowerCaseTranscript.match(
-        /(?:với danh mục là|danh mục là|là) (.+?)(?: và|$)/
-      );
+      const categoryMatch = transcript.match(voiceCommandPatterns.getCategory);
       if (categoryMatch && categoryMatch[1]) {
         const categoryName = categoryMatch[1].trim().toLowerCase();
         // Giả sử danh mục thu nhập và chi tiêu đều nằm trong `budgets`
@@ -227,7 +226,7 @@ export const AppLayout = () => {
       }
 
       // Xác nhận thêm giao dịch
-      if (lowerCaseTranscript.includes("ok")) {
+      if (lowerCaseTranscript.includes(actionKeywords.confirm)) {
         if (updatedTransaction.text && updatedTransaction.amount) {
           // Sửa 'content' thành 'text'
           const newTransaction = {

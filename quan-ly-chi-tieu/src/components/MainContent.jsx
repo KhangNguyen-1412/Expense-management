@@ -7,6 +7,7 @@ import { AddTransactionView } from "../views/AddTransactionView";
 import { BudgetView } from "../views/BudgetView";
 import { StatisticsView } from "../views/StatisticsView";
 import { SettingsView } from "../views/SettingsView";
+import { SavingsGoalsView } from "../views/SavingsGoalsView";
 
 export const MainContent = ({ voiceTransaction }) => {
   const {
@@ -89,6 +90,8 @@ export const MainContent = ({ voiceTransaction }) => {
           formatCurrency={formatCurrency}
         />
       );
+    case "goals":
+      return <SavingsGoalsView />;
     case "dashboard":
     default:
       return (
