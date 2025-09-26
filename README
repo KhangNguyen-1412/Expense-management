@@ -1,0 +1,83 @@
+# Trợ lý Chi tiêu - Ứng dụng Quản lý Tài chính Cá nhân
+
+Đây là một ứng dụng web hiện đại giúp bạn theo dõi và quản lý chi tiêu cá nhân một cách hiệu quả. Ứng dụng được xây dựng bằng React, Vite, và Firebase, cung cấp các tính năng mạnh mẽ trong một giao diện trực quan và thân thiện.
+
+ <!-- Thay thế bằng URL ảnh chụp màn hình của bạn -->
+
+## ✨ Tính năng nổi bật
+
+-   **Đăng nhập linh hoạt**: Hỗ trợ đăng nhập ẩn danh để dùng thử và đăng nhập bằng Google để đồng bộ dữ liệu.
+-   **Quản lý Giao dịch**: Thêm, sửa, xóa, sao chép, gộp và tìm kiếm các giao dịch thu/chi.
+-   **Ngân sách hàng tháng**: Thiết lập ngân sách cho từng hạng mục và theo dõi tiến độ chi tiêu qua biểu đồ và thanh tiến trình.
+-   **Báo cáo trực quan**: Xem báo cáo chi tiêu theo hạng mục và xu hướng theo thời gian với các biểu đồ tương tác.
+-   **Phân tích với AI**: Tích hợp Gemini AI để đưa ra các phân tích và lời khuyên tài chính dựa trên dữ liệu của bạn.
+-   **Nhập/Xuất dữ liệu**: Dễ dàng xuất dữ liệu ra file CSV để lưu trữ hoặc nhập dữ liệu từ file CSV.
+-   **Hoàn tác (Undo)**: An toàn hơn với chức năng hoàn tác cho các hành động xóa và gộp.
+-   **Giao diện đáp ứng (Responsive)**: Tối ưu hóa trải nghiệm trên cả máy tính và thiết bị di động.
+-   **Tùy chỉnh cá nhân**: Chế độ giao diện sáng/tối, bật/tắt thông báo đẩy.
+-   **Bảo mật dữ liệu**: Chức năng xóa toàn bộ dữ liệu cá nhân.
+
+## 🚀 Công nghệ sử dụng
+
+-   **Frontend**: [React](https://reactjs.org/) (với Hooks & Context), [Vite](https://vitejs.dev/)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **Animation**: [Framer Motion](https://www.framer.com/motion/)
+-   **Biểu đồ**: [Chart.js](https://www.chartjs.org/) & [react-chartjs-2](https://react-chartjs-2.js.org/)
+-   **Backend & Database**: [Firebase](https://firebase.google.com/) (Authentication, Firestore)
+-   **AI**: [Google Gemini API](https://ai.google.dev/)
+
+## 🛠️ Cài đặt và Chạy dự án
+
+### Yêu cầu
+
+-   [Node.js](https://nodejs.org/) (phiên bản 16.x trở lên)
+-   `npm` hoặc `yarn`
+
+### Các bước cài đặt
+
+1.  **Clone repository:**
+    ```bash
+    git clone https://github.com/your-username/expense-management.git
+    cd expense-management/quan-ly-chi-tieu
+    ```
+
+2.  **Cài đặt các gói phụ thuộc:**
+    ```bash
+    npm install
+    ```
+
+3.  **Thiết lập Firebase:**
+    -   Truy cập Firebase Console và tạo một dự án mới.
+    -   Trong dự án, vào mục **Authentication** -> **Sign-in method** và bật các nhà cung cấp:
+        -   **Anonymous**
+        -   **Google**
+    -   Vào mục **Firestore Database** và tạo một cơ sở dữ liệu mới ở chế độ production.
+    -   Trong **Project Settings** -> **General**, tìm đến mục "Your apps" và tạo một ứng dụng Web mới.
+    -   Sao chép đối tượng `firebaseConfig` và dán vào file `src/config/firebase.js`.
+
+4.  **Thiết lập biến môi trường:**
+    -   Tạo một file tên là `.env` ở thư mục gốc (`quan-ly-chi-tieu`).
+    -   Thêm các khóa API của bạn vào file này:
+        ```
+        # Lấy từ Google AI Studio
+        VITE_GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+
+        # Tạo bằng lệnh `npx web-push generate-vapid-keys`
+        VITE_VAPID_PUBLIC_KEY=YOUR_VAPID_PUBLIC_KEY
+        ```
+
+5.  **Chạy ứng dụng:**
+    ```bash
+    npm run dev
+    ```
+    Ứng dụng sẽ chạy tại địa chỉ `http://localhost:5173`.
+
+## scripts có sẵn
+
+-   `npm run dev`: Chạy ứng dụng ở chế độ development.
+-   `npm run build`: Build ứng dụng cho môi trường production.
+-   `npm run preview`: Xem trước bản build production.
+
+---
+
+Cảm ơn bạn đã xem qua dự án!
