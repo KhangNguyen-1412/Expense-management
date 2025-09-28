@@ -1,15 +1,12 @@
 import React from "react";
 import { useAppContext } from "../context/AppContext";
+import "../styles/SettingsView.css";
 
 const SettingRow = ({ title, description, children }) => (
-  <div className="flex items-center justify-between py-4 border-b border-slate-200 dark:border-slate-700">
+  <div className="setting-row">
     <div>
-      <h4 className="font-semibold text-slate-800 dark:text-slate-200">
-        {title}
-      </h4>
-      <p className="text-sm text-slate-500 dark:text-slate-400">
-        {description}
-      </p>
+      <h4 className="setting-info-title">{title}</h4>
+      <p className="setting-info-description">{description}</p>
     </div>
     <div>{children}</div>
   </div>
@@ -18,13 +15,13 @@ const SettingRow = ({ title, description, children }) => (
 const ToggleSwitch = ({ checked, onChange }) => (
   <button
     onClick={onChange}
-    className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${
-      checked ? "bg-indigo-600" : "bg-slate-300 dark:bg-slate-600"
+    className={`toggle-switch ${
+      checked ? "toggle-switch-on" : "toggle-switch-off"
     }`}
   >
     <span
-      className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
-        checked ? "translate-x-6" : "translate-x-1"
+      className={`toggle-knob ${
+        checked ? "toggle-knob-on" : "toggle-knob-off"
       }`}
     />
   </button>
@@ -51,11 +48,9 @@ export const SettingsView = () => {
   } = useAppContext();
 
   return (
-    <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-2xl mx-auto">
-      <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-6">
-        Cài đặt
-      </h3>
-      <div className="space-y-2">
+    <div className="settings-container">
+      <h3 className="settings-title">Cài đặt</h3>
+      <div className="settings-list">
         <SettingRow
           title="Giao diện tối"
           description="Bật/tắt giao diện nền tối để giảm mỏi mắt."
@@ -111,7 +106,7 @@ export const SettingsView = () => {
             value={selectedVoiceURI || ""}
             onChange={(e) => handleSelectVoice(e.target.value)}
             disabled={availableVoices.length === 0}
-            className="w-48 p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+            className="settings-select"
           >
             <option value="">Mặc định</option>
             {availableVoices.map((voice) => (
@@ -121,14 +116,11 @@ export const SettingsView = () => {
             ))}
           </select>
         </SettingRow>
-        <div className="pt-6">
-          <button
-            onClick={openDeleteDataDialog}
-            className="w-full text-left px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40 font-semibold transition-colors"
-          >
+        <div className="delete-data-section">
+          <button onClick={openDeleteDataDialog} className="delete-data-button">
             Xóa toàn bộ dữ liệu
           </button>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 px-1">
+          <p className="delete-data-note">
             Hành động này không thể hoàn tác. Tất cả giao dịch và ngân sách của
             bạn sẽ bị xóa vĩnh viễn.
           </p>

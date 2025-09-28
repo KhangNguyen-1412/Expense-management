@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import "../styles/Dialog.css";
 
 export const VoiceGuideDialog = ({ isOpen, onClose }) => {
   const backdropVariants = {
@@ -16,48 +17,43 @@ export const VoiceGuideDialog = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-        >
+        <motion.div className="dialog-backdrop">
           {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-black bg-opacity-60"
+            className="dialog-overlay"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
             variants={backdropVariants}
             onClick={onClose}
-          ></motion.div>
+          />
 
           {/* Dialog box */}
           <motion.div
-            className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-lg m-4"
+            className="dialog-box"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             variants={modalVariants}
           >
-            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
-              Hướng dẫn Ghi âm Giao dịch
-            </h3>
-            <p className="mt-4 text-slate-600 dark:text-slate-400">
+            <h3 className="dialog-title">Hướng dẫn Ghi âm Giao dịch</h3>
+            <p className="dialog-content">
               Sử dụng giọng nói để thêm giao dịch nhanh chóng. Bấm vào nút micro
               để bắt đầu và kết thúc.
             </p>
 
-            <h4 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">
-              Cấu trúc câu lệnh:
-            </h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <h4 className="dialog-subtitle">Cấu trúc câu lệnh:</h4>
+            <p className="dialog-sub-content">
               Bạn có thể đọc một câu đầy đủ hoặc đọc từng phần.
             </p>
-            <pre className="mt-2 p-3 bg-slate-100 dark:bg-slate-900 rounded-lg text-sm text-slate-700 dark:text-slate-300 overflow-x-auto">
+            <pre className="dialog-code-block">
               <code>
                 {`[Loại] [Tên] với số tiền là [Số tiền] với danh mục là [Tên danh mục]`}
               </code>
             </pre>
 
-            <h4 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">
-              Các từ khóa quan trọng:
-            </h4>
-            <ul className="mt-2 list-disc list-inside space-y-2 text-slate-600 dark:text-slate-400">
+            <h4 className="dialog-subtitle">Các từ khóa quan trọng:</h4>
+            <ul className="dialog-list">
               <li>
                 <strong>Loại giao dịch:</strong> Dùng "thu nhập" hoặc "khoản
                 thu". Nếu bỏ qua, mặc định là chi tiêu.
@@ -70,11 +66,8 @@ export const VoiceGuideDialog = ({ isOpen, onClose }) => {
               </li>
             </ul>
 
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={onClose}
-                className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 font-semibold"
-              >
+            <div className="dialog-actions">
+              <button onClick={onClose} className="btn btn-primary btn-sm">
                 Đã hiểu
               </button>
             </div>

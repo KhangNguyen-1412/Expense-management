@@ -1,0 +1,59 @@
+.statistics-container {
+  @apply space-y-6;
+}
+
+.filter-card {
+  @apply bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg;
+}
+
+.filter-title {
+  @apply text-xl font-bold text-slate-800 dark:text-slate-100 mb-4;
+}
+
+.filter-controls {
+  @apply flex flex-col sm:flex-row sm:items-center gap-4;
+}
+
+.filter-presets {
+  @apply flex items-center space-x-2;
+}
+
+.datepicker-container {
+  @apply flex items-center gap-2;
+}
+
+.stats-datepicker {
+  @apply w-32 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5;
+}
+
+.charts-grid {
+  @apply grid grid-cols-1 lg:grid-cols-5 gap-6;
+}
+
+.chart-wrapper {
+  @apply bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg;
+}
+
+.chart-wrapper-line {
+  @apply lg:col-span-3;
+}
+
+.chart-wrapper-pie {
+  @apply lg:col-span-2 flex flex-col items-center;
+}
+
+.pie-chart-title {
+  @apply text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4;
+}
+
+.no-data-card {
+  @apply bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg text-center;
+}
+
+.no-data-title {
+  @apply text-xl font-bold text-slate-700 dark:text-slate-200;
+}
+
+.no-data-description {
+  @apply mt-2 text-slate-500 dark:text-slate-400;
+}

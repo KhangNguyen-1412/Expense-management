@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Pie, Line } from "react-chartjs-2";
 import DatePicker from "react-datepicker";
+import "../styles/StatisticsView.css";
 
 export const StatisticsView = ({ transactions, formatCurrency }) => {
   const [activePreset, setActivePreset] = useState("thisMonth");
@@ -159,10 +160,8 @@ export const StatisticsView = ({ transactions, formatCurrency }) => {
   const FilterButton = ({ label, preset }) => (
     <button
       onClick={() => handlePresetClick(preset)}
-      className={`px-3 py-2 text-sm font-semibold rounded-lg transition-colors ${
-        activePreset === preset
-          ? "bg-indigo-600 text-white"
-          : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+      className={`filter-btn ${
+        activePreset === preset ? "filter-btn-active" : "filter-btn-inactive"
       }`}
     >
       {label}
@@ -170,18 +169,16 @@ export const StatisticsView = ({ transactions, formatCurrency }) => {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white dark:bg-slate-800 shadow-lg shadow-slate-200/40 dark:shadow-none rounded-xl p-4 sm:p-6">
-        <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">
-          Lọc Báo cáo
-        </h3>
-        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-          <div className="flex items-center gap-2">
+    <div className="statistics-container">
+      <div className="filter-card">
+        <h3 className="filter-title">Lọc Báo cáo</h3>
+        <div className="filter-controls">
+          <div className="filter-presets">
             <FilterButton label="Tháng này" preset="thisMonth" />
             <FilterButton label="Tháng trước" preset="lastMonth" />
             <FilterButton label="Năm nay" preset="thisYear" />
           </div>
-          <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+          <div className="datepicker-container">
             <DatePicker
               selected={dateRange.startDate}
               onChange={(date) => {
@@ -192,7 +189,7 @@ export const StatisticsView = ({ transactions, formatCurrency }) => {
               startDate={dateRange.startDate}
               endDate={dateRange.endDate}
               dateFormat="dd/MM/yyyy"
-              className="w-32 p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="stats-datepicker"
             />
             <span>-</span>
             <DatePicker
@@ -206,32 +203,28 @@ export const StatisticsView = ({ transactions, formatCurrency }) => {
               endDate={dateRange.endDate}
               minDate={dateRange.startDate}
               dateFormat="dd/MM/yyyy"
-              className="w-32 p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="stats-datepicker"
             />
           </div>
         </div>
       </div>
       {reportData.totalSpending > 0 ? (
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
-          <div className="xl:col-span-3 bg-white dark:bg-slate-800 shadow-lg shadow-slate-200/40 dark:shadow-none rounded-xl p-4 sm:p-6">
+        <div className="charts-grid">
+          <div className="chart-wrapper chart-wrapper-line">
             <Line
               options={chartOptions("Xu hướng chi tiêu", true)}
               data={chartData.trend}
             />
           </div>
-          <div className="xl:col-span-2 bg-white dark:bg-slate-800 shadow-lg shadow-slate-200/40 dark:shadow-none rounded-xl p-4 sm:p-6">
-            <h4 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 text-center">
-              Tỷ trọng chi tiêu
-            </h4>
+          <div className="chart-wrapper chart-wrapper-pie">
+            <h4 className="pie-chart-title">Tỷ trọng chi tiêu</h4>
             <Pie options={chartOptions("", false)} data={chartData.category} />
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 shadow-lg rounded-xl p-12 text-center">
-          <h4 className="text-xl font-semibold text-slate-700 dark:text-slate-300">
-            Không có dữ liệu
-          </h4>
-          <p className="text-slate-500 dark:text-slate-400 mt-2">
+        <div className="no-data-card">
+          <h4 className="no-data-title">Không có dữ liệu</h4>
+          <p className="no-data-description">
             Không tìm thấy giao dịch chi tiêu nào trong khoảng thời gian đã
             chọn.
           </p>

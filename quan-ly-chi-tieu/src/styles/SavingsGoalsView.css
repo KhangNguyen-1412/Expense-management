@@ -1,0 +1,39 @@
+.savings-goals-container {
+  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6;
+}
+
+.savings-goals-header {
+  @apply flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6;
+}
+
+.savings-goals-title {
+  @apply text-2xl font-bold text-slate-800 dark:text-slate-200;
+}
+
+.add-goal-button {
+  @apply px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors;
+}
+
+.completed-goals-report-container {
+  @apply mb-6 text-center;
+}
+
+.completed-goals-report-button {
+  @apply text-sm font-semibold text-green-600 dark:text-green-400 hover:underline;
+}
+
+.loading-text {
+  @apply text-center text-slate-500 dark:text-slate-400 animate-pulse;
+}
+
+.no-goals-container {
+  @apply text-center py-10;
+}
+
+.no-goals-text {
+  @apply text-slate-500 dark:text-slate-400;
+}
+
+.goals-list {
+  @apply space-y-4;
+}

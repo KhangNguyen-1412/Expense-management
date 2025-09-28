@@ -1,0 +1,103 @@
+.budget-container {
+  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-2xl mx-auto;
+}
+
+.budget-header {
+  @apply flex flex-col sm:flex-row justify-between sm:items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6;
+}
+
+.budget-title {
+  @apply text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3 sm:mb-0;
+}
+
+.datepicker-wrapper {
+  @apply w-full sm:w-48;
+}
+
+.budget-datepicker {
+  @apply w-full p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow text-center font-semibold;
+}
+
+.copy-budget-container {
+  @apply mb-6 text-center;
+}
+
+.copy-budget-button {
+  @apply text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline;
+}
+
+.budget-summary {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl text-center;
+}
+
+.summary-title {
+  @apply text-slate-500 dark:text-slate-400 font-semibold;
+}
+
+.summary-value {
+  @apply font-bold text-2xl mt-1;
+}
+
+.summary-value-income {
+  @apply text-green-600 dark:text-green-500;
+}
+
+.summary-value-budgeted {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+.summary-value-negative {
+  @apply text-red-600 dark:text-red-500;
+}
+
+.summary-value-positive {
+  @apply text-orange-500;
+}
+
+.chart-container {
+  @apply mb-8 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700;
+}
+
+.budget-items-container {
+  @apply space-y-6;
+}
+
+.budget-item-header {
+  @apply flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-2;
+}
+
+.budget-item-label {
+  @apply font-semibold text-slate-700 dark:text-slate-300;
+}
+
+.budget-item-details {
+  @apply flex items-center gap-4 w-full sm:w-auto;
+}
+
+.budget-item-spent {
+  @apply text-sm text-slate-500 dark:text-slate-400 flex-grow sm:flex-grow-0 text-right;
+}
+
+.budget-input-wrapper {
+  @apply relative w-36;
+}
+
+.budget-input-currency {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm;
+}
+
+.budget-input {
+  @apply w-full p-2 pl-10 text-right font-semibold bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow;
+}
+
+.progress-bar-bg {
+  @apply w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5;
+}
+
+.progress-bar-fg {
+  @apply h-2.5 rounded-full transition-all duration-500;
+}
+
+.save-budget-button {
+  @apply w-full mt-8 bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all duration-300 text-lg;
+}

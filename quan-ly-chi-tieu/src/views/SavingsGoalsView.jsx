@@ -6,6 +6,7 @@ import { CompletedGoalsDialog } from "../components/CompletedGoalsDialog";
 import { ContributeToGoalDialog } from "../components/ContributeToGoalDialog";
 import { EditGoalDialog } from "../components/EditGoalDialog";
 import { GoalHistoryDialog } from "../components/GoalHistoryDialog";
+import "../styles/SavingsGoalsView.css";
 
 export const SavingsGoalsView = () => {
   const { goals, isLoadingData, handleDeleteGoal } = useAppContext();
@@ -51,49 +52,41 @@ export const SavingsGoalsView = () => {
         onClose={() => setDialogState({ ...dialogState, history: false })}
         goal={selectedGoal}
       />
-      <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6">
-        <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
-          <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
-            Mục tiêu Tiết kiệm
-          </h3>
+      <div className="savings-goals-container">
+        <div className="savings-goals-header">
+          <h3 className="savings-goals-title">Mục tiêu Tiết kiệm</h3>
           <button
             onClick={() => setIsAddGoalOpen(true)}
-            className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+            className="btn btn-primary btn-sm"
           >
             + Thêm mục tiêu
           </button>
         </div>
 
         {hasCompletedGoals && (
-          <div className="mb-6 text-center">
+          <div className="completed-goals-report-container">
             <button
               onClick={() => setIsReportOpen(true)}
-              className="text-sm font-semibold text-green-600 dark:text-green-400 hover:underline"
+              className="completed-goals-report-button"
             >
               Xem báo cáo mục tiêu đã hoàn thành
             </button>
           </div>
         )}
 
-        {isLoadingData && (
-          <p className="text-center text-slate-500 dark:text-slate-400 animate-pulse">
-            Đang tải mục tiêu...
-          </p>
-        )}
+        {isLoadingData && <p className="loading-text">Đang tải mục tiêu...</p>}
 
         {!isLoadingData && goals.length === 0 && (
-          <div className="text-center py-10">
-            <p className="text-slate-500 dark:text-slate-400">
-              Bạn chưa có mục tiêu nào.
-            </p>
-            <p className="text-slate-500 dark:text-slate-400 mt-2">
+          <div className="no-goals-container">
+            <p className="no-goals-text">Bạn chưa có mục tiêu nào.</p>
+            <p className="no-goals-text mt-2">
               Hãy bắt đầu đặt mục tiêu để hiện thực hóa ước mơ!
             </p>
           </div>
         )}
 
         {!isLoadingData && goals.length > 0 && (
-          <div className="space-y-4">
+          <div className="goals-list">
             {goals.map((goal) => (
               <GoalItem
                 key={goal.id}

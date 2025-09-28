@@ -1,0 +1,23 @@
+.add-transaction-container {
+  @apply bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg max-w-md mx-auto;
+}
+
+.add-transaction-header {
+  @apply flex justify-between items-center mb-5;
+}
+
+.add-transaction-title {
+  @apply text-xl font-bold text-slate-800 dark:text-slate-100;
+}
+
+.voice-guide-button {
+  @apply text-sm text-indigo-600 dark:text-indigo-400 hover:underline;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1;
+}
+
+.amount-note {
+  @apply text-xs text-slate-500 dark:text-slate-400;
+}

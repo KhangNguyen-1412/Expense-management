@@ -3,6 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import DatePicker from "react-datepicker";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
+import "../styles/BudgetView.css";
 import { Bar } from "react-chartjs-2";
 
 export const BudgetView = () => {
@@ -142,55 +143,47 @@ export const BudgetView = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-2xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
-        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3 sm:mb-0">
-          Ngân sách
-        </h3>
-        <div className="w-full sm:w-48">
+    <div className="budget-container">
+      <div className="budget-header">
+        <h3 className="budget-title">Ngân sách</h3>
+        <div className="datepicker-wrapper">
           <DatePicker
             selected={selectedBudgetDate}
             onChange={(date) => setSelectedBudgetDate(date)}
             dateFormat="MM/yyyy"
             showMonthYearPicker
-            className="w-full p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow text-center font-semibold"
+            className="budget-datepicker"
           />
         </div>
       </div>
-      <div className="mb-6 text-center">
+      <div className="copy-budget-container">
         <button
           onClick={handleCopyFromLastMonth}
-          className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+          className="copy-budget-button"
         >
           Sao chép ngân sách từ tháng trước
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl text-center">
+      <div className="budget-summary">
         <div>
-          <h4 className="text-slate-500 dark:text-slate-400 font-semibold">
-            Tổng thu nhập
-          </h4>
-          <p className="font-bold text-2xl text-green-600 dark:text-green-500 mt-1">
+          <h4 className="summary-title">Tổng thu nhập</h4>
+          <p className="summary-value summary-value-income">
             {formatCurrency(income)}
           </p>
         </div>
         <div>
-          <h4 className="text-slate-500 dark:text-slate-400 font-semibold">
-            Đã phân bổ
-          </h4>
-          <p className="font-bold text-2xl text-blue-600 dark:text-blue-400 mt-1">
+          <h4 className="summary-title">Đã phân bổ</h4>
+          <p className="summary-value summary-value-budgeted">
             {formatCurrency(totalBudgeted)}
           </p>
         </div>
         <div>
-          <h4 className="text-slate-500 dark:text-slate-400 font-semibold">
-            Chưa phân bổ
-          </h4>
+          <h4 className="summary-title">Chưa phân bổ</h4>
           <p
-            className={`font-bold text-2xl mt-1 ${
+            className={`summary-value ${
               unallocated < 0
-                ? "text-red-600 dark:text-red-500"
-                : "text-orange-500"
+                ? "summary-value-negative"
+                : "summary-value-positive"
             }`}
           >
             {formatCurrency(unallocated)}
@@ -198,11 +191,11 @@ export const BudgetView = () => {
         </div>
       </div>
       {Object.keys(budgets).length > 0 && (
-        <div className="mb-8 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div className="chart-container">
           <Bar options={chartOptions} data={chartData} />
         </div>
       )}
-      <div className="space-y-6">
+      <div className="budget-items-container">
         {SPENDING_CATEGORIES.map((category, index) => {
           const budgetAmount = localBudgets[category] || 0;
           const spentAmount = selectedMonthCategorySpending[category] || 0;
@@ -221,22 +214,20 @@ export const BudgetView = () => {
 
           return (
             <div key={category}>
-              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-2">
+              <div className="budget-item-header">
                 <label
                   htmlFor={`budget-${category}`}
-                  className="font-semibold text-slate-700 dark:text-slate-300"
+                  className="budget-item-label"
                 >
                   {category}
                 </label>
-                <div className="flex items-center gap-4 w-full sm:w-auto">
-                  <span className="text-sm text-slate-500 dark:text-slate-400 flex-grow sm:flex-grow-0 text-right">
+                <div className="budget-item-details">
+                  <span className="budget-item-spent">
                     {formatCurrency(spentAmount)} /{" "}
                     {formatCurrency(budgetAmount)}
                   </span>
-                  <div className="relative w-36">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
-                      VND
-                    </span>
+                  <div className="budget-input-wrapper">
+                    <span className="budget-input-currency">VND</span>
                     <input
                       type="number"
                       id={`budget-${category}`}
@@ -245,14 +236,14 @@ export const BudgetView = () => {
                         handleBudgetChange(category, e.target.value)
                       }
                       placeholder="0"
-                      className="w-full p-2 pl-10 text-right font-semibold bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+                      className="budget-input"
                     />
                   </div>
                 </div>
               </div>
-              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
+              <div className="progress-bar-bg">
                 <div
-                  className="h-2.5 rounded-full transition-all duration-500"
+                  className="progress-bar-fg"
                   style={{
                     width: `${Math.min(percentage, 100)}%`,
                     backgroundColor:
@@ -266,10 +257,7 @@ export const BudgetView = () => {
           );
         })}
       </div>
-      <button
-        onClick={handleSave}
-        className="w-full mt-8 bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all duration-300 text-lg"
-      >
+      <button onClick={handleSave} className="btn btn-primary w-full mt-8">
         Lưu Ngân sách
       </button>
     </div>

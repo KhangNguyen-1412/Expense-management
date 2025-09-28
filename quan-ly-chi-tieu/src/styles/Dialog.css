@@ -1,0 +1,39 @@
+.dialog-backdrop {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+}
+
+.dialog-overlay {
+  @apply absolute inset-0 bg-black bg-opacity-60;
+}
+
+.dialog-box {
+  @apply relative bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-lg m-4;
+}
+
+.dialog-title {
+  @apply text-lg font-bold text-slate-800 dark:text-slate-100;
+}
+
+.dialog-content {
+  @apply mt-4 text-slate-600 dark:text-slate-400;
+}
+
+.dialog-subtitle {
+  @apply mt-4 font-semibold text-slate-700 dark:text-slate-300;
+}
+
+.dialog-sub-content {
+  @apply text-sm text-slate-500 dark:text-slate-400;
+}
+
+.dialog-code-block {
+  @apply mt-2 p-3 bg-slate-100 dark:bg-slate-900 rounded-lg text-sm text-slate-700 dark:text-slate-300 overflow-x-auto;
+}
+
+.dialog-list {
+  @apply mt-2 list-disc list-inside space-y-2 text-slate-600 dark:text-slate-400;
+}
+
+.dialog-actions {
+  @apply mt-6 flex justify-end;
+}

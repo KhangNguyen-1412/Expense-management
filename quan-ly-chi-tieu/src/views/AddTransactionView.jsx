@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import { VoiceGuideDialog } from "../components/VoiceGuideDialog";
+import "../styles/AddTransactionView.css";
 
 export const AddTransactionView = () => {
   const {
@@ -53,19 +54,19 @@ export const AddTransactionView = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-lg mx-auto">
+    <div className="add-transaction-container">
       <VoiceGuideDialog
         isOpen={isGuideOpen}
         onClose={() => setIsGuideOpen(false)}
       />
-      <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
-        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
+      <div className="add-transaction-header">
+        <h3 className="add-transaction-title">
           {isEditing ? "Chỉnh sửa giao dịch" : "Thêm giao dịch mới"}
         </h3>
         {!isEditing && (
           <button
             onClick={() => setIsGuideOpen(true)}
-            className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+            className="voice-guide-button"
           >
             Xem hướng dẫn ghi âm
           </button>
@@ -73,10 +74,7 @@ export const AddTransactionView = () => {
       </div>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label
-            htmlFor="text"
-            className="block text-slate-700 dark:text-slate-300 mb-1 font-semibold"
-          >
+          <label htmlFor="text" className="form-label">
             Nội dung
           </label>
           <input
@@ -85,18 +83,12 @@ export const AddTransactionView = () => {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="VD: Cà phê cuối tuần"
-            className="w-full p-3 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+            className="form-input" // Class này giờ đến từ common.css
           />
         </div>
         <div>
-          <label
-            htmlFor="amount"
-            className="block text-slate-700 dark:text-slate-300 mb-1 font-semibold"
-          >
-            Số tiền{" "}
-            <span className="font-normal text-sm text-slate-500">
-              (âm - chi tiêu)
-            </span>
+          <label htmlFor="amount" className="form-label">
+            Số tiền <span className="amount-note">(âm - chi tiêu)</span>
           </label>
           <input
             type="number"
@@ -104,22 +96,19 @@ export const AddTransactionView = () => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="VD: -50000"
-            className="w-full p-3 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+            className="form-input" // Class này giờ đến từ common.css
           />
         </div>
         {amount && +amount < 0 && (
           <div>
-            <label
-              htmlFor="category"
-              className="block text-slate-700 dark:text-slate-300 mb-1 font-semibold"
-            >
+            <label htmlFor="category" className="form-label">
               Hạng mục chi tiêu
             </label>
             <select
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full p-3 border bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+              className="form-input" // Có thể dùng chung form-input
             >
               {SPENDING_CATEGORIES.map((cat) => (
                 <option key={cat} value={cat}>
@@ -134,12 +123,12 @@ export const AddTransactionView = () => {
             <button
               type="button"
               onClick={cancelEdit}
-              className="w-full bg-slate-200 dark:bg-slate-600 text-slate-800 dark:text-slate-200 font-bold py-3 px-4 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-all duration-300 text-lg"
+              className="btn btn-secondary w-full"
             >
               Hủy
             </button>
           )}
-          <button className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all duration-300 text-lg">
+          <button className="btn btn-primary w-full">
             {isEditing ? "Cập nhật" : "Thêm giao dịch"}
           </button>
         </div>

@@ -35,19 +35,20 @@ export const ContributeToGoalDialog = ({ isOpen, onClose, goal }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-        >
+        <motion.div className="fixed inset-0 z-50 flex items-center justify-center">
           <motion.div
             className="absolute inset-0 bg-black bg-opacity-60"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
             variants={backdropVariants}
             onClick={onClose}
           ></motion.div>
           <motion.div
             className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-sm m-4"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             variants={modalVariants}
           >
             <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">

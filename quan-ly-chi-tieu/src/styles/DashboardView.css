@@ -1,0 +1,71 @@
+.dashboard-container {
+  @apply space-y-8;
+}
+
+.balance-card {
+  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-8;
+}
+
+.balance-title {
+  @apply text-xl font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider;
+}
+
+.balance-amount {
+  @apply text-6xl font-extrabold text-slate-800 dark:text-slate-100 mt-2;
+}
+
+.summary-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-8;
+}
+
+.summary-card {
+  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 flex items-center;
+}
+
+.summary-icon-wrapper {
+  @apply p-4 rounded-xl mr-4;
+}
+
+.summary-icon-income {
+  @apply bg-green-100 dark:bg-green-900/20;
+}
+
+.summary-icon-expense {
+  @apply bg-red-100 dark:bg-red-900/20;
+}
+
+.summary-icon {
+  @apply h-8 w-8;
+}
+
+.summary-icon-income-color {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.summary-icon-expense-color {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.summary-title {
+  @apply text-lg uppercase text-slate-500 dark:text-slate-400 font-semibold;
+}
+
+.summary-amount {
+  @apply text-3xl font-bold;
+}
+
+.summary-amount-income {
+  @apply text-green-600 dark:text-green-500;
+}
+
+.summary-amount-expense {
+  @apply text-red-500;
+}
+
+.ai-button {
+  @apply w-full flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-4 rounded-xl hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 shadow-lg shadow-indigo-200/50 dark:shadow-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed text-lg;
+}
+
+.ai-button-icon {
+  @apply h-6 w-6;
+}

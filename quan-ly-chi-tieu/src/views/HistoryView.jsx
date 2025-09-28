@@ -7,7 +7,7 @@ import { exportToCSV } from "../utils/csvExporter";
 import { importFromCSV } from "../utils/csvImporter";
 import { CSVGuideDialog } from "../components/CSVGuideDialog";
 import { MergeTransactionsDialog } from "../components/MergeTransactionsDialog";
-
+import "../styles/HistoryView.css";
 export const HistoryView = () => {
   const { transactions, isLoadingData, addMultipleTransactions, showToast } =
     useAppContext();
@@ -156,10 +156,8 @@ export const HistoryView = () => {
   const FilterButton = ({ value, label }) => (
     <button
       onClick={() => handleFilterClick(value)}
-      className={`px-4 py-2 text-sm font-semibold rounded-lg transition-colors ${
-        filter === value
-          ? "bg-indigo-600 text-white"
-          : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+      className={`filter-btn ${
+        filter === value ? "filter-btn-active" : "filter-btn-inactive"
       }`}
     >
       {label}
@@ -167,25 +165,23 @@ export const HistoryView = () => {
   );
 
   return (
-    <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 flex flex-col h-full">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
-        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3 sm:mb-0">
-          Lịch sử Giao dịch
-        </h3>
-        <div className="flex flex-wrap items-center justify-end gap-3 mt-3 sm:mt-0">
-          <div className="relative w-full sm:w-auto">
+    <div className="history-container">
+      <div className="history-header">
+        <h3 className="history-title">Lịch sử Giao dịch</h3>
+        <div className="history-controls">
+          <div className="control-wrapper">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full p-2 pl-3 pr-8 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow appearance-none"
+              className="sort-select"
             >
               <option value="date_desc">Sắp xếp: Mới nhất</option>
               <option value="amount_desc">Sắp xếp: Tiền giảm dần</option>
               <option value="amount_asc">Sắp xếp: Tiền tăng dần</option>
             </select>
-            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <div className="select-arrow">
               <svg
-                className="w-4 h-4 text-slate-400"
+                className="select-arrow-icon"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -200,17 +196,17 @@ export const HistoryView = () => {
               </svg>
             </div>
           </div>
-          <div className="relative w-full sm:w-auto">
+          <div className="control-wrapper">
             <input
               type="text"
               placeholder="Tìm kiếm..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-48 p-2 pl-9 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow"
+              className="search-input"
             />
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <div className="search-icon-wrapper">
               <svg
-                className="w-4 h-4 text-slate-400"
+                className="search-icon"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -225,7 +221,7 @@ export const HistoryView = () => {
               </svg>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 w-full sm:w-auto">
+          <div className="datepicker-container">
             <DatePicker
               selectsRange={true}
               startDate={dateRange.startDate}
@@ -234,23 +230,23 @@ export const HistoryView = () => {
               isClearable={true}
               placeholderText="Lọc theo khoảng ngày"
               dateFormat="dd/MM/yyyy"
-              className="w-full p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow"
+              className="history-datepicker"
             />
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="filter-buttons">
             <FilterButton value="all" label="Tất cả" />
             <FilterButton value="today" label="Hôm nay" />
             <FilterButton value="week" label="Tuần này" />
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="action-buttons">
             <button
               onClick={handleExport}
-              className="p-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
+              className="action-btn action-btn-export"
               aria-label="Xuất ra file CSV"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="action-btn-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -266,12 +262,12 @@ export const HistoryView = () => {
             <div className="flex items-center">
               <label
                 htmlFor="csv-import-input"
-                className="p-2 rounded-l-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors cursor-pointer"
+                className="action-btn action-btn-import rounded-r-none"
                 aria-label="Nhập từ file CSV"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="action-btn-icon"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -286,12 +282,12 @@ export const HistoryView = () => {
               </label>
               <button
                 onClick={() => setIsGuideOpen(true)}
-                className="p-2 rounded-r-lg bg-blue-800 text-white hover:bg-blue-900 transition-colors"
+                className="action-btn action-btn-guide rounded-l-none"
                 aria-label="Hướng dẫn nhập CSV"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="action-btn-icon"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -308,7 +304,7 @@ export const HistoryView = () => {
             <input
               type="file"
               id="csv-import-input"
-              className="hidden"
+              className="hidden-input"
               accept=".csv"
               onChange={handleImport}
             />
@@ -325,35 +321,29 @@ export const HistoryView = () => {
         selectedTransactions={selectedTransactions}
       />
       {selectedIds.size > 1 && (
-        <div className="mb-4 flex items-center justify-between p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
-          <span className="font-semibold text-indigo-800 dark:text-indigo-200">
+        <div className="merge-banner">
+          <span className="merge-info">
             Đã chọn {selectedIds.size} giao dịch
           </span>
           <button
             onClick={() => setIsMergeDialogOpen(true)}
-            className="px-4 py-2 text-sm font-bold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+            className="merge-button"
           >
             Gộp giao dịch
           </button>
         </div>
       )}
       {/* Table Container with scroll */}
-      <div className="flex-grow overflow-y-auto hidden sm:block">
-        <table className="w-full border-collapse">
-          <thead className="sticky top-0 bg-white dark:bg-slate-800 z-10 shadow-sm">
+      <div className="table-container">
+        <table className="history-table">
+          <thead className="table-header">
             <tr>
               <th className="p-3 w-12">
                 {/* Optional: Add a select-all checkbox here */}
               </th>
-              <th className="text-left p-3 font-semibold text-slate-600 dark:text-slate-300 uppercase text-sm">
-                Tên giao dịch
-              </th>
-              <th className="text-right p-3 font-semibold text-slate-600 dark:text-slate-300 uppercase text-sm">
-                Số tiền
-              </th>
-              <th className="text-center p-3 font-semibold text-slate-600 dark:text-slate-300 uppercase text-sm">
-                Hành động
-              </th>
+              <th className="table-header-cell">Tên giao dịch</th>
+              <th className="table-header-cell text-right">Số tiền</th>
+              <th className="table-header-cell text-center">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -372,10 +362,7 @@ export const HistoryView = () => {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="4"
-                  className="text-center text-slate-500 dark:text-slate-400 py-10"
-                >
+                <td colSpan="4" className="no-data-cell">
                   Không có giao dịch nào phù hợp với bộ lọc.
                 </td>
               </tr>
@@ -384,7 +371,7 @@ export const HistoryView = () => {
         </table>
       </div>
       {/* Mobile Card List */}
-      <div className="flex-grow overflow-y-auto sm:hidden">
+      <div className="mobile-list-container">
         {isLoadingData ? (
           Array(5)
             .fill(0)
@@ -399,21 +386,21 @@ export const HistoryView = () => {
             />
           ))
         ) : (
-          <p className="text-center text-slate-500 dark:text-slate-400 py-10">
+          <p className="no-data-text">
             Không có giao dịch nào phù hợp với bộ lọc.
           </p>
         )}
       </div>
       {!isLoadingData && totalPages > 1 && (
-        <div className="flex justify-center items-center mt-6 space-x-4">
+        <div className="pagination-container">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="px-4 py-2 text-sm font-semibold rounded-lg transition-colors bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="pagination-button"
           >
             Trước
           </button>
-          <span className="font-semibold text-slate-700 dark:text-slate-300">
+          <span className="pagination-info">
             Trang {currentPage} / {totalPages}
           </span>
           <button
@@ -421,7 +408,7 @@ export const HistoryView = () => {
               setCurrentPage((prev) => Math.min(prev + 1, totalPages))
             }
             disabled={currentPage === totalPages}
-            className="px-4 py-2 text-sm font-semibold rounded-lg transition-colors bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="pagination-button"
           >
             Sau
           </button>

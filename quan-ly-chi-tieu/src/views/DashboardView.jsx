@@ -2,6 +2,7 @@ import React from "react";
 import { BudgetStatus } from "../components/BudgetStatus";
 import { AnalysisResult } from "../components/AnalysisResult";
 import { useAppContext } from "../context/AppContext";
+import "../styles/DashboardView.css";
 
 export const DashboardView = () => {
   const {
@@ -18,21 +19,17 @@ export const DashboardView = () => {
   } = useAppContext();
 
   return (
-    <div className="space-y-8">
-      <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-8">
-        <h2 className="text-xl font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Số dư của bạn
-        </h2>
-        <p className="text-6xl font-extrabold text-slate-800 dark:text-slate-100 mt-2">
-          {formatCurrency(total)}
-        </p>
+    <div className="dashboard-container">
+      <div className="balance-card">
+        <h2 className="balance-title">Số dư của bạn</h2>
+        <p className="balance-amount">{formatCurrency(total)}</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 flex items-center">
-          <div className="p-4 bg-green-100 dark:bg-green-900/20 rounded-xl mr-4">
+      <div className="summary-grid">
+        <div className="summary-card">
+          <div className="summary-icon-wrapper summary-icon-income">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-green-600 dark:text-green-400"
+              className="summary-icon summary-icon-income-color"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -46,19 +43,17 @@ export const DashboardView = () => {
             </svg>
           </div>
           <div>
-            <h3 className="text-lg uppercase text-slate-500 dark:text-slate-400 font-semibold">
-              Thu nhập
-            </h3>
-            <p className="text-3xl font-bold text-green-600 dark:text-green-500">
+            <h3 className="summary-title">Thu nhập</h3>
+            <p className="summary-amount summary-amount-income">
               {formatCurrency(income)}
             </p>
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 flex items-center">
-          <div className="p-4 bg-red-100 dark:bg-red-900/20 rounded-xl mr-4">
+        <div className="summary-card">
+          <div className="summary-icon-wrapper summary-icon-expense">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-red-600 dark:text-red-400"
+              className="summary-icon summary-icon-expense-color"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -72,10 +67,8 @@ export const DashboardView = () => {
             </svg>
           </div>
           <div>
-            <h3 className="text-lg uppercase text-slate-500 dark:text-slate-400 font-semibold">
-              Chi tiêu
-            </h3>
-            <p className="text-3xl font-bold text-red-500">
+            <h3 className="summary-title">Chi tiêu</h3>
+            <p className="summary-amount summary-amount-expense">
               {formatCurrency(Math.abs(expense))}
             </p>
           </div>
@@ -86,11 +79,11 @@ export const DashboardView = () => {
         <button
           onClick={handleAnalyzeSpending}
           disabled={isLoadingAnalysis}
-          className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-4 rounded-xl hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 shadow-lg shadow-indigo-200/50 dark:shadow-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+          className="ai-button"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="ai-button-icon"
             viewBox="0 0 20 20"
             fill="currentColor"
           >

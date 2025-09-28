@@ -1,0 +1,131 @@
+.history-container {
+  @apply bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl shadow-lg;
+}
+
+.history-header {
+  @apply mb-6;
+}
+
+.history-title {
+  @apply text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4;
+}
+
+.history-controls {
+  @apply flex flex-wrap items-center gap-2 sm:gap-4;
+}
+
+.control-wrapper {
+  @apply relative;
+}
+
+.sort-select,
+.search-input,
+.history-datepicker {
+  @apply w-full sm:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 appearance-none;
+}
+
+.sort-select {
+  @apply pr-8; /* Padding for arrow */
+}
+
+.search-input {
+  @apply pl-10; /* Padding for icon */
+}
+
+.select-arrow {
+  @apply pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500 dark:text-slate-400;
+}
+
+.select-arrow-icon {
+  @apply w-4 h-4;
+}
+
+.search-icon-wrapper {
+  @apply pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3;
+}
+
+.search-icon {
+  @apply w-5 h-5 text-slate-500 dark:text-slate-400;
+}
+
+.filter-buttons {
+  @apply flex items-center space-x-2;
+}
+
+.filter-btn {
+  @apply px-3 py-2 text-sm font-medium text-center rounded-lg transition-colors;
+}
+
+.filter-btn-active {
+  @apply bg-indigo-600 text-white;
+}
+
+.filter-btn-inactive {
+  @apply bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600;
+}
+
+.action-buttons {
+  @apply flex items-center space-x-2 ml-auto;
+}
+
+.action-btn {
+  @apply p-2.5 text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors;
+}
+
+.action-btn-icon {
+  @apply w-5 h-5;
+}
+
+.hidden-input {
+  @apply w-0 h-0 opacity-0 absolute;
+}
+
+.table-container {
+  @apply hidden sm:block overflow-x-auto;
+}
+
+.history-table {
+  @apply w-full text-sm text-left text-slate-500 dark:text-slate-400;
+}
+
+.table-header {
+  @apply text-xs text-slate-700 dark:text-slate-300 uppercase bg-slate-50 dark:bg-slate-700;
+}
+
+.table-header-cell {
+  @apply px-4 py-3;
+}
+
+.no-data-cell {
+  @apply text-center py-8 text-slate-500 dark:text-slate-400;
+}
+
+.mobile-list-container {
+  @apply sm:hidden space-y-3;
+}
+
+.no-data-text {
+  @apply text-center py-8 text-slate-500 dark:text-slate-400;
+}
+
+.pagination-container {
+  @apply flex items-center justify-center mt-6 space-x-4;
+}
+
+.pagination-button {
+  @apply px-4 py-2 text-sm font-medium rounded-lg transition-colors bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.pagination-info {
+  @apply text-sm text-slate-600 dark:text-slate-400;
+}
+
+.merge-banner {
+  @apply flex items-center justify-between p-3 mb-4 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg;
+}
+.merge-info {
+  @apply text-sm font-medium text-indigo-800 dark:text-indigo-200;
+}
+.merge-button {
+  @apply px-3 py-1.5 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700;
+}
