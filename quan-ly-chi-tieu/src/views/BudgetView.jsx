@@ -207,16 +207,16 @@ export const BudgetView = () => {
     <div className="page-container">
       {/* Top Action & Navigation Header */}
       <div className="page-header">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <h2 className="page-title">
                 Quản lý Ngân sách
               </h2>
               {overBudgetCount > 0 && (
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-700 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-200 dark:border-rose-800 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
-                  {overBudgetCount} danh mục vượt mức
+                  {overBudgetCount} vượt hạn mức
                 </span>
               )}
             </div>
@@ -225,31 +225,43 @@ export const BudgetView = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
-            <div className="datepicker-wrapper">
+          <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+            {/* Date Picker với Icon Lịch */}
+            <div className="relative flex-1 sm:flex-initial min-w-[130px]">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none z-10">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
               <DatePicker
                 selected={selectedBudgetDate}
                 onChange={(date) => setSelectedBudgetDate(date)}
                 dateFormat="MM/yyyy"
                 showMonthYearPicker
-                className="budget-datepicker"
+                className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-700/60 text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-bold text-center focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-700 outline-none transition-all cursor-pointer shadow-sm"
               />
             </div>
 
+            {/* Nút Sao chép */}
             <button
               onClick={handleCopyFromLastMonth}
-              className="copy-budget-btn"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700/60 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-600/80 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm"
               title="Sao chép thiết lập ngân sách từ tháng trước"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
               </svg>
-              <span className="hidden md:inline">Sao chép tháng trước</span>
+              <span>Sao chép tháng trước</span>
             </button>
 
+            {/* Nút Lưu Ngân Sách */}
             <button
               onClick={handleSave}
-              className={`save-top-btn ${isSaved ? "bg-emerald-600 hover:bg-emerald-700" : ""}`}
+              className={`w-full sm:w-auto flex items-center justify-center gap-2 text-xs sm:text-sm font-bold px-4 py-2 text-white rounded-xl shadow-md active:scale-95 transition-all cursor-pointer ${
+                isSaved
+                  ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/20"
+                  : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/20"
+              }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
