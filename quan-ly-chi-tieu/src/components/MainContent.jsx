@@ -9,6 +9,7 @@ import { StatisticsView } from "../views/StatisticsView";
 import { SettingsView } from "../views/SettingsView";
 import { SavingsGoalsView } from "../views/SavingsGoalsView";
 import { SalaryTaxCalculatorView } from "../views/SalaryTaxCalculatorView";
+import { ProfileView } from "../views/ProfileView";
 
 export const MainContent = ({ voiceTransaction }) => {
   const {
@@ -68,6 +69,8 @@ export const MainContent = ({ voiceTransaction }) => {
       );
     case "settings":
       return <SettingsView />;
+    case "profile":
+      return <ProfileView />;
     case "add":
       return (
         <AddTransactionView
