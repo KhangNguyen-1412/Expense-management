@@ -11,7 +11,7 @@ import { SavingsGoalsView } from "../views/SavingsGoalsView";
 import { SalaryTaxCalculatorView } from "../views/SalaryTaxCalculatorView";
 import { ProfileView } from "../views/ProfileView";
 
-export const MainContent = ({ voiceTransaction }) => {
+export const MainContent = () => {
   const {
     activeView,
     authError,
@@ -59,60 +59,82 @@ export const MainContent = ({ voiceTransaction }) => {
     );
   }
 
-  switch (activeView) {
-    case "history":
-      return (
-        <HistoryView
-          transactions={transactions}
-          onDeleteTransaction={handleDeleteTransaction}
-        />
-      );
-    case "settings":
-      return <SettingsView />;
-    case "profile":
-      return <ProfileView />;
-    case "add":
-      return (
-        <AddTransactionView
-          onAddTransaction={handleAddTransaction}
-          voiceTransaction={voiceTransaction}
-        />
-      );
-    case "budget":
-      return (
-        <BudgetView
-          income={income}
-          budgets={budgets}
-          onSetBudgets={handleSetBudgets}
-          formatCurrency={formatCurrency}
-        />
-      );
-    case "statistics":
-      return (
-        <StatisticsView
-          transactions={transactions}
-          formatCurrency={formatCurrency}
-        />
-      );
-    case "goals":
-      return <SavingsGoalsView />;
-    case "calculator":
-      return <SalaryTaxCalculatorView />;
-    case "dashboard":
-    default:
-      return (
-        <DashboardView
-          transactions={transactions}
-          income={income}
-          expense={expense}
-          total={total}
-          budgets={budgets}
-          handleAnalyzeSpending={handleAnalyzeSpending}
-          analysis={analysis}
-          isLoading={isLoadingAnalysis}
-          error={analysisError}
-          formatCurrency={formatCurrency}
-        />
-      );
-  }
+  const pageVariants = {
+    initial: { opacity: 0, y: 10, scale: 0.99 },
+    animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.2, ease: "easeOut" } },
+    exit: { opacity: 0, y: -10, scale: 0.99, transition: { duration: 0.15, ease: "easeIn" } },
+  };
+
+  const renderView = () => {
+    switch (activeView) {
+      case "history":
+        return (
+          <HistoryView
+            transactions={transactions}
+            onDeleteTransaction={handleDeleteTransaction}
+          />
+        );
+      case "settings":
+        return <SettingsView />;
+      case "profile":
+        return <ProfileView />;
+      case "add":
+        return (
+          <AddTransactionView
+            onAddTransaction={handleAddTransaction}
+          />
+        );
+      case "budget":
+        return (
+          <BudgetView
+            income={income}
+            budgets={budgets}
+            onSetBudgets={handleSetBudgets}
+            formatCurrency={formatCurrency}
+          />
+        );
+      case "statistics":
+        return (
+          <StatisticsView
+            transactions={transactions}
+            formatCurrency={formatCurrency}
+          />
+        );
+      case "goals":
+        return <SavingsGoalsView />;
+      case "calculator":
+        return <SalaryTaxCalculatorView />;
+      case "dashboard":
+      default:
+        return (
+          <DashboardView
+            transactions={transactions}
+            income={income}
+            expense={expense}
+            total={total}
+            budgets={budgets}
+            handleAnalyzeSpending={handleAnalyzeSpending}
+            analysis={analysis}
+            isLoading={isLoadingAnalysis}
+            error={analysisError}
+            formatCurrency={formatCurrency}
+          />
+        );
+    }
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={activeView}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        className="w-full"
+      >
+        {renderView()}
+      </motion.div>
+    </AnimatePresence>
+  );
 };

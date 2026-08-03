@@ -10,6 +10,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db, handleSignOut as firebaseSignOut } from "../config/firebase";
 import { formatCurrency as formatCurrencyUtil } from "../utils/formatCurrency";
 import { SPENDING_CATEGORIES } from "../constants/categories";
+import { getViewFromPath, VIEW_URL_MAP, updateSEOMeta } from "../utils/seo";
 
 // Custom Hooks
 import { useTheme } from "../hooks/useTheme";
@@ -29,7 +30,31 @@ export const AppProvider = ({ children }) => {
   // =================================================================
   // Section 1: State khai báo trạng thái giao diện và cục bộ
   // =================================================================
-  const [activeView, setActiveView] = useState("dashboard");
+  const [activeView, setActiveViewState] = useState(() => getViewFromPath(window.location.pathname));
+
+  // Custom Navigation function that syncs Friendly URL and SEO Meta
+  const setActiveView = useCallback((viewId) => {
+    setActiveViewState(viewId);
+    const meta = VIEW_URL_MAP[viewId] || VIEW_URL_MAP.dashboard;
+    if (window.location.pathname !== meta.slug) {
+      window.history.pushState({ viewId }, "", meta.slug);
+    }
+    updateSEOMeta(viewId);
+  }, []);
+
+  // Listen to browser Back / Forward buttons & initial SEO setup
+  useEffect(() => {
+    updateSEOMeta(activeView);
+
+    const handlePopState = () => {
+      const currentView = getViewFromPath(window.location.pathname);
+      setActiveViewState(currentView);
+      updateSEOMeta(currentView);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [activeView]);
   const [transactionToEdit, setTransactionToEdit] = useState(null);
   const [lastUndoableAction, setLastUndoableAction] = useState(null);
   const [budgetWarnings, setBudgetWarnings] = useState([]);

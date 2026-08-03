@@ -194,6 +194,70 @@ export const SalaryTaxCalculatorView = () => {
         </div>
       </div>
 
+      {/* TOP RESULT CARDS: Net Income Result Card & Monthly Budget Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        {/* Net Income Result Card */}
+        <div className="calc-card p-5 bg-gradient-to-br from-indigo-900 to-slate-900 text-white border-none shadow-xl flex flex-col justify-between">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-indigo-300 block mb-1">
+              Lương Net Thực Nhận (Sau Thuế & BH)
+            </span>
+            <h3 className="text-3xl sm:text-4xl font-extrabold text-emerald-400 tracking-tight">
+              {formatCurrency(calculation.netSalary)}
+            </h3>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-indigo-800/80 grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <span className="text-indigo-300 block">Lương Gross:</span>
+              <span className="font-bold">{formatCurrency(calculation.gross)}</span>
+            </div>
+            <div>
+              <span className="text-indigo-300 block">Tổng khấu trừ:</span>
+              <span className="font-bold text-rose-300">
+                -{formatCurrency(calculation.totalInsurance + calculation.pitTax)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Living Expenses & Disposable Budget Result */}
+        <div className="calc-card p-5 flex flex-col justify-between">
+          <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+            Tổng kết Ngân sách Tháng
+          </h4>
+
+          <div className="space-y-2.5">
+            <div className="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+              <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                Lương Net thực nhận:
+              </span>
+              <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                +{formatCurrency(calculation.netSalary)}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+              <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                Tổng chi phí Trọ & Điện nước:
+              </span>
+              <span className="text-sm font-bold text-rose-600 dark:text-rose-400">
+                -{formatCurrency(livingCosts.totalLivingCost)}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center p-3 bg-indigo-50 dark:bg-indigo-950/60 rounded-xl border border-indigo-200 dark:border-indigo-800">
+              <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300">
+                Thu nhập ròng khả dụng:
+              </span>
+              <span className={`text-base font-extrabold ${disposableIncome < 0 ? "text-rose-600" : "text-indigo-600 dark:text-indigo-400"}`}>
+                {formatCurrency(disposableIncome)}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main 2-Column Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
         {/* Left Column: Config Inputs (7 cols) */}
@@ -519,66 +583,8 @@ export const SalaryTaxCalculatorView = () => {
           </div>
         </div>
 
-        {/* Right Column: Breakdown Results Dashboard (5 cols) */}
+        {/* Right Column: Detailed Tax & Insurance Breakdown Table (5 cols) */}
         <div className="lg:col-span-5 flex flex-col gap-6">
-          {/* Net Income Result Card */}
-          <div className="calc-card p-5 bg-gradient-to-br from-indigo-900 to-slate-900 text-white border-none shadow-xl">
-            <span className="text-xs font-semibold uppercase tracking-wider text-indigo-300 block mb-1">
-              Lương Net Thực Nhận (Sau Thuế & BH)
-            </span>
-            <h3 className="text-3xl font-extrabold text-emerald-400 tracking-tight">
-              {formatCurrency(calculation.netSalary)}
-            </h3>
-
-            <div className="mt-4 pt-3 border-t border-indigo-800/80 grid grid-cols-2 gap-2 text-xs">
-              <div>
-                <span className="text-indigo-300 block">Lương Gross:</span>
-                <span className="font-bold">{formatCurrency(calculation.gross)}</span>
-              </div>
-              <div>
-                <span className="text-indigo-300 block">Tổng khấu trừ:</span>
-                <span className="font-bold text-rose-300">
-                  -{formatCurrency(calculation.totalInsurance + calculation.pitTax)}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Living Expenses & Disposable Budget Result */}
-          <div className="calc-card p-5">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
-              Tổng kết Ngân sách Tháng
-            </h4>
-
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
-                <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
-                  Lương Net thực nhận:
-                </span>
-                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                  +{formatCurrency(calculation.netSalary)}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
-                <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
-                  Tổng chi phí Trọ & Điện nước:
-                </span>
-                <span className="text-sm font-bold text-rose-600 dark:text-rose-400">
-                  -{formatCurrency(livingCosts.totalLivingCost)}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center p-3 bg-indigo-50 dark:bg-indigo-950/60 rounded-xl border border-indigo-200 dark:border-indigo-800">
-                <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300">
-                  Thu nhập ròng khả dụng:
-                </span>
-                <span className={`text-base font-extrabold ${disposableIncome < 0 ? "text-rose-600" : "text-indigo-600 dark:text-indigo-400"}`}>
-                  {formatCurrency(disposableIncome)}
-                </span>
-              </div>
-            </div>
-          </div>
 
           {/* Detailed Tax & Insurance Breakdown Table */}
           <div className="calc-card p-5">

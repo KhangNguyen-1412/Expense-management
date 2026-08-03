@@ -112,36 +112,14 @@ export const AddTransactionView = () => {
 
   return (
     <div className="page-container">
-      <VoiceGuideDialog
-        isOpen={isGuideOpen}
-        onClose={() => setIsGuideOpen(false)}
-      />
-
       {/* Header Banner */}
       <div className="page-header">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h2 className="page-title">
-              {isEditing ? "Chỉnh sửa giao dịch" : "Thêm giao dịch mới"}
-            </h2>
-            <p className="page-subtitle">
-              Ghi chép thu chi hàng ngày nhanh chóng & chính xác
-            </p>
-          </div>
-
-          {!isEditing && (
-            <button
-              type="button"
-              onClick={() => setIsGuideOpen(true)}
-              className="voice-guide-pill"
-            >
-              <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-              </svg>
-              <span>Hướng dẫn giọng nói</span>
-            </button>
-          )}
-        </div>
+        <h2 className="page-title">
+          {isEditing ? "Chỉnh sửa giao dịch" : "Thêm giao dịch mới"}
+        </h2>
+        <p className="page-subtitle">
+          Ghi chép thu chi hàng ngày nhanh chóng & chính xác
+        </p>
       </div>
 
       {/* Main 2-Column Responsive Viewport */}
