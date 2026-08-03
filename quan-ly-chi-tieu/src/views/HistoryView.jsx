@@ -165,9 +165,19 @@ export const HistoryView = () => {
   );
 
   return (
-    <div className="history-container">
-      <div className="history-header">
-        <h3 className="history-title">Lịch sử Giao dịch</h3>
+    <div className="page-container">
+      {/* Header Banner */}
+      <div className="page-header">
+        <h2 className="page-title">
+          Lịch sử Giao dịch
+        </h2>
+        <p className="page-subtitle">
+          Xem, tìm kiếm, lọc và quản lý lịch sử thu chi cá nhân
+        </p>
+      </div>
+
+      {/* Filter & Search Controls Card */}
+      <div className="page-card p-5">
         <div className="history-controls">
           <div className="control-wrapper">
             <select
@@ -334,7 +344,7 @@ export const HistoryView = () => {
         </div>
       )}
       {/* Table Container with scroll */}
-      <div className="table-container">
+      <div className="page-card p-4 overflow-x-auto">
         <table className="history-table">
           <thead className="table-header">
             <tr>

@@ -1,103 +1,110 @@
-.budget-container {
-  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-2xl mx-auto;
+/* Budget Dashboard Container for Widescreen & Laptop Viewports */
+.budget-dashboard {
+  @apply max-w-7xl mx-auto pb-6;
 }
 
-.budget-header {
-  @apply flex flex-col sm:flex-row justify-between sm:items-center border-b border-slate-200 dark:border-slate-700 pb-4 mb-6;
-}
-
-.budget-title {
-  @apply text-2xl font-bold text-slate-800 dark:text-slate-200 mb-3 sm:mb-0;
-}
-
-.datepicker-wrapper {
-  @apply w-full sm:w-48;
+/* Header Action Card */
+.budget-header-card {
+  @apply bg-white dark:bg-slate-800/90 backdrop-blur shadow-sm border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-5 transition-all;
 }
 
 .budget-datepicker {
-  @apply w-full p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow text-center font-semibold;
+  @apply w-32 p-2 border border-slate-300 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-700/80 text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-semibold text-center focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-700 outline-none transition-all cursor-pointer;
 }
 
-.copy-budget-container {
-  @apply mb-6 text-center;
+.copy-budget-btn {
+  @apply flex items-center gap-2 text-xs sm:text-sm font-semibold px-3 py-2 text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700/60 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl border border-slate-200/80 dark:border-slate-600/80 transition-all active:scale-95;
 }
 
-.copy-budget-button {
-  @apply text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline;
+.save-top-btn {
+  @apply flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-500/20 active:scale-95 transition-all cursor-pointer;
 }
 
-.budget-summary {
-  @apply grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl text-center;
+.save-bottom-btn {
+  @apply px-4 py-2 text-xs sm:text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow shadow-indigo-500/20 active:scale-95 transition-all cursor-pointer;
 }
 
-.summary-title {
-  @apply text-slate-500 dark:text-slate-400 font-semibold;
+/* Cards & Layout Containers */
+.budget-card {
+  @apply bg-white dark:bg-slate-800/90 shadow-sm border border-slate-200/80 dark:border-slate-700/80 rounded-2xl transition-all;
 }
 
-.summary-value {
-  @apply font-bold text-2xl mt-1;
+/* Summary Grid */
+.budget-summary-grid {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
 }
 
-.summary-value-income {
-  @apply text-green-600 dark:text-green-500;
+.summary-card {
+  @apply flex items-center gap-3 p-4 bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl shadow-sm hover:shadow transition-all;
 }
 
-.summary-value-budgeted {
-  @apply text-blue-600 dark:text-blue-400;
+.summary-icon {
+  @apply p-3 rounded-xl shrink-0 flex items-center justify-center;
 }
 
-.summary-value-negative {
-  @apply text-red-600 dark:text-red-500;
+.summary-card-label {
+  @apply text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-400 block whitespace-nowrap overflow-hidden text-ellipsis;
 }
 
-.summary-value-positive {
-  @apply text-orange-500;
+.summary-card-value {
+  @apply text-lg sm:text-xl font-bold tracking-tight mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis;
 }
 
-.chart-container {
-  @apply mb-8 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700;
+/* Category Search Input */
+.category-search-input {
+  @apply w-full pl-9 pr-7 py-1.5 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all;
 }
 
-.budget-items-container {
-  @apply space-y-6;
+/* Scrollable Category List for Laptop Viewport Optimization */
+.budget-items-scrollable {
+  @apply max-h-[50vh] lg:max-h-[calc(100vh-340px)] overflow-y-auto pr-1 space-y-3;
 }
 
-.budget-item-header {
-  @apply flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-2;
+/* Scrollbar Customization */
+.budget-items-scrollable::-webkit-scrollbar {
+  width: 5px;
 }
 
-.budget-item-label {
-  @apply font-semibold text-slate-700 dark:text-slate-300;
+.budget-items-scrollable::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.budget-item-details {
-  @apply flex items-center gap-4 w-full sm:w-auto;
+.budget-items-scrollable::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
 }
 
-.budget-item-spent {
-  @apply text-sm text-slate-500 dark:text-slate-400 flex-grow sm:flex-grow-0 text-right;
+.budget-items-scrollable::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-500;
 }
 
+/* Category Item Card */
+.category-item-card {
+  @apply p-3.5 bg-slate-50/70 dark:bg-slate-700/30 hover:bg-slate-100/80 dark:hover:bg-slate-700/50 border border-slate-200/60 dark:border-slate-700/50 rounded-xl transition-all;
+}
+
+/* Input Fields */
 .budget-input-wrapper {
-  @apply relative w-36;
+  @apply relative w-32 shrink-0;
 }
 
 .budget-input-currency {
-  @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm;
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold pointer-events-none;
 }
 
 .budget-input {
-  @apply w-full p-2 pl-10 text-right font-semibold bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow;
+  @apply w-full py-1.5 pl-3 pr-7 text-right text-xs sm:text-sm font-bold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm;
 }
 
+/* Progress Bars */
 .progress-bar-bg {
-  @apply w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5;
+  @apply w-full bg-slate-200/80 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden mt-1.5;
 }
 
 .progress-bar-fg {
-  @apply h-2.5 rounded-full transition-all duration-500;
+  @apply h-full rounded-full transition-all duration-500;
 }
 
-.save-budget-button {
-  @apply w-full mt-8 bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 transition-all duration-300 text-lg;
+/* Chart Container Wrapper */
+.chart-wrapper {
+  @apply relative w-full h-full min-h-[220px];
 }

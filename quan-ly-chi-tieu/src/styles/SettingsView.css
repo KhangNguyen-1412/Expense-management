@@ -1,29 +1,50 @@
+/* Settings Premium Layout */
 .settings-container {
-  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 max-w-2xl mx-auto;
+  @apply max-w-5xl mx-auto pb-6 space-y-6;
 }
 
-.settings-title {
-  @apply text-2xl font-bold text-slate-800 dark:text-slate-200 mb-6;
+/* Header Banner */
+.settings-header-card {
+  @apply bg-white dark:bg-slate-800/90 backdrop-blur shadow-sm border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-5 transition-all;
 }
 
-.settings-list {
-  @apply space-y-2;
+/* Section Card */
+.settings-section {
+  @apply bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl shadow-sm overflow-hidden;
 }
 
+.settings-section-header {
+  @apply flex items-center gap-3 px-5 py-3.5 bg-slate-50/70 dark:bg-slate-700/30 border-b border-slate-200/60 dark:border-slate-700/60;
+}
+
+.settings-section-icon {
+  @apply w-8 h-8 rounded-lg flex items-center justify-center shrink-0;
+}
+
+.settings-section-title {
+  @apply text-sm font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider;
+}
+
+.settings-section-desc {
+  @apply text-[11px] text-slate-400 dark:text-slate-500;
+}
+
+/* Setting Row */
 .setting-row {
-  @apply flex items-center justify-between py-4 border-b border-slate-200 dark:border-slate-700;
+  @apply flex items-center justify-between px-5 py-4 border-b border-slate-100/80 dark:border-slate-700/50 last:border-b-0 hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors;
 }
 
 .setting-info-title {
-  @apply font-semibold text-slate-800 dark:text-slate-200;
+  @apply text-sm font-semibold text-slate-800 dark:text-slate-200;
 }
 
 .setting-info-description {
-  @apply text-sm text-slate-500 dark:text-slate-400;
+  @apply text-xs text-slate-500 dark:text-slate-400 mt-0.5;
 }
 
+/* Toggle Switch */
 .toggle-switch {
-  @apply relative inline-flex items-center h-6 rounded-full w-11 transition-colors;
+  @apply relative inline-flex items-center h-6 rounded-full w-11 transition-colors cursor-pointer shrink-0 border-2 border-transparent;
 }
 
 .toggle-switch-on {
@@ -35,29 +56,35 @@
 }
 
 .toggle-knob {
-  @apply inline-block w-4 h-4 transform bg-white rounded-full transition-transform;
+  @apply inline-block w-5 h-5 transform bg-white rounded-full transition-transform shadow-md;
 }
 
 .toggle-knob-on {
-  @apply translate-x-6;
+  @apply translate-x-5;
 }
 
 .toggle-knob-off {
-  @apply translate-x-1;
+  @apply translate-x-0;
 }
 
+/* Select */
 .settings-select {
-  @apply w-48 p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply w-48 p-2 text-sm border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
-.delete-data-section {
-  @apply pt-6;
+/* Danger Zone */
+.danger-section {
+  @apply bg-rose-50/80 dark:bg-rose-950/20 border border-rose-200/80 dark:border-rose-800/50 rounded-2xl shadow-sm overflow-hidden;
 }
 
-.delete-data-button {
-  @apply w-full text-left px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40 font-semibold transition-colors;
+.danger-section-header {
+  @apply flex items-center gap-3 px-5 py-3.5 bg-rose-100/50 dark:bg-rose-900/20 border-b border-rose-200/60 dark:border-rose-800/40;
 }
 
-.delete-data-note {
-  @apply text-xs text-slate-500 dark:text-slate-400 mt-2 px-1;
+.danger-btn {
+  @apply w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm transition-all active:scale-[0.98] shadow-sm shadow-rose-300/30 dark:shadow-rose-900/30;
+}
+
+.danger-note {
+  @apply text-xs text-rose-500/80 dark:text-rose-400/60 mt-3 px-1;
 }

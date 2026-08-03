@@ -8,6 +8,7 @@ import { BudgetView } from "../views/BudgetView";
 import { StatisticsView } from "../views/StatisticsView";
 import { SettingsView } from "../views/SettingsView";
 import { SavingsGoalsView } from "../views/SavingsGoalsView";
+import { SalaryTaxCalculatorView } from "../views/SalaryTaxCalculatorView";
 
 export const MainContent = ({ voiceTransaction }) => {
   const {
@@ -92,6 +93,8 @@ export const MainContent = ({ voiceTransaction }) => {
       );
     case "goals":
       return <SavingsGoalsView />;
+    case "calculator":
+      return <SalaryTaxCalculatorView />;
     case "dashboard":
     default:
       return (

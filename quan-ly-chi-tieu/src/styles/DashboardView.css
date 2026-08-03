@@ -1,71 +1,77 @@
-.dashboard-container {
-  @apply space-y-8;
+/* Dashboard — Page-Specific Styles Only */
+
+/* Hero Balance Banner */
+.dashboard-hero {
+  @apply bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden;
 }
 
-.balance-card {
-  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-8;
+.dashboard-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 60%),
+              radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-.balance-title {
-  @apply text-xl font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider;
+.hero-label {
+  @apply text-xs sm:text-sm font-semibold uppercase tracking-widest text-indigo-300 mb-1;
 }
 
-.balance-amount {
-  @apply text-6xl font-extrabold text-slate-800 dark:text-slate-100 mt-2;
+.hero-balance {
+  @apply text-4xl sm:text-5xl font-extrabold tracking-tight;
 }
 
-.summary-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-8;
+.hero-stat-card {
+  @apply flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10;
 }
 
-.summary-card {
-  @apply bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl p-6 flex items-center;
+.hero-stat-icon {
+  @apply w-9 h-9 rounded-lg flex items-center justify-center shrink-0;
 }
 
-.summary-icon-wrapper {
-  @apply p-4 rounded-xl mr-4;
+.hero-stat-label {
+  @apply text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-indigo-200/80 block;
 }
 
-.summary-icon-income {
-  @apply bg-green-100 dark:bg-green-900/20;
+.hero-stat-value {
+  @apply text-base sm:text-lg font-bold text-white;
 }
 
-.summary-icon-expense {
-  @apply bg-red-100 dark:bg-red-900/20;
+/* Recent Transactions */
+.recent-tx-item {
+  @apply flex items-center justify-between py-3 px-1 border-b border-slate-100 dark:border-slate-700/50 last:border-b-0 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-700/20 rounded-lg;
 }
 
-.summary-icon {
-  @apply h-8 w-8;
+.recent-tx-icon {
+  @apply w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-lg;
 }
 
-.summary-icon-income-color {
-  @apply text-green-600 dark:text-green-400;
+.recent-tx-name {
+  @apply text-sm font-semibold text-slate-700 dark:text-slate-200 truncate;
 }
 
-.summary-icon-expense-color {
-  @apply text-red-600 dark:text-red-400;
+.recent-tx-category {
+  @apply text-[11px] text-slate-400 dark:text-slate-500;
 }
 
-.summary-title {
-  @apply text-lg uppercase text-slate-500 dark:text-slate-400 font-semibold;
+.recent-tx-amount {
+  @apply text-sm font-bold whitespace-nowrap;
 }
 
-.summary-amount {
-  @apply text-3xl font-bold;
+.recent-tx-date {
+  @apply text-[10px] text-slate-400 text-right;
 }
 
-.summary-amount-income {
-  @apply text-green-600 dark:text-green-500;
+/* AI Analysis */
+.ai-card {
+  @apply bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-violet-950/30 dark:to-indigo-950/30 border border-violet-200/60 dark:border-violet-800/40 rounded-2xl p-5;
 }
 
-.summary-amount-expense {
-  @apply text-red-500;
+.ai-btn {
+  @apply w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold py-3 px-4 rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all duration-300 shadow-lg shadow-indigo-300/30 dark:shadow-indigo-900/30 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base active:scale-[0.98];
 }
 
-.ai-button {
-  @apply w-full flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-4 px-4 rounded-xl hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 shadow-lg shadow-indigo-200/50 dark:shadow-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed text-lg;
-}
-
-.ai-button-icon {
-  @apply h-6 w-6;
+.ai-btn-icon {
+  @apply w-5 h-5;
 }

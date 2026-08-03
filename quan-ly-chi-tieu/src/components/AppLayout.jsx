@@ -313,7 +313,7 @@ export const AppLayout = () => {
   if (isAppLocked) return <PinLockScreen />;
 
   return (
-    <div className="flex h-screen bg-slate-100 dark:bg-slate-950 font-sans">
+    <div className="flex h-screen overflow-hidden bg-slate-100 dark:bg-slate-950 font-sans">
       <Sidebar isListening={isListening} toggleListening={toggleListening} />
       <main className="flex-1 p-6 sm:p-10 overflow-y-auto">
         <MainContent voiceTransaction={voiceTransaction} />

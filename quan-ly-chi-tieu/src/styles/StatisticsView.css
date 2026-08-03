@@ -1,21 +1,53 @@
+/* Statistics/Reports Premium Dashboard */
 .statistics-container {
-  @apply space-y-6;
+  @apply max-w-7xl mx-auto pb-6 space-y-6;
 }
 
-.filter-card {
-  @apply bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg;
+/* Header Banner */
+.stats-header-card {
+  @apply bg-white dark:bg-slate-800/90 backdrop-blur shadow-sm border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-5 transition-all;
 }
 
-.filter-title {
-  @apply text-xl font-bold text-slate-800 dark:text-slate-100 mb-4;
+/* KPI Summary Cards */
+.kpi-grid {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
 }
 
-.filter-controls {
-  @apply flex flex-col sm:flex-row sm:items-center gap-4;
+.kpi-card {
+  @apply bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 flex items-center gap-3 shadow-sm hover:shadow-md transition-all duration-200;
+}
+
+.kpi-icon {
+  @apply w-11 h-11 rounded-xl flex items-center justify-center shrink-0;
+}
+
+.kpi-label {
+  @apply text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-400 block;
+}
+
+.kpi-value {
+  @apply text-lg sm:text-xl font-bold tracking-tight mt-0.5;
+}
+
+/* Filter Controls */
+.filter-section {
+  @apply flex flex-col sm:flex-row sm:items-center gap-3;
 }
 
 .filter-presets {
-  @apply flex items-center space-x-2;
+  @apply flex items-center gap-1.5;
+}
+
+.filter-pill {
+  @apply px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-xl border transition-all cursor-pointer;
+}
+
+.filter-pill-active {
+  @apply bg-indigo-600 text-white border-indigo-600 shadow-sm shadow-indigo-300/30 dark:shadow-indigo-900/30;
+}
+
+.filter-pill-inactive {
+  @apply bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700;
 }
 
 .datepicker-container {
@@ -23,37 +55,48 @@
 }
 
 .stats-datepicker {
-  @apply w-32 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5;
+  @apply w-32 bg-slate-50 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-semibold rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-700 p-2.5 outline-none transition-all text-center;
 }
 
+/* Charts Layout */
 .charts-grid {
-  @apply grid grid-cols-1 lg:grid-cols-5 gap-6;
+  @apply grid grid-cols-1 lg:grid-cols-12 gap-6;
 }
 
-.chart-wrapper {
-  @apply bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg;
+.chart-card {
+  @apply bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-5 shadow-sm;
 }
 
-.chart-wrapper-line {
-  @apply lg:col-span-3;
+.chart-title {
+  @apply text-sm font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700/80 pb-3 mb-4;
 }
 
-.chart-wrapper-pie {
-  @apply lg:col-span-2 flex flex-col items-center;
+/* Top Categories Ranking */
+.ranking-item {
+  @apply flex items-center gap-3 py-2.5 border-b border-slate-100 dark:border-slate-700/50 last:border-b-0;
 }
 
-.pie-chart-title {
-  @apply text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4;
+.ranking-badge {
+  @apply w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0;
 }
 
+.ranking-bar-bg {
+  @apply w-full bg-slate-200/80 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden;
+}
+
+.ranking-bar-fg {
+  @apply h-full rounded-full transition-all duration-500;
+}
+
+/* No Data State */
 .no-data-card {
-  @apply bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg text-center;
+  @apply bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-10 rounded-2xl shadow-sm text-center;
 }
 
 .no-data-title {
-  @apply text-xl font-bold text-slate-700 dark:text-slate-200;
+  @apply text-lg font-bold text-slate-700 dark:text-slate-200 mt-3;
 }
 
 .no-data-description {
-  @apply mt-2 text-slate-500 dark:text-slate-400;
+  @apply mt-2 text-sm text-slate-500 dark:text-slate-400;
 }
