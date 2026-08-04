@@ -231,55 +231,67 @@ export const PhotoFeedView = () => {
 
     const style = post.layoutStyle || "frame";
 
-    // 1. Dạng Cột (Triển Lãm Tranh Nghệ Thuật - Museum Art Gallery Exhibition Layout)
+    // 1. Dạng Cột (Triển Lãm Tranh Nghệ Thuật Xếp Nghệ Thuật Lộn Xộn / Artistic Scattered Gallery Wall)
     if (style === "column") {
       const isGrid = photos.length <= 3;
+      const tiltStyles = [
+        "rotate-2 translate-y-1 sm:translate-y-2",
+        "-rotate-3 -translate-y-2 sm:-translate-y-3",
+        "rotate-3 translate-y-3 sm:translate-y-4",
+        "-rotate-2 translate-y-1 sm:translate-y-2",
+        "rotate-1 -translate-y-2 sm:-translate-y-3",
+        "-rotate-4 translate-y-3 sm:translate-y-4",
+      ];
+
       return (
-        <div className="relative bg-neutral-950 p-4 sm:p-6 border-t border-b border-neutral-800/80 overflow-hidden rounded-b-2xl">
+        <div className="relative bg-neutral-950 p-6 sm:p-8 border-t border-b border-neutral-800/80 overflow-hidden rounded-b-2xl min-h-[320px]">
           {/* Museum Overhead Spotlight Glow */}
-          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-amber-400/15 via-amber-400/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-amber-400/20 via-amber-400/5 to-transparent pointer-events-none" />
 
           <div
             className={
               isGrid
-                ? `grid gap-6 ${
+                ? `grid gap-6 sm:gap-8 items-center py-4 ${
                     photos.length === 1
-                      ? "grid-cols-1 max-w-lg mx-auto"
+                      ? "grid-cols-1 max-w-sm mx-auto"
                       : photos.length === 2
-                      ? "grid-cols-2"
-                      : "grid-cols-3"
+                      ? "grid-cols-2 max-w-2xl mx-auto"
+                      : "grid-cols-1 sm:grid-cols-3"
                   }`
-                : "flex flex-row gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-amber-600/40 snap-x snap-mandatory"
+                : "flex flex-row gap-6 sm:gap-8 overflow-x-auto py-6 px-2 scrollbar-thin scrollbar-thumb-amber-600/40 snap-x snap-mandatory items-center"
             }
           >
-            {photos.map((url, idx) => (
-              <div
-                key={idx}
-                onClick={() => openLightbox(photos, idx, post.caption)}
-                className={`relative group cursor-pointer transition-all duration-300 transform hover:-translate-y-1.5 ${
-                  !isGrid ? "shrink-0 w-64 sm:w-80 snap-center" : "w-full"
-                }`}
-              >
-                {/* Museum Framed Artwork Container */}
-                <div className="bg-stone-900 border-[6px] border-amber-900/60 dark:border-stone-800 p-3 sm:p-4 rounded-lg shadow-2xl shadow-black/80 flex flex-col items-center">
-                  {/* Inner Picture Matting (Pass-partout) */}
-                  <div className="w-full bg-stone-100 dark:bg-stone-950 p-2 sm:p-3 rounded-xs border border-stone-300 dark:border-stone-800 shadow-inner flex items-center justify-center min-h-[220px] max-h-[360px]">
-                    <img
-                      src={url}
-                      alt={`Artwork ${idx + 1}`}
-                      className="w-full h-auto object-contain max-h-[340px] shadow-sm group-hover:scale-[1.02] transition-transform duration-300 rounded-xs"
-                    />
-                  </div>
+            {photos.map((url, idx) => {
+              const tilt = tiltStyles[idx % tiltStyles.length];
+              return (
+                <div
+                  key={idx}
+                  onClick={() => openLightbox(photos, idx, post.caption)}
+                  className={`relative group cursor-pointer transition-all duration-300 transform ${tilt} hover:rotate-0 hover:translate-y-0 hover:scale-105 hover:z-30 ${
+                    !isGrid ? "shrink-0 w-60 sm:w-72 snap-center" : "w-full"
+                  }`}
+                >
+                  {/* Museum Framed Artwork Container with 3D Drop Shadow */}
+                  <div className="bg-stone-900 border-[7px] border-amber-950/70 dark:border-stone-800 p-3 sm:p-4 rounded-xl shadow-2xl shadow-black/90 flex flex-col items-center group-hover:shadow-amber-500/20 group-hover:border-amber-700/80 transition-all">
+                    {/* Inner Picture Matting (Pass-partout) */}
+                    <div className="w-full bg-stone-100 dark:bg-stone-950 p-2 sm:p-3 rounded-xs border border-stone-300 dark:border-stone-800 shadow-inner flex items-center justify-center min-h-[200px] max-h-[360px]">
+                      <img
+                        src={url}
+                        alt={`Artwork ${idx + 1}`}
+                        className="w-full h-auto object-contain max-h-[340px] shadow-sm transition-transform duration-300 rounded-xs"
+                      />
+                    </div>
 
-                  {/* Brass Museum Plaque Tag */}
-                  <div className="mt-3 px-3 py-1 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 text-stone-900 rounded border border-amber-400/80 shadow-md font-serif text-[10px] font-extrabold tracking-widest uppercase flex items-center gap-1.5 shrink-0">
-                    <span className="text-[8px] opacity-70">✦</span>
-                    <span>TÁC PHẨM #{idx + 1}</span>
-                    <span className="text-[8px] opacity-70">✦</span>
+                    {/* Brass Museum Plaque Tag */}
+                    <div className="mt-3 px-3 py-1 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 text-stone-900 rounded border border-amber-400/80 shadow-md font-serif text-[10px] font-extrabold tracking-widest uppercase flex items-center gap-1.5 shrink-0">
+                      <span className="text-[8px] opacity-70">✦</span>
+                      <span>TÁC PHẨM #{idx + 1}</span>
+                      <span className="text-[8px] opacity-70">✦</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       );
