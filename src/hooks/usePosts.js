@@ -210,5 +210,28 @@ export const usePosts = (user) => {
     [user]
   );
 
-  return { posts, isLoadingPosts, addPost, deletePost, toggleLikePost };
+  // Update layout style of an existing post
+  const updatePostLayout = useCallback(
+    async (postId, newLayoutStyle) => {
+      setPosts((prev) => {
+        const updated = prev.map((p) =>
+          p.id === postId ? { ...p, layoutStyle: newLayoutStyle } : p
+        );
+        saveLocalPosts(updated);
+        return updated;
+      });
+
+      if (user) {
+        try {
+          const docRef = doc(db, `users/${user.uid}/posts`, postId);
+          await updateDoc(docRef, { layoutStyle: newLayoutStyle });
+        } catch (err) {
+          console.error("Failed to update post layout in Firestore:", err);
+        }
+      }
+    },
+    [user]
+  );
+
+  return { posts, isLoadingPosts, addPost, deletePost, toggleLikePost, updatePostLayout };
 };

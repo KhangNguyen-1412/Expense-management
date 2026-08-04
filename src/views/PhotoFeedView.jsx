@@ -12,6 +12,7 @@ export const PhotoFeedView = () => {
     addPost,
     deletePost,
     toggleLikePost,
+    updatePostLayout,
     driveFolderUrl,
     setActiveView,
     showToast,
@@ -554,8 +555,48 @@ export const PhotoFeedView = () => {
                           </>
                         )}
                       </h4>
-                      <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-0.5">
+                      <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-0.5 flex-wrap">
                         <span>{formatDate(post.createdAt)}</span>
+                        <span>•</span>
+                        {/* Interactive Layout Switcher Badge */}
+                        <div className="flex items-center gap-0.5 bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border border-slate-200/50 dark:border-slate-700">
+                          <button
+                            type="button"
+                            onClick={() => updatePostLayout(post.id, "frame")}
+                            className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold transition-all ${
+                              (post.layoutStyle || "frame") === "frame"
+                                ? "bg-indigo-600 text-white shadow-xs"
+                                : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                            }`}
+                            title="Đổi dạng Khung / Lưới"
+                          >
+                            Khung
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updatePostLayout(post.id, "column")}
+                            className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold transition-all ${
+                              post.layoutStyle === "column"
+                                ? "bg-indigo-600 text-white shadow-xs"
+                                : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                            }`}
+                            title="Đổi dạng Cột"
+                          >
+                            Cột
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updatePostLayout(post.id, "classic")}
+                            className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold transition-all ${
+                              post.layoutStyle === "classic"
+                                ? "bg-indigo-600 text-white shadow-xs"
+                                : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                            }`}
+                            title="Đổi dạng Cổ điển"
+                          >
+                            Cổ điển
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

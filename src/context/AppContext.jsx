@@ -110,7 +110,7 @@ export const AppProvider = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
   const { user, authError, isLoadingAuth } = useAuth();
   const { profile, isLoadingProfile, updateUserProfile } = useUserProfile(user);
-  const { posts, isLoadingPosts, addPost, deletePost, toggleLikePost } = usePosts(user);
+  const { posts, isLoadingPosts, addPost, deletePost, toggleLikePost, updatePostLayout } = usePosts(user);
   const {
     transactions,
     budgets,
@@ -450,6 +450,7 @@ export const AppProvider = ({ children }) => {
     addPost,
     deletePost,
     toggleLikePost,
+    updatePostLayout,
     toggleTheme,
     handleAnalyzeSpending,
     handleAddTransaction,
