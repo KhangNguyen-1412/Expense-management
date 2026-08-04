@@ -35,6 +35,7 @@ export const PhotoFeedView = () => {
   const [newUrlInput, setNewUrlInput] = useState("");
   const [location, setLocation] = useState("");
   const [postDate, setPostDate] = useState(getTodayString);
+  const [layoutStyle, setLayoutStyle] = useState("frame"); // "frame" (Khung/Lưới), "column" (Cột), "classic" (Cổ điển)
 
   // Lightbox modal state: { photos: [], currentIndex: 0, title: "" }
   const [previewPhoto, setPreviewPhoto] = useState(null);
@@ -184,6 +185,7 @@ export const PhotoFeedView = () => {
       caption: caption.trim(),
       imageUrls: imageUrls,
       location: location.trim(),
+      layoutStyle: layoutStyle,
       createdAt: customCreatedAt,
       authorName,
       authorAvatar,
@@ -193,6 +195,7 @@ export const PhotoFeedView = () => {
     setImageUrls([]);
     setNewUrlInput("");
     setLocation("");
+    setLayoutStyle("frame");
     setPostDate(getTodayString());
     setIsCreateOpen(false);
     if (showToast) showToast("Đã đăng bài viết mới thành công!", "success");
@@ -220,11 +223,73 @@ export const PhotoFeedView = () => {
     return `${parts[2]}/${parts[1]}/${parts[0]}`;
   };
 
-  // Render photo gallery for a post in feed
+  // Render photo gallery for a post in feed based on layoutStyle: 'frame' | 'column' | 'classic'
   const renderPostPhotosGrid = (post) => {
     const photos = getPostPhotos(post);
     if (photos.length === 0) return null;
 
+    const style = post.layoutStyle || "frame";
+
+    // 1. Dạng Cột (Vertical Column Layout)
+    if (style === "column") {
+      return (
+        <div className="flex flex-col gap-1.5 bg-slate-950 p-2 overflow-hidden">
+          {photos.map((url, idx) => (
+            <div
+              key={idx}
+              onClick={() => openLightbox(photos, idx, post.caption)}
+              className="relative w-full max-h-[500px] overflow-hidden bg-slate-900 rounded-xl cursor-pointer group flex items-center justify-center"
+            >
+              <img
+                src={url}
+                alt={`Photo ${idx + 1}`}
+                className="w-full h-auto object-contain max-h-[500px] group-hover:scale-[1.01] transition-transform duration-300"
+              />
+              {photos.length > 1 && (
+                <span className="absolute top-2 right-2 bg-slate-900/80 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full backdrop-blur-xs shadow-md">
+                  {idx + 1} / {photos.length}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // 2. Dạng Cổ điển (Vintage Polaroid Layout)
+    if (style === "classic") {
+      return (
+        <div className="p-4 sm:p-6 bg-gradient-to-b from-amber-50/50 to-orange-50/30 dark:from-slate-950/90 dark:to-slate-900/80 border-t border-b border-amber-200/40 dark:border-slate-800">
+          <div className={`grid gap-5 ${photos.length === 1 ? "grid-cols-1 max-w-sm mx-auto" : "grid-cols-1 sm:grid-cols-2"}`}>
+            {photos.map((url, idx) => (
+              <div
+                key={idx}
+                onClick={() => openLightbox(photos, idx, post.caption)}
+                className={`bg-white dark:bg-slate-900 p-3 pt-3.5 pb-6 rounded-lg shadow-md hover:shadow-xl border border-slate-200/90 dark:border-slate-800 cursor-pointer transform ${
+                  idx % 2 === 0 ? "-rotate-1 hover:rotate-0" : "rotate-1 hover:rotate-0"
+                } transition-all duration-300 relative group`}
+              >
+                {/* Washi Tape Accent */}
+                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-14 h-5 bg-amber-200/80 dark:bg-amber-700/50 backdrop-blur-xs rotate-2 shadow-xs rounded-xs border border-amber-300/40 pointer-events-none z-10" />
+
+                <div className="overflow-hidden rounded-xs bg-slate-950 max-h-[340px] flex items-center justify-center">
+                  <img
+                    src={url}
+                    alt={`Classic photo ${idx + 1}`}
+                    className="w-full h-auto object-cover max-h-[340px] sepia-[0.12] contrast-[1.02] group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="mt-2.5 text-center text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 tracking-widest uppercase">
+                  ✦ MEMORY #{idx + 1} ✦
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // 3. Dạng Khung / Lưới (Modern Grid Frame Layout - Default)
     if (photos.length === 1) {
       return (
         <div
@@ -530,7 +595,7 @@ export const PhotoFeedView = () => {
                   </div>
                 )}
 
-                {/* Multi-Photo Grid Renderer */}
+                {/* Multi-Photo Grid / Layout Renderer */}
                 {renderPostPhotosGrid(post)}
 
                 {/* Post Footer Actions */}
@@ -925,6 +990,64 @@ export const PhotoFeedView = () => {
                     onChange={(e) => setPostDate(e.target.value)}
                     className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
+                </div>
+
+                {/* Layout Format Style Picker */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center gap-1.5">
+                    <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                    </svg>
+                    <span>Dạng hiển thị bố cục ảnh</span>
+                  </label>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setLayoutStyle("frame")}
+                      className={`p-2.5 rounded-2xl border text-center transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                        layoutStyle === "frame"
+                          ? "border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold shadow-sm"
+                          : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                      <span className="text-[11px]">Khung / Lưới</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setLayoutStyle("column")}
+                      className={`p-2.5 rounded-2xl border text-center transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                        layoutStyle === "column"
+                          ? "border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold shadow-sm"
+                          : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                      </svg>
+                      <span className="text-[11px]">Dạng Cột</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setLayoutStyle("classic")}
+                      className={`p-2.5 rounded-2xl border text-center transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                        layoutStyle === "classic"
+                          ? "border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold shadow-sm"
+                          : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span className="text-[11px]">Cổ điển</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Photo Input (Multi-photo Google Drive Link / Upload) */}

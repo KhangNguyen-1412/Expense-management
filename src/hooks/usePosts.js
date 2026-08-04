@@ -73,6 +73,7 @@ export const usePosts = (user) => {
         imageUrl: postData.imageUrls?.[0] || postData.imageUrl || "",
         imageUrls: postData.imageUrls || (postData.imageUrl ? [postData.imageUrl] : []),
         location: postData.location || "",
+        layoutStyle: postData.layoutStyle || "frame",
         likesCount: 0,
         isLiked: false,
         createdAt: postData.createdAt || new Date().toISOString(),
