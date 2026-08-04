@@ -67,7 +67,7 @@ export const usePosts = (user) => {
     }
   }, []);
 
-  // 2. Sync posts from Firestore if user exists
+  // 2. Real-time 2-way sync with Cloud Firestore
   useEffect(() => {
     if (!user) {
       const local = loadLocalPosts();
@@ -86,26 +86,13 @@ export const usePosts = (user) => {
           id: docSnap.id,
         }));
 
-        // Always read current local posts to avoid wiping offline/draft posts
-        const currentLocal = loadLocalPosts();
-        const firestoreMap = new Map(fetchedPosts.map((p) => [p.id, p]));
-
-        const merged = [...fetchedPosts];
-
-        // Retain any local post not yet synced to Firestore
-        currentLocal.forEach((localPost) => {
-          if (!firestoreMap.has(localPost.id)) {
-            merged.push(localPost);
-          }
-        });
-
         // Sort descending by createdAt
-        merged.sort(
+        fetchedPosts.sort(
           (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
         );
 
-        setPosts(merged);
-        saveLocalPosts(merged);
+        setPosts(fetchedPosts);
+        saveLocalPosts(fetchedPosts);
         setIsLoadingPosts(false);
       },
       (error) => {
