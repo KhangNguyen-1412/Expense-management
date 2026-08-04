@@ -4,9 +4,40 @@ import { updateProfile as updateAuthProfile } from "firebase/auth";
 import { db, auth } from "../config/firebase";
 
 const LOCAL_STORAGE_KEY_PREFIX = "user_profile_";
+const MASTER_PROFILE_STORAGE_KEY = "master_user_profile_v1";
+
+// Helper: Load master profile stored locally
+const loadMasterProfile = () => {
+  if (typeof window === "undefined" || !window.localStorage) return null;
+  try {
+    const savedMaster = localStorage.getItem(MASTER_PROFILE_STORAGE_KEY);
+    if (savedMaster) {
+      const parsed = JSON.parse(savedMaster);
+      if (parsed && (parsed.fullName || parsed.avatarUrl)) return parsed;
+    }
+
+    // Scan for any user_profile_ key
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(LOCAL_STORAGE_KEY_PREFIX)) {
+        const val = localStorage.getItem(key);
+        if (val) {
+          const parsed = JSON.parse(val);
+          if (parsed && (parsed.fullName || parsed.avatarUrl)) return parsed;
+        }
+      }
+    }
+  } catch (e) {
+    console.error("Error reading master profile:", e);
+  }
+  return null;
+};
 
 export const useUserProfile = (user) => {
   const [profile, setProfile] = useState(() => {
+    const master = loadMasterProfile();
+    if (master) return master;
+
     const storageKey = LOCAL_STORAGE_KEY_PREFIX + (user?.uid || "guest");
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -17,7 +48,7 @@ export const useUserProfile = (user) => {
       }
     }
     return {
-      fullName: user?.displayName || "",
+      fullName: user?.displayName || "Nguyễn Huỳnh Phúc Khang",
       dob: "",
       phoneNumber: "",
       idCardNumber: "",
@@ -45,24 +76,47 @@ export const useUserProfile = (user) => {
     return LOCAL_STORAGE_KEY_PREFIX + (user?.uid || "guest");
   }, [user]);
 
-  // Sync profile from Firestore if user exists
+  // Sync profile from Firestore (user profile or public showcase)
   useEffect(() => {
+    let unsubscribe;
+
     if (!user) {
-      setIsLoadingProfile(false);
-      return;
+      // For visitors without login, listen to public_showcase profile in Firestore
+      const publicDocRef = doc(db, "public_showcase", "profile");
+      unsubscribe = onSnapshot(
+        publicDocRef,
+        (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setProfile((prev) => {
+              const merged = { ...prev, ...data };
+              localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(merged));
+              return merged;
+            });
+          }
+          setIsLoadingProfile(false);
+        },
+        (err) => {
+          console.warn("Public profile fetch warning:", err);
+          setIsLoadingProfile(false);
+        }
+      );
+      return () => {
+        if (unsubscribe) unsubscribe();
+      };
     }
 
     const storageKey = getStorageKey();
     const docRef = doc(db, `users/${user.uid}/profile`, "info");
 
-    const unsubscribe = onSnapshot(
+    unsubscribe = onSnapshot(
       docRef,
       (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data();
           setProfile((prev) => {
             const merged = {
-              fullName: data.fullName ?? user.displayName ?? "",
+              fullName: data.fullName ?? user.displayName ?? "Nguyễn Huỳnh Phúc Khang",
               dob: data.dob ?? "",
               phoneNumber: data.phoneNumber ?? "",
               idCardNumber: data.idCardNumber ?? "",
@@ -84,21 +138,30 @@ export const useUserProfile = (user) => {
               },
             };
             localStorage.setItem(storageKey, JSON.stringify(merged));
+            localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(merged));
             return merged;
           });
+
+          // Also sync to public showcase for visitors
+          try {
+            setDoc(doc(db, "public_showcase", "profile"), data, { merge: true });
+          } catch (e) {
+            console.warn("Error syncing public profile:", e);
+          }
         } else {
-          // If no doc in Firestore, use local or initial defaults
           const savedLocal = localStorage.getItem(storageKey);
           if (savedLocal) {
             try {
-              setProfile(JSON.parse(savedLocal));
+              const parsed = JSON.parse(savedLocal);
+              setProfile(parsed);
+              localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(parsed));
             } catch (err) {
               console.error("Failed to parse local profile:", err);
             }
           } else {
             setProfile((prev) => ({
               ...prev,
-              fullName: user.displayName || prev.fullName || "",
+              fullName: user.displayName || prev.fullName || "Nguyễn Huỳnh Phúc Khang",
               avatarUrl: user.photoURL || prev.avatarUrl || "",
             }));
           }
@@ -111,7 +174,9 @@ export const useUserProfile = (user) => {
       }
     );
 
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [user, getStorageKey]);
 
   // Function to save/update user profile
@@ -120,6 +185,14 @@ export const useUserProfile = (user) => {
       setProfile(updatedProfile);
       const storageKey = getStorageKey();
       localStorage.setItem(storageKey, JSON.stringify(updatedProfile));
+      localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(updatedProfile));
+
+      // Sync to public showcase doc in Firestore
+      try {
+        await setDoc(doc(db, "public_showcase", "profile"), updatedProfile, { merge: true });
+      } catch (e) {
+        console.warn("Public profile write warning:", e);
+      }
 
       // Try updating Firebase Auth profile if available
       if (auth.currentUser && !auth.currentUser.isAnonymous) {

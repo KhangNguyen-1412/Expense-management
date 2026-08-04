@@ -67,18 +67,49 @@ export const usePosts = (user) => {
     }
   }, []);
 
-  // 2. Real-time 2-way sync with Cloud Firestore
+  // 2. Real-time 2-way sync with Cloud Firestore (User Posts & Public Showcase)
   useEffect(() => {
+    let unsubscribe;
+
     if (!user) {
-      const local = loadLocalPosts();
-      setPosts(local);
-      setIsLoadingPosts(false);
-      return;
+      // Listen to public showcase posts for non-logged in visitors
+      const publicColRef = collection(db, "public_showcase/posts/items");
+      unsubscribe = onSnapshot(
+        publicColRef,
+        (snapshot) => {
+          if (!snapshot.empty) {
+            const fetchedPosts = snapshot.docs.map((docSnap) => ({
+              ...docSnap.data(),
+              id: docSnap.id,
+            }));
+
+            fetchedPosts.sort(
+              (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+            );
+
+            setPosts(fetchedPosts);
+            saveLocalPosts(fetchedPosts);
+          } else {
+            const local = loadLocalPosts();
+            if (local.length > 0) setPosts(local);
+          }
+          setIsLoadingPosts(false);
+        },
+        (err) => {
+          console.warn("Public posts listener warning:", err);
+          const local = loadLocalPosts();
+          setPosts(local);
+          setIsLoadingPosts(false);
+        }
+      );
+      return () => {
+        if (unsubscribe) unsubscribe();
+      };
     }
 
     const postsColRef = collection(db, `users/${user.uid}/posts`);
 
-    const unsubscribe = onSnapshot(
+    unsubscribe = onSnapshot(
       postsColRef,
       (snapshot) => {
         const fetchedPosts = snapshot.docs.map((docSnap) => ({
@@ -86,7 +117,6 @@ export const usePosts = (user) => {
           id: docSnap.id,
         }));
 
-        // Sort descending by createdAt
         fetchedPosts.sort(
           (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
         );
@@ -94,6 +124,17 @@ export const usePosts = (user) => {
         setPosts(fetchedPosts);
         saveLocalPosts(fetchedPosts);
         setIsLoadingPosts(false);
+
+        // Sync to public showcase collection for visitors
+        try {
+          fetchedPosts.forEach(async (p) => {
+            if (p.id) {
+              await setDoc(doc(db, "public_showcase/posts/items", p.id), p, { merge: true });
+            }
+          });
+        } catch (e) {
+          console.warn("Error syncing public posts:", e);
+        }
       },
       (error) => {
         console.error("Error listening to Firestore posts:", error);
@@ -101,7 +142,9 @@ export const usePosts = (user) => {
       }
     );
 
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [user]);
 
   // Add a new post
