@@ -1,0 +1,24 @@
+{
+  "short_name": "LifeHub",
+  "name": "LifeHub - Trợ Lý Sống & Tài Chính Cá Nhân",
+  "description": "Nền tảng quản lý toàn diện cuộc sống: Nhật ký ảnh Polaroid, tính thuế TNCN 7 bậc, quản lý ngân sách & mục tiêu tiết kiệm.",
+  "icons": [
+    {
+      "src": "/app-logo-3d.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/app-logo-3d.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#1b4332",
+  "theme_color": "#1b4332",
+  "display": "standalone",
+  "orientation": "portrait"
+}
