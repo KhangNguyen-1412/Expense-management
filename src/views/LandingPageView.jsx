@@ -380,6 +380,101 @@ export const LandingPageView = () => {
           </div>
         </section>
 
+        {/* PROFESSIONAL SKILLS & CV SHOWCASE CARD */}
+        <section className="rounded-3xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-stone-100 dark:border-stone-800 pb-4">
+            <div>
+              <span className="text-xs font-serif font-bold uppercase tracking-widest text-emerald-800 dark:text-emerald-400 block mb-1">
+                🎓 HỌC VẤN & HỒ SƠ CHUYÊN MÔN
+              </span>
+              <h3 className="text-xl sm:text-2xl font-serif font-extrabold text-stone-800 dark:text-stone-100">
+                Kỹ Năng & Kinh Nghiệm Nghề Nghiệp
+              </h3>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono text-stone-500 dark:text-stone-400">
+              <span className="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                📍 An Hữu - Đồng Tháp ➔ KTX Sư Phạm
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Column 1: Academic & Certifications */}
+            <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/70 dark:border-stone-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 flex items-center gap-1.5">
+                <span>🎓 Học Vấn & Bằng Cấp</span>
+              </h4>
+              <ul className="space-y-2 text-xs text-stone-600 dark:text-stone-300">
+                <li className="font-semibold text-stone-800 dark:text-stone-100">
+                  • ĐH Sư Phạm TP.HCM (Tốt nghiệp 06/2026)
+                </li>
+                <li className="text-[11px] text-stone-500 font-mono">
+                  Email: 4801104066@student.hcmue.edu.vn
+                </li>
+                <li className="pt-1 border-t border-stone-200/60 dark:border-stone-700/60 font-medium">
+                  • Chứng chỉ Nghiệp vụ Sư phạm cho Giảng viên
+                </li>
+                <li className="text-[11px] text-emerald-700 dark:text-emerald-400 font-bold">
+                  • Mã số BHXH: 8222360105 (VssID)
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 2: Tech Skillsets */}
+            <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/70 dark:border-stone-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400 flex items-center gap-1.5">
+                <span>💻 Kỹ Năng Công Nghệ</span>
+              </h4>
+              <div className="flex flex-wrap gap-1.5">
+                {["ReactJS", "VueJS", "PHP", "Automation Tester", "Financial Planning"].map((skill, i) => (
+                  <span key={i} className="px-2.5 py-1 rounded-xl text-xs font-bold bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-700 shadow-2xs">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+              <div className="pt-2 text-xs text-stone-500 font-serif italic">
+                Sáng tạo giải pháp phần mềm tối ưu & tự động hóa quy trình test.
+              </div>
+            </div>
+
+            {/* Column 3: Internship & Experiences */}
+            <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/70 dark:border-stone-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5">
+                <span>🏢 Lịch Sử Thực Tập</span>
+              </h4>
+              <div className="space-y-2 text-xs">
+                <div className="p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                  <span className="font-bold text-stone-800 dark:text-stone-100 block">Apps Cyclone</span>
+                  <span className="text-[11px] text-stone-500 block">Automation Engineer (2026-NAY)</span>
+                </div>
+                <div className="p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
+                  <span className="font-bold text-stone-800 dark:text-stone-100 block">TMA Solutions</span>
+                  <span className="text-[11px] text-stone-500 block">Frontend Tester (2025-2026)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Socials & Pets Pill Bar */}
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs border-t border-stone-100 dark:border-stone-800">
+            <div className="flex items-center gap-2 font-mono">
+              <span className="text-stone-500">Mạng xã hội:</span>
+              <span className="px-2.5 py-1 rounded-full bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300 font-bold border border-pink-300 dark:border-pink-800">
+                Instagram: @pkhang1412
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-stone-500 font-mono">Thú cưng chăm sóc:</span>
+              <div className="flex items-center gap-1.5 font-bold">
+                <span className="px-2 py-0.5 rounded-lg bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700">Vịt 🦆</span>
+                <span className="px-2 py-0.5 rounded-lg bg-yellow-100 dark:bg-yellow-950 text-yellow-800 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700">Bắp 🌽</span>
+                <span className="px-2 py-0.5 rounded-lg bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-300 border border-orange-300 dark:border-orange-700">Lạc 🥜</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* AUTHENTIC POLAROID GALLERY SECTION */}
         <section id="photo-gallery-section" className="space-y-6">
           {/* Section Header & View Options */}
@@ -401,6 +496,8 @@ export const LandingPageView = () => {
                   { id: "life", label: "Cuộc sống" },
                   { id: "travel", label: "Du lịch" },
                   { id: "work", label: "Công việc" },
+                  { id: "gym", label: "Gym & Fitness" },
+                  { id: "pets", label: "Thú cưng" },
                 ].map(tag => (
                   <button
                     key={tag.id}

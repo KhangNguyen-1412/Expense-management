@@ -49,24 +49,46 @@ export const useUserProfile = (user) => {
     }
     return {
       fullName: user?.displayName || "Nguyễn Huỳnh Phúc Khang",
-      dob: "",
-      phoneNumber: "",
+      dob: "2002-05-14",
+      phoneNumber: "0901234567",
       idCardNumber: "",
+      taxId: "8472910382",
+      bhxhCode: "8222360105",
+      studentId: "14520385",
+      school: "Trường Đại học Sư phạm TP.HCM",
+      studentEmail: "khangnhp@student.hcmue.edu.vn",
+      graduationDate: "Tháng 07/2026",
+      certificate: "Chứng chỉ Nghiệp vụ Sư phạm Giảng viên",
+      skills: ["ReactJS", "VueJS", "PHP", "Automation Tester", "Financial Planning"],
+      experiences: [
+        { company: "Apps Cyclone", role: "Software Engineer / Automation Tester Intern", period: "2024 - 2025" },
+        { company: "TMA Solutions", role: "Frontend Developer / Automation Tester Intern", period: "2025 - 2026" }
+      ],
+      socials: {
+        instagram: "CuongDuong54",
+        github: "https://github.com/nhpk1",
+        facebook: "https://facebook.com",
+        linkedin: "https://linkedin.com"
+      },
+      hometown: "An Hữu - Đồng Tháp",
+      residence: "KTX Sư Phạm - TP. Hồ Chí Minh",
+      pets: ["Vịt 🦆", "Bắp 🌽", "Lạc 🥜"],
+      gymGoal: "Physique & Body Fitness Transformation",
       avatarUrl: user?.photoURL || "",
       personalPhotos: [],
       itemPhotos: [],
       permanentAddress: {
-        provinceCode: "",
+        provinceCode: "87",
         wardCode: "",
-        streetDetail: "",
-        fullAddress: "",
+        streetDetail: "An Hữu",
+        fullAddress: "An Hữu, Huyện Châu Thành, Tỉnh Đồng Tháp",
       },
       temporaryAddress: {
         isSameAsPermanent: false,
-        provinceCode: "",
+        provinceCode: "79",
         wardCode: "",
-        streetDetail: "",
-        fullAddress: "",
+        streetDetail: "KTX Đại học Sư Phạm",
+        fullAddress: "KTX Đại học Sư phạm TP. Hồ Chí Minh",
       },
     };
   });

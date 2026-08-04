@@ -18,6 +18,15 @@ export const EditProfileDialog = ({
   const [dob, setDob] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [idCardNumber, setIdCardNumber] = useState("");
+  const [bhxhCode, setBhxhCode] = useState("");
+  const [taxId, setTaxId] = useState("");
+  const [studentEmail, setStudentEmail] = useState("");
+  const [graduationDate, setGraduationDate] = useState("");
+  const [certificate, setCertificate] = useState("");
+  const [skillsStr, setSkillsStr] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [petsStr, setPetsStr] = useState("");
+
   const [avatarType, setAvatarType] = useState("url"); // 'url' or 'file'
   const [avatarUrl, setAvatarUrl] = useState("");
   
@@ -51,6 +60,15 @@ export const EditProfileDialog = ({
       setDob(currentProfile.dob || "");
       setPhoneNumber(currentProfile.phoneNumber || "");
       setIdCardNumber(currentProfile.idCardNumber || "");
+      setBhxhCode(currentProfile.bhxhCode || "8222360105");
+      setTaxId(currentProfile.taxId || "8472910382");
+      setStudentEmail(currentProfile.studentEmail || "4801104066@student.hcmue.edu.vn");
+      setGraduationDate(currentProfile.graduationDate || "06/2026");
+      setCertificate(currentProfile.certificate || "Chứng chỉ Nghiệp vụ Sư phạm cho Giảng viên");
+      setSkillsStr(Array.isArray(currentProfile.skills) ? currentProfile.skills.join(", ") : "ReactJS, VueJS, PHP, Automation Tester, Financial Planning");
+      setInstagram(currentProfile.socials?.instagram || "@pkhang1412");
+      setPetsStr(Array.isArray(currentProfile.pets) ? currentProfile.pets.join(", ") : "Vịt 🦆, Bắp 🌽, Lạc 🥜");
+
       setAvatarUrl(currentProfile.avatarUrl || "");
       setPersonalPhotos(currentProfile.personalPhotos || []);
       setItemPhotos(currentProfile.itemPhotos || []);
@@ -207,11 +225,26 @@ export const EditProfileDialog = ({
     const finalTempWard = isSameAddress ? permWard : tempWard;
     const finalTempStreet = isSameAddress ? permStreet : tempStreet;
 
+    const parsedSkills = skillsStr.split(",").map(s => s.trim()).filter(Boolean);
+    const parsedPets = petsStr.split(",").map(p => p.trim()).filter(Boolean);
+
     const updatedProfile = {
+      ...currentProfile,
       fullName: fullName.trim(),
       dob: dob,
       phoneNumber: phoneNumber.trim(),
       idCardNumber: idCardNumber.trim(),
+      bhxhCode: bhxhCode.trim(),
+      taxId: taxId.trim(),
+      studentEmail: studentEmail.trim(),
+      graduationDate: graduationDate.trim(),
+      certificate: certificate.trim(),
+      skills: parsedSkills.length > 0 ? parsedSkills : ["ReactJS", "VueJS", "PHP", "Automation Tester"],
+      pets: parsedPets.length > 0 ? parsedPets : ["Vịt 🦆", "Bắp 🌽", "Lạc 🥜"],
+      socials: {
+        ...(currentProfile?.socials || {}),
+        instagram: instagram.trim() || "@pkhang1412",
+      },
       avatarUrl: convertGoogleDriveUrl(avatarUrl),
       permanentAddress: {
         provinceCode: updatedPermProvince,
@@ -407,6 +440,129 @@ export const EditProfileDialog = ({
                     onChange={(e) => setIdCardNumber(e.target.value)}
                     placeholder="Ví dụ: 001098765432"
                     className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <hr className="border-slate-100 dark:border-slate-800" />
+
+            {/* Section 2: Digital Identity & Professional Profile */}
+            <div className="space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                <span>2. Hồ sơ Chuyên môn & Định danh Kỹ thuật</span>
+              </h4>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* BHXH Code */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Mã số BHXH (VssID)
+                  </label>
+                  <input
+                    type="text"
+                    value={bhxhCode}
+                    onChange={(e) => setBhxhCode(e.target.value)}
+                    placeholder="Ví dụ: 8222360105"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
+                  />
+                </div>
+
+                {/* Tax ID */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Mã số thuế cá nhân (eTax)
+                  </label>
+                  <input
+                    type="text"
+                    value={taxId}
+                    onChange={(e) => setTaxId(e.target.value)}
+                    placeholder="Ví dụ: 8472910382"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
+                  />
+                </div>
+
+                {/* Student Email & MSSV */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Email Sinh viên / MSSV
+                  </label>
+                  <input
+                    type="email"
+                    value={studentEmail}
+                    onChange={(e) => setStudentEmail(e.target.value)}
+                    placeholder="4801104066@student.hcmue.edu.vn"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
+                  />
+                </div>
+
+                {/* Graduation Date */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Tháng Tốt nghiệp dự kiến
+                  </label>
+                  <input
+                    type="text"
+                    value={graduationDate}
+                    onChange={(e) => setGraduationDate(e.target.value)}
+                    placeholder="06/2026"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                {/* Certificate */}
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Bằng cấp & Chứng chỉ Sư phạm
+                  </label>
+                  <input
+                    type="text"
+                    value={certificate}
+                    onChange={(e) => setCertificate(e.target.value)}
+                    placeholder="Chứng chỉ Nghiệp vụ Sư phạm cho Giảng viên"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                {/* Skills */}
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Bộ kỹ năng lập trình (phân cách bởi dấu phẩy)
+                  </label>
+                  <input
+                    type="text"
+                    value={skillsStr}
+                    onChange={(e) => setSkillsStr(e.target.value)}
+                    placeholder="ReactJS, VueJS, PHP, Automation Tester, Financial Planning"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                {/* Instagram Handle */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Instagram Handle
+                  </label>
+                  <input
+                    type="text"
+                    value={instagram}
+                    onChange={(e) => setInstagram(e.target.value)}
+                    placeholder="@pkhang1412"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                {/* Pets List */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Thú cưng (phân cách bởi dấu phẩy)
+                  </label>
+                  <input
+                    type="text"
+                    value={petsStr}
+                    onChange={(e) => setPetsStr(e.target.value)}
+                    placeholder="Vịt 🦆, Bắp 🌽, Lạc 🥜"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
               </div>

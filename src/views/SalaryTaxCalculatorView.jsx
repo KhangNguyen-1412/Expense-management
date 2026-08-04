@@ -360,6 +360,22 @@ export const SalaryTaxCalculatorView = () => {
                 </p>
               </div>
 
+              {/* Verified Digital Identity Badges */}
+              <div className="p-3 bg-emerald-50/60 dark:bg-emerald-950/40 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/60 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-bold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                  <span>Định danh Mã số Thuế & BHXH VssID:</span>
+                </div>
+                <div className="flex items-center gap-2 font-mono text-[11px]">
+                  <span className="px-2.5 py-1 rounded-lg bg-white dark:bg-stone-800 border border-emerald-300 dark:border-emerald-700 text-stone-800 dark:text-stone-200 shadow-2xs">
+                    Mã BHXH: <strong className="text-emerald-800 dark:text-emerald-400">8222360105</strong>
+                  </span>
+                  <span className="px-2.5 py-1 rounded-lg bg-white dark:bg-stone-800 border border-teal-300 dark:border-teal-700 text-stone-800 dark:text-stone-200 shadow-2xs">
+                    MST: <strong className="text-teal-700 dark:text-teal-400">eTax Verified</strong>
+                  </span>
+                </div>
+              </div>
+
               {/* Labor Contract Switcher */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-stone-100/40 dark:bg-stone-800/30 rounded-xl border border-stone-200/50 dark:border-stone-700/50">
                 <div>

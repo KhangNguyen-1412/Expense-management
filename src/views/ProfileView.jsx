@@ -288,8 +288,104 @@ export const ProfileView = () => {
                   <span>Địa chỉ tạm trú (Sau sáp nhập):</span>
                 </div>
                 <span className="font-semibold text-slate-800 dark:text-slate-200 block text-xs leading-relaxed">
-                  {profile?.temporaryAddress?.fullAddress || "Chưa thiết lập"}
+                  {profile?.temporaryAddress?.fullAddress || "KTX Đại học Sư phạm TP. Hồ Chí Minh"}
                 </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Quản lý Hồ sơ Chuyên môn, Định danh & Kỹ năng (Digital ID & CV Management) */}
+          <div className="page-card p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/80 pb-3">
+              <h3 className="page-card-title flex items-center gap-2">
+                <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <span>Hồ sơ Chuyên môn & Định danh Kỹ thuật</span>
+              </h3>
+              <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold">
+                Verified Profile
+              </span>
+            </div>
+
+            {/* Sub-grid 1: Digital IDs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1">
+                <span className="text-slate-400 block font-medium">Mã số BHXH (VssID):</span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">
+                  {profile?.bhxhCode || "8222360105"}
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1">
+                <span className="text-slate-400 block font-medium">Mã số thuế cá nhân (eTax):</span>
+                <span className="font-bold text-teal-600 dark:text-teal-400 font-mono text-sm">
+                  {profile?.taxId || "8472910382"}
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1">
+                <span className="text-slate-400 block font-medium">MSSV & Email Sinh viên:</span>
+                <span className="font-bold text-slate-800 dark:text-slate-100 font-mono text-[11px] block">
+                  {profile?.studentEmail || "4801104066@student.hcmue.edu.vn"}
+                </span>
+                <span className="text-[10px] text-stone-500 block">ĐH Sư Phạm TP.HCM (Tốt nghiệp 06/2026)</span>
+              </div>
+
+              <div className="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1">
+                <span className="text-slate-400 block font-medium">Bằng cấp / Chứng chỉ:</span>
+                <span className="font-bold text-slate-800 dark:text-slate-100 text-xs block">
+                  {profile?.certificate || "Nghiệp vụ Sư phạm Giảng viên"}
+                </span>
+              </div>
+            </div>
+
+            {/* Sub-grid 2: Tech Skills & Experience */}
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-700/80 space-y-3">
+              <div>
+                <span className="text-xs text-slate-400 font-medium block mb-1.5">Bộ kỹ năng lập trình & chuyên môn:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {(profile?.skills || ["ReactJS", "VueJS", "PHP", "Automation Tester", "Financial Planning"]).map((skill, idx) => (
+                    <span key={idx} className="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <span className="text-xs text-slate-400 font-medium block mb-1.5">Lịch sử thực tập & công việc:</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-700/40 border border-slate-200/60 dark:border-slate-700">
+                    <span className="font-bold text-slate-800 dark:text-slate-100 block">Apps Cyclone</span>
+                    <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium block">Automation Engineer (2026-NAY)</span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-700/40 border border-slate-200/60 dark:border-slate-700">
+                    <span className="font-bold text-slate-800 dark:text-slate-100 block">TMA Solutions</span>
+                    <span className="text-[11px] text-teal-700 dark:text-teal-400 font-medium block">Frontend Tester (2025-2026)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sub-grid 3: Socials & Pets */}
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-700/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Instagram:</span>
+                <span className="px-2.5 py-1 rounded-full bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300 font-bold border border-pink-300 dark:border-pink-800">
+                  @pkhang1412
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Thú cưng:</span>
+                <div className="flex items-center gap-1 font-bold">
+                  {(profile?.pets || ["Vịt 🦆", "Bắp 🌽", "Lạc 🥜"]).map((pet, i) => (
+                    <span key={i} className="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 text-[11px]">
+                      {pet}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
