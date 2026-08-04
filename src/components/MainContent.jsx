@@ -10,6 +10,7 @@ import { SettingsView } from "../views/SettingsView";
 import { SavingsGoalsView } from "../views/SavingsGoalsView";
 import { SalaryTaxCalculatorView } from "../views/SalaryTaxCalculatorView";
 import { ProfileView } from "../views/ProfileView";
+import { PhotoFeedView } from "../views/PhotoFeedView";
 
 export const MainContent = () => {
   const {
@@ -78,6 +79,8 @@ export const MainContent = () => {
         return <SettingsView />;
       case "profile":
         return <ProfileView />;
+      case "feed":
+        return <PhotoFeedView />;
       case "add":
         return (
           <AddTransactionView

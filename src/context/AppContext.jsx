@@ -21,6 +21,8 @@ import { useTransactions } from "../hooks/useTransactions";
 import { useGeminiAnalysis } from "../hooks/useGeminiAnalysis";
 import { useGoals } from "../hooks/useGoals";
 import { usePushNotifications } from "../hooks/usePushNotifications";
+import { useUserProfile } from "../hooks/useUserProfile";
+import { usePosts } from "../hooks/usePosts";
 
 // 1. Tạo Context
 const AppContext = createContext();
@@ -95,9 +97,20 @@ export const AppProvider = ({ children }) => {
     console.log(`Toast: [${type}] ${message}`);
   }, []);
 
+  const [driveFolderUrl, setDriveFolderUrlState] = useState(
+    () => localStorage.getItem("user_drive_folder_url") || ""
+  );
+
+  const setDriveFolderUrl = useCallback((url) => {
+    setDriveFolderUrlState(url);
+    localStorage.setItem("user_drive_folder_url", url);
+  }, []);
+
   // Các custom hook chính
   const { theme, toggleTheme } = useTheme();
   const { user, authError, isLoadingAuth } = useAuth();
+  const { profile, isLoadingProfile, updateUserProfile } = useUserProfile(user);
+  const { posts, isLoadingPosts, addPost, deletePost, toggleLikePost } = usePosts(user);
   const {
     transactions,
     budgets,
@@ -398,6 +411,9 @@ export const AppProvider = ({ children }) => {
     // State & Data
     activeView,
     user,
+    profile,
+    driveFolderUrl,
+    posts,
     transactions,
     budgets,
     goals,
@@ -412,6 +428,8 @@ export const AppProvider = ({ children }) => {
     // Loading & Error States
     authError,
     isLoadingAuth,
+    isLoadingProfile,
+    isLoadingPosts,
     isLoadingData,
     isLoadingAnalysis,
     analysisError,
@@ -427,6 +445,11 @@ export const AppProvider = ({ children }) => {
     isAppLocked,
     // Functions
     setActiveView,
+    updateUserProfile,
+    setDriveFolderUrl,
+    addPost,
+    deletePost,
+    toggleLikePost,
     toggleTheme,
     handleAnalyzeSpending,
     handleAddTransaction,

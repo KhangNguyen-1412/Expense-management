@@ -46,6 +46,11 @@ export const VIEW_URL_MAP = {
     title: "Trang cá nhân & Tài khoản | Trợ lý Quản lý Chi tiêu",
     description: "Xem thông tin tài khoản cá nhân, trạng thái đồng bộ Google Cloud và tổng quan tài chính.",
   },
+  feed: {
+    slug: "/nhat-ky-anh",
+    title: "Nhật ký Ảnh & Mạng xã hội Khoảnh khắc | Trợ lý Chi tiêu",
+    description: "Lưu giữ nhật ký khoảnh khắc, hình ảnh và bài viết kết nối với kho Google Drive cá nhân.",
+  },
 };
 
 // Map slug to viewId
