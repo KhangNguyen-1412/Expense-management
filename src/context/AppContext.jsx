@@ -107,7 +107,7 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   // Các custom hook chính
-  const { theme, toggleTheme } = useTheme();
+  const { theme, isDarkMode, isAutoTime, toggleDarkMode, toggleAutoTime, toggleTheme } = useTheme();
   const { user, authError, isLoadingAuth } = useAuth();
   const { profile, isLoadingProfile, updateUserProfile } = useUserProfile(user);
   const { posts, isLoadingPosts, addPost, deletePost, toggleLikePost, updatePostLayout } = usePosts(user);
@@ -435,6 +435,10 @@ export const AppProvider = ({ children }) => {
     analysisError,
     // UI Settings
     theme,
+    isDarkMode,
+    isAutoTime,
+    toggleDarkMode,
+    toggleAutoTime,
     isPushSupported,
     isPushSubscribed,
     isSignOutConfirmOpen,

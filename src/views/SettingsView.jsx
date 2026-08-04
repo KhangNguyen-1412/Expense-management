@@ -12,19 +12,24 @@ const SettingRow = ({ title, description, children }) => (
   </div>
 );
 
-const ToggleSwitch = ({ checked, onChange }) => (
+const ToggleSwitch = ({ checked, onChange, disabled = false }) => (
   <button
     type="button"
     role="switch"
     aria-checked={checked}
-    onClick={onChange}
+    disabled={disabled}
+    onClick={disabled ? undefined : onChange}
     className={`toggle-switch ${
-      checked ? "toggle-switch-on" : "toggle-switch-off"
+      disabled
+        ? "opacity-40 cursor-not-allowed bg-slate-300 dark:bg-slate-700"
+        : checked
+        ? "toggle-switch-on"
+        : "toggle-switch-off"
     }`}
   >
     <span
       className={`toggle-knob ${
-        checked ? "toggle-knob-on" : "toggle-knob-off"
+        checked && !disabled ? "toggle-knob-on" : "toggle-knob-off"
       }`}
     />
   </button>
@@ -33,7 +38,10 @@ const ToggleSwitch = ({ checked, onChange }) => (
 export const SettingsView = () => {
   const {
     theme,
-    toggleTheme,
+    isDarkMode,
+    isAutoTime,
+    toggleDarkMode,
+    toggleAutoTime,
     driveFolderUrl,
     setDriveFolderUrl,
     isPushSupported,
@@ -64,26 +72,46 @@ export const SettingsView = () => {
         </p>
       </div>
 
-      {/* Section 1: Appearance */}
+      {/* Section 1: Appearance & Time-Based Themes */}
       <div className="section-card">
         <div className="section-header">
           <div className="section-icon bg-indigo-100 dark:bg-indigo-900/30">
             <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           </div>
           <div>
-            <h3 className="section-title">Giao diện & Hiển thị</h3>
-            <p className="section-desc">Tùy chỉnh chế độ sáng tối</p>
+            <h3 className="section-title">Giao diện & Chế độ Theo Thời Gian</h3>
+            <p className="section-desc">Quản lý giao diện tối cố định và tự động chuyển đổi theo Bình Minh & Hoàng Hôn</p>
           </div>
         </div>
 
         <SettingRow
-          title="Giao diện tối"
-          description="Bật chế độ nền tối để giảm mỏi mắt khi sử dụng ban đêm."
+          title="Giao diện tối cố định"
+          description="Bật chế độ nền tối cố định để giảm mỏi mắt khi sử dụng ban đêm."
         >
-          <ToggleSwitch checked={theme === "dark"} onChange={toggleTheme} />
+          <ToggleSwitch checked={isDarkMode} onChange={toggleDarkMode} />
         </SettingRow>
+
+        <div className="border-t border-slate-200/60 dark:border-slate-700/60" />
+
+        <SettingRow
+          title="Tự động đổi giao diện theo thời gian"
+          description="Tự động chuyển màu giao diện theo thời gian thực (Bình minh: 05:00 - 08:00, Ban ngày: 08:00 - 17:00, Hoàng hôn: 17:00 - 19:00, Ban đêm: 19:00 - 05:00)."
+        >
+          <ToggleSwitch
+            checked={isAutoTime && !isDarkMode}
+            onChange={toggleAutoTime}
+            disabled={isDarkMode}
+          />
+        </SettingRow>
+
+        {isDarkMode && (
+          <div className="mx-5 mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 text-amber-800 dark:text-amber-300 text-xs flex items-center gap-2">
+            <span className="text-base">⚠️</span>
+            <span>Chức năng <b>Tự động đổi giao diện theo thời gian</b> đã bị vô hiệu hóa do bạn đang bật cố định <b>Giao diện tối</b>.</span>
+          </div>
+        )}
       </div>
 
       {/* Section: Google Drive Photo Storage */}

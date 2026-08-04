@@ -207,3 +207,47 @@
 .view-title {
   @apply text-2xl font-bold text-slate-800 dark:text-slate-200;
 }
+
+/* ==========================================================================
+   TIME-BASED THEME PALETTES — Sunset & Sunrise
+   ========================================================================== */
+
+/* 🌅 Sunset (Hoàng Hôn) Theme */
+html[data-theme="sunset"] body {
+  background: linear-gradient(135deg, #161224 0%, #291a34 40%, #1e172e 100%) !important;
+  color: #f5f3ff !important;
+}
+
+html[data-theme="sunset"] .page-header,
+html[data-theme="sunset"] .page-card,
+html[data-theme="sunset"] .section-card,
+html[data-theme="sunset"] .kpi-card {
+  background: rgba(38, 30, 54, 0.92) !important;
+  border-color: rgba(236, 72, 153, 0.25) !important;
+  box-shadow: 0 4px 20px -2px rgba(219, 39, 119, 0.15) !important;
+}
+
+html[data-theme="sunset"] .section-header {
+  background: rgba(53, 42, 75, 0.6) !important;
+  border-color: rgba(236, 72, 153, 0.2) !important;
+}
+
+/* 🌄 Sunrise (Bình Minh) Theme */
+html[data-theme="sunrise"] body {
+  background: linear-gradient(135deg, #fffbeb 0%, #fff1f2 40%, #f0f9ff 100%) !important;
+  color: #1e293b !important;
+}
+
+html[data-theme="sunrise"] .page-header,
+html[data-theme="sunrise"] .page-card,
+html[data-theme="sunrise"] .section-card,
+html[data-theme="sunrise"] .kpi-card {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(249, 115, 22, 0.25) !important;
+  box-shadow: 0 4px 20px -2px rgba(249, 115, 22, 0.1) !important;
+}
+
+html[data-theme="sunrise"] .section-header {
+  background: rgba(255, 247, 237, 0.8) !important;
+  border-color: rgba(249, 115, 22, 0.2) !important;
+}
