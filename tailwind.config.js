@@ -7,7 +7,12 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}", // Quét tất cả các file trong thư mục src
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['"Playfair Display"', 'Georgia', 'Cambria', 'serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'Cambria', 'serif'],
+      },
+    },
   },
   // **MỚI: Thêm plugin typography**
   plugins: [
