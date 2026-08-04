@@ -70,7 +70,8 @@ export const usePosts = (user) => {
       const newPost = {
         id: newId,
         caption: postData.caption || "",
-        imageUrl: postData.imageUrl || "",
+        imageUrl: postData.imageUrls?.[0] || postData.imageUrl || "",
+        imageUrls: postData.imageUrls || (postData.imageUrl ? [postData.imageUrl] : []),
         location: postData.location || "",
         likesCount: 0,
         isLiked: false,

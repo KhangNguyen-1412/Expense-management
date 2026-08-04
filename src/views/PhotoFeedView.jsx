@@ -31,9 +31,12 @@ export const PhotoFeedView = () => {
   };
 
   const [caption, setCaption] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrls, setImageUrls] = useState([]);
+  const [newUrlInput, setNewUrlInput] = useState("");
   const [location, setLocation] = useState("");
   const [postDate, setPostDate] = useState(getTodayString);
+
+  // Lightbox modal state: { photos: [], currentIndex: 0, title: "" }
   const [previewPhoto, setPreviewPhoto] = useState(null);
 
   const isGuest = !user || user.isAnonymous;
@@ -58,6 +61,26 @@ export const PhotoFeedView = () => {
     return posts.filter((p) => p.createdAt && p.createdAt.startsWith(selectedFilterDate));
   }, [posts, selectedFilterDate]);
 
+  // Helper: Extract all photo URLs from a post
+  const getPostPhotos = (post) => {
+    if (post.imageUrls && Array.isArray(post.imageUrls) && post.imageUrls.length > 0) {
+      return post.imageUrls.map(convertGoogleDriveUrl);
+    }
+    if (post.imageUrl && post.imageUrl.trim()) {
+      return [convertGoogleDriveUrl(post.imageUrl)];
+    }
+    return [];
+  };
+
+  // Open Lightbox at specific index
+  const openLightbox = (photos, index = 0, title = "") => {
+    setPreviewPhoto({
+      photos,
+      currentIndex: index,
+      title: title || "Hình ảnh bài viết",
+    });
+  };
+
   // Calculate calendar grid for current month/year
   const calendarData = useMemo(() => {
     const year = calendarViewDate.getFullYear();
@@ -78,7 +101,10 @@ export const PhotoFeedView = () => {
       const dayStr = String(day).padStart(2, "0");
       const dateKey = `${year}-${monthStr}-${dayStr}`;
       const dayPosts = postsByDate[dateKey] || [];
-      const firstPhotoPost = dayPosts.find((p) => p.imageUrl && p.imageUrl.trim().length > 0);
+      const firstPhotoPost = dayPosts.find((p) => {
+        const photos = getPostPhotos(p);
+        return photos.length > 0;
+      });
 
       days.push({
         day,
@@ -104,28 +130,48 @@ export const PhotoFeedView = () => {
     setCalendarViewDate(new Date());
   };
 
-  // Handle image upload from file
-  const handleFileUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  // Add a photo URL to draft post
+  const handleAddUrlPhoto = () => {
+    if (!newUrlInput.trim()) return;
+    const converted = convertGoogleDriveUrl(newUrlInput.trim());
+    setImageUrls((prev) => [...prev, converted]);
+    setNewUrlInput("");
+    if (showToast) showToast("Đã thêm ảnh vào bài đăng!", "success");
+  };
 
-    if (file.size > 2 * 1024 * 1024) {
-      if (showToast) showToast("Dung lượng ảnh tối đa 2MB", "error");
-      return;
+  // Handle image upload from multiple files
+  const handleMultipleFileUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    let added = 0;
+    files.forEach((file) => {
+      if (file.size > 2 * 1024 * 1024) {
+        if (showToast) showToast(`File ${file.name} vượt quá 2MB`, "error");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrls((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+      added++;
+    });
+
+    if (added > 0 && showToast) {
+      showToast(`Đã tải lên ${added} ảnh!`, "success");
     }
+  };
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageUrl(reader.result);
-      if (showToast) showToast("Đã chọn ảnh thành công!", "success");
-    };
-    reader.readAsDataURL(file);
+  // Remove photo from draft post
+  const handleRemoveDraftPhoto = (index) => {
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleCreatePost = (e) => {
     e.preventDefault();
-    if (!caption.trim() && !imageUrl.trim()) {
-      if (showToast) showToast("Vui lòng nhập nội dung hoặc chọn ảnh để đăng bài", "error");
+    if (!caption.trim() && imageUrls.length === 0) {
+      if (showToast) showToast("Vui lòng nhập nội dung hoặc thêm ít nhất 1 ảnh để đăng bài", "error");
       return;
     }
 
@@ -136,7 +182,7 @@ export const PhotoFeedView = () => {
 
     addPost({
       caption: caption.trim(),
-      imageUrl: convertGoogleDriveUrl(imageUrl),
+      imageUrls: imageUrls,
       location: location.trim(),
       createdAt: customCreatedAt,
       authorName,
@@ -144,7 +190,8 @@ export const PhotoFeedView = () => {
     });
 
     setCaption("");
-    setImageUrl("");
+    setImageUrls([]);
+    setNewUrlInput("");
     setLocation("");
     setPostDate(getTodayString());
     setIsCreateOpen(false);
@@ -171,6 +218,109 @@ export const PhotoFeedView = () => {
     if (!dateStr) return "";
     const parts = dateStr.split("-");
     return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  };
+
+  // Render photo gallery for a post in feed
+  const renderPostPhotosGrid = (post) => {
+    const photos = getPostPhotos(post);
+    if (photos.length === 0) return null;
+
+    if (photos.length === 1) {
+      return (
+        <div
+          onClick={() => openLightbox(photos, 0, post.caption)}
+          className="relative cursor-pointer bg-slate-950 flex items-center justify-center overflow-hidden max-h-[500px]"
+        >
+          <img
+            src={photos[0]}
+            alt="Post visual"
+            className="w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
+            onError={(e) => {
+              e.target.src = "https://via.placeholder.com/600x400?text=L%E1%BB%97i+t%E1%BA%A3i+%E1%BA%A3nh";
+            }}
+          />
+        </div>
+      );
+    }
+
+    if (photos.length === 2) {
+      return (
+        <div className="grid grid-cols-2 gap-1 bg-slate-950 overflow-hidden">
+          {photos.map((url, idx) => (
+            <div
+              key={idx}
+              onClick={() => openLightbox(photos, idx, post.caption)}
+              className="relative h-64 sm:h-80 overflow-hidden bg-slate-900 group cursor-pointer"
+            >
+              <img
+                src={url}
+                alt={`Photo ${idx + 1}`}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    if (photos.length === 3) {
+      return (
+        <div className="grid grid-cols-3 gap-1 bg-slate-950 overflow-hidden">
+          <div
+            onClick={() => openLightbox(photos, 0, post.caption)}
+            className="col-span-2 h-64 sm:h-80 overflow-hidden bg-slate-900 group relative cursor-pointer"
+          >
+            <img
+              src={photos[0]}
+              alt="Photo 1"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div className="grid grid-rows-2 gap-1 h-64 sm:h-80">
+            {photos.slice(1, 3).map((url, idx) => (
+              <div
+                key={idx}
+                onClick={() => openLightbox(photos, idx + 1, post.caption)}
+                className="relative overflow-hidden bg-slate-900 group cursor-pointer"
+              >
+                <img
+                  src={url}
+                  alt={`Photo ${idx + 2}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // 4 or more photos (2x2 grid layout)
+    const displayPhotos = photos.slice(0, 4);
+    const extraCount = photos.length - 4;
+
+    return (
+      <div className="grid grid-cols-2 gap-1 bg-slate-950 overflow-hidden">
+        {displayPhotos.map((url, idx) => (
+          <div
+            key={idx}
+            onClick={() => openLightbox(photos, idx, post.caption)}
+            className="relative h-44 sm:h-56 overflow-hidden bg-slate-900 group cursor-pointer"
+          >
+            <img
+              src={url}
+              alt={`Photo ${idx + 1}`}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            {idx === 3 && extraCount > 0 && (
+              <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center text-white font-extrabold text-2xl group-hover:bg-slate-950/60 transition-colors">
+                +{extraCount}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -246,7 +396,7 @@ export const PhotoFeedView = () => {
               }}
             />
             <div className="flex-1 bg-slate-100 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-xs text-slate-400 font-medium">
-              {authorName} ơi, bạn đang nghĩ gì? Dán link Google Drive hoặc chọn ảnh...
+              {authorName} ơi, bạn đang nghĩ gì? Dán link Google Drive hoặc chọn nhiều ảnh...
             </div>
           </div>
 
@@ -306,7 +456,6 @@ export const PhotoFeedView = () => {
         {/* Feed Posts List */}
         {!isLoadingPosts && displayedPosts.length > 0 ? (
           displayedPosts.map((post) => {
-            const finalPhotoUrl = convertGoogleDriveUrl(post.imageUrl);
             return (
               <motion.div
                 key={post.id}
@@ -381,22 +530,8 @@ export const PhotoFeedView = () => {
                   </div>
                 )}
 
-                {/* Post Image */}
-                {finalPhotoUrl && (
-                  <div
-                    onClick={() => setPreviewPhoto({ title: post.caption || "Ảnh bài viết", url: finalPhotoUrl })}
-                    className="relative cursor-pointer bg-slate-950 flex items-center justify-center overflow-hidden max-h-[500px]"
-                  >
-                    <img
-                      src={finalPhotoUrl}
-                      alt="Post visual"
-                      className="w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
-                      onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/600x400?text=L%E1%BB%97i+t%E1%BA%A3i+%E1%BA%A3nh+Google+Drive";
-                      }}
-                    />
-                  </div>
-                )}
+                {/* Multi-Photo Grid Renderer */}
+                {renderPostPhotosGrid(post)}
 
                 {/* Post Footer Actions */}
                 <div className="p-3 bg-slate-50/50 dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -591,9 +726,8 @@ export const PhotoFeedView = () => {
                     }
 
                     const hasPosts = item.dayPosts.length > 0;
-                    const firstPhotoUrl = item.firstPhotoPost
-                      ? convertGoogleDriveUrl(item.firstPhotoPost.imageUrl)
-                      : null;
+                    const photos = item.firstPhotoPost ? getPostPhotos(item.firstPhotoPost) : [];
+                    const firstPhotoUrl = photos.length > 0 ? photos[0] : null;
                     const isSelected = selectedFilterDate === item.dateKey;
 
                     return (
@@ -691,10 +825,10 @@ export const PhotoFeedView = () => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 my-8 overflow-hidden flex flex-col"
+              className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 my-8 overflow-hidden flex flex-col max-h-[90vh]"
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 shrink-0">
                 <div className="flex items-center gap-3">
                   <img
                     src={authorAvatar}
@@ -717,7 +851,7 @@ export const PhotoFeedView = () => {
               </div>
 
               {/* Form Body */}
-              <form onSubmit={handleCreatePost} className="p-6 space-y-4">
+              <form onSubmit={handleCreatePost} className="p-6 space-y-4 overflow-y-auto flex-1">
                 {/* Caption input */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
@@ -727,7 +861,7 @@ export const PhotoFeedView = () => {
                     <span>Cảm nghĩ / Nội dung bài viết</span>
                   </label>
                   <textarea
-                    rows={4}
+                    rows={3}
                     value={caption}
                     onChange={(e) => setCaption(e.target.value)}
                     placeholder="Viết cảm nghĩ, nhật ký khoảnh khắc hôm nay..."
@@ -793,14 +927,14 @@ export const PhotoFeedView = () => {
                   />
                 </div>
 
-                {/* Photo Input (Google Drive Link / Upload) */}
-                <div className="space-y-2">
+                {/* Photo Input (Multi-photo Google Drive Link / Upload) */}
+                <div className="space-y-2.5 pt-1">
                   <div className="flex items-center justify-between">
                     <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                       <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                      <span>Hình ảnh bài viết</span>
+                      <span>Hình ảnh bài viết (Đã chọn {imageUrls.length} ảnh)</span>
                     </label>
 
                     {driveFolderUrl && (
@@ -818,46 +952,70 @@ export const PhotoFeedView = () => {
                     )}
                   </div>
 
-                  <input
-                    type="url"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="Dán Link Google Drive hoặc Link ảnh trực tiếp..."
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  {/* Add URL field + button */}
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="url"
+                      value={newUrlInput}
+                      onChange={(e) => setNewUrlInput(e.target.value)}
+                      placeholder="Dán Link Google Drive hoặc Link ảnh..."
+                      className="flex-1 px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddUrlPhoto}
+                      className="px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-all shrink-0 shadow-sm"
+                    >
+                      + Thêm ảnh
+                    </button>
+                  </div>
 
+                  {/* Upload multiple files */}
                   <div className="flex items-center justify-between pt-1">
                     <label className="cursor-pointer text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
                       <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                       </svg>
-                      <span>Hoặc tải ảnh từ thiết bị</span>
+                      <span>Hoặc chọn nhiều ảnh từ thiết bị</span>
                       <input
                         type="file"
+                        multiple
                         accept="image/*"
-                        onChange={handleFileUpload}
+                        onChange={handleMultipleFileUpload}
                         className="hidden"
                       />
                     </label>
                   </div>
 
-                  {imageUrl && (
-                    <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 max-h-48 bg-slate-950 flex items-center justify-center">
-                      <img
-                        src={convertGoogleDriveUrl(imageUrl)}
-                        alt="Preview"
-                        className="max-h-48 w-auto object-contain"
-                        onError={(e) => {
-                          e.target.src = "https://via.placeholder.com/300x150?text=L%E1%BB%97i+link+anh";
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setImageUrl("")}
-                        className="absolute top-2 right-2 bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md"
-                      >
-                        ✕
-                      </button>
+                  {/* Preview Selected Photos list grid */}
+                  {imageUrls.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 pt-2">
+                      {imageUrls.map((url, idx) => (
+                        <div
+                          key={idx}
+                          className="relative group rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950 h-24 flex items-center justify-center shadow-xs"
+                        >
+                          <img
+                            src={convertGoogleDriveUrl(url)}
+                            alt={`Preview ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src = "https://via.placeholder.com/150?text=L%E1%BB%97i+anh";
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveDraftPhoto(idx)}
+                            className="absolute top-1 right-1 bg-rose-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] shadow-md opacity-90 hover:opacity-100 transition-opacity"
+                            title="Xóa ảnh này"
+                          >
+                            ✕
+                          </button>
+                          <span className="absolute bottom-1 left-1 bg-slate-900/80 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">
+                            #{idx + 1}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -884,37 +1042,87 @@ export const PhotoFeedView = () => {
         )}
       </AnimatePresence>
 
-      {/* Lightbox Preview Modal */}
+      {/* Lightbox Carousel Preview Modal */}
       <AnimatePresence>
         {previewPhoto && (
           <div
             onClick={() => setPreviewPhoto(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-3xl max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col"
+              className="relative max-w-4xl w-full max-h-[90vh] bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col"
             >
-              <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 dark:border-slate-800">
-                <span className="font-bold text-sm text-slate-800 dark:text-slate-100 truncate max-w-md">
+              {/* Top Bar */}
+              <div className="flex items-center justify-between px-6 py-3 border-b border-slate-800 bg-slate-950/60">
+                <span className="font-bold text-xs sm:text-sm text-slate-100 truncate max-w-md">
                   {previewPhoto.title}
                 </span>
-                <button
-                  onClick={() => setPreviewPhoto(null)}
-                  className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl"
-                >
-                  ✕
-                </button>
+
+                <div className="flex items-center gap-4">
+                  {previewPhoto.photos && previewPhoto.photos.length > 1 && (
+                    <span className="text-xs font-bold text-slate-400">
+                      {previewPhoto.currentIndex + 1} / {previewPhoto.photos.length}
+                    </span>
+                  )}
+                  <button
+                    onClick={() => setPreviewPhoto(null)}
+                    className="p-1.5 text-slate-400 hover:text-white rounded-xl transition-colors"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
-              <div className="p-2 flex items-center justify-center bg-slate-950 min-h-[300px]">
+
+              {/* Main Image Viewer */}
+              <div className="relative p-2 flex items-center justify-center bg-slate-950 min-h-[350px] sm:min-h-[500px]">
+                {/* Previous Button */}
+                {previewPhoto.photos && previewPhoto.photos.length > 1 && previewPhoto.currentIndex > 0 && (
+                  <button
+                    onClick={() =>
+                      setPreviewPhoto((prev) => ({
+                        ...prev,
+                        currentIndex: prev.currentIndex - 1,
+                      }))
+                    }
+                    className="absolute left-4 z-10 w-10 h-10 rounded-full bg-slate-900/80 text-white font-bold flex items-center justify-center border border-slate-700 shadow-lg hover:bg-slate-800 transition-all text-xl"
+                  >
+                    ‹
+                  </button>
+                )}
+
                 <img
-                  src={convertGoogleDriveUrl(previewPhoto.url)}
+                  src={
+                    previewPhoto.photos
+                      ? previewPhoto.photos[previewPhoto.currentIndex]
+                      : previewPhoto.url
+                  }
                   alt={previewPhoto.title}
-                  className="max-h-[70vh] w-auto object-contain rounded-xl"
+                  className="max-h-[75vh] w-auto object-contain rounded-xl"
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/600x400?text=L%E1%BB%97i+t%E1%BA%A3i+anh";
+                  }}
                 />
+
+                {/* Next Button */}
+                {previewPhoto.photos &&
+                  previewPhoto.photos.length > 1 &&
+                  previewPhoto.currentIndex < previewPhoto.photos.length - 1 && (
+                    <button
+                      onClick={() =>
+                        setPreviewPhoto((prev) => ({
+                          ...prev,
+                          currentIndex: prev.currentIndex + 1,
+                        }))
+                      }
+                      className="absolute right-4 z-10 w-10 h-10 rounded-full bg-slate-900/80 text-white font-bold flex items-center justify-center border border-slate-700 shadow-lg hover:bg-slate-800 transition-all text-xl"
+                    >
+                      ›
+                    </button>
+                  )}
               </div>
             </motion.div>
           </div>
