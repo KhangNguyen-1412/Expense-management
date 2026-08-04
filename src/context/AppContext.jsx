@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import { doc, setDoc } from "firebase/firestore";
-import { db, handleSignOut as firebaseSignOut } from "../config/firebase";
+import { db, handleGoogleSignIn, handleSignOut as firebaseSignOut } from "../config/firebase";
 import { formatCurrency as formatCurrencyUtil } from "../utils/formatCurrency";
 import { SPENDING_CATEGORIES } from "../constants/categories";
 import { getViewFromPath, VIEW_URL_MAP, updateSEOMeta } from "../utils/seo";
@@ -465,6 +465,7 @@ export const AppProvider = ({ children }) => {
     handleDeleteTransaction,
     handleSetBudgets,
     handleSignOut,
+    handleGoogleSignIn,
     handleStartEdit,
     handleUpdateTransaction,
     handleMergeTransactions,

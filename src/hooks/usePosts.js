@@ -67,80 +67,50 @@ export const usePosts = (user) => {
     }
   }, []);
 
-  // 2. Real-time 2-way sync with Cloud Firestore (User Posts & Public Showcase)
+  // 2. Real-time 2-way sync with Cloud Firestore
   useEffect(() => {
     let unsubscribe;
 
-    if (!user) {
-      // Listen to public showcase posts for non-logged in visitors
-      const publicColRef = collection(db, "public_showcase/posts/items");
+    // For unauthenticated or anonymous users, rely on LocalStorage master cache to prevent permission-denied errors
+    if (!user || user.isAnonymous) {
+      const local = loadLocalPosts();
+      setPosts(local);
+      setIsLoadingPosts(false);
+      return;
+    }
+
+    const postsColRef = collection(db, `users/${user.uid}/posts`);
+
+    try {
       unsubscribe = onSnapshot(
-        publicColRef,
+        postsColRef,
         (snapshot) => {
-          if (!snapshot.empty) {
-            const fetchedPosts = snapshot.docs.map((docSnap) => ({
-              ...docSnap.data(),
-              id: docSnap.id,
-            }));
+          const fetchedPosts = snapshot.docs.map((docSnap) => ({
+            ...docSnap.data(),
+            id: docSnap.id,
+          }));
 
-            fetchedPosts.sort(
-              (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
-            );
+          fetchedPosts.sort(
+            (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+          );
 
-            setPosts(fetchedPosts);
-            saveLocalPosts(fetchedPosts);
-          } else {
-            const local = loadLocalPosts();
-            if (local.length > 0) setPosts(local);
-          }
+          setPosts(fetchedPosts);
+          saveLocalPosts(fetchedPosts);
           setIsLoadingPosts(false);
         },
-        (err) => {
-          console.warn("Public posts listener warning:", err);
+        (error) => {
+          console.warn("Firestore posts listener fallback:", error?.message || error);
           const local = loadLocalPosts();
           setPosts(local);
           setIsLoadingPosts(false);
         }
       );
-      return () => {
-        if (unsubscribe) unsubscribe();
-      };
+    } catch (e) {
+      console.warn("Firestore posts subscription error:", e);
+      const local = loadLocalPosts();
+      setPosts(local);
+      setIsLoadingPosts(false);
     }
-
-    const postsColRef = collection(db, `users/${user.uid}/posts`);
-
-    unsubscribe = onSnapshot(
-      postsColRef,
-      (snapshot) => {
-        const fetchedPosts = snapshot.docs.map((docSnap) => ({
-          ...docSnap.data(),
-          id: docSnap.id,
-        }));
-
-        fetchedPosts.sort(
-          (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
-        );
-
-        setPosts(fetchedPosts);
-        saveLocalPosts(fetchedPosts);
-        setIsLoadingPosts(false);
-
-        // Sync to public showcase collection for visitors
-        try {
-          fetchedPosts.forEach(async (p) => {
-            if (p.id) {
-              await setDoc(doc(db, "public_showcase/posts/items", p.id), p, { merge: true });
-            }
-          });
-        } catch (e) {
-          console.warn("Error syncing public posts:", e);
-        }
-      },
-      (error) => {
-        console.error("Error listening to Firestore posts:", error);
-        setIsLoadingPosts(false);
-      }
-    );
 
     return () => {
       if (unsubscribe) unsubscribe();

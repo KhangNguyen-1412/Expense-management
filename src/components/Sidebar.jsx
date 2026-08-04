@@ -7,6 +7,7 @@ export const Sidebar = () => {
     activeView,
     setActiveView,
     user,
+    profile,
     theme,
     toggleTheme,
     handleSignOut,
@@ -90,106 +91,53 @@ export const Sidebar = () => {
 
       {user && (
         <div className="shrink-0 mb-4">
-          {/* Desktop User/Login Info */}
+          {/* Desktop User Info Card */}
           <div className="hidden lg:block">
-            {user.isAnonymous ? (
-              <button
-                onClick={handleGoogleSignIn}
-                className="w-full bg-emerald-800 text-white py-2.5 px-3 rounded-xl hover:bg-emerald-900 transition-colors text-xs font-semibold flex items-center justify-center gap-2 tracking-wide"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 48 48">
-                  <path
-                    fill="#EA4335"
-                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-                  ></path>
-                  <path
-                    fill="#4285F4"
-                    d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
-                  ></path>
-                  <path
-                    fill="#FBBC05"
-                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
-                  ></path>
-                  <path
-                    fill="#34A853"
-                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-                  ></path>
-                  <path fill="none" d="M0 0h48v48H0z"></path>
-                </svg>
-                Đăng nhập Google
-              </button>
-            ) : (
-              <button
-                onClick={() => setActiveView("landing")}
-                className={`w-full group p-2.5 rounded-2xl border transition-all duration-200 flex flex-col items-center gap-1.5 cursor-pointer text-center ${
-                  activeView === "landing"
-                    ? "bg-emerald-100/70 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 shadow-sm"
-                    : "bg-stone-100/60 dark:bg-stone-800/60 border-stone-200/80 dark:border-stone-700/70 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:border-emerald-300 dark:hover:border-emerald-800"
-                }`}
-                title="Xem Trang giới thiệu (Landing Page)"
-              >
-                <div className="relative">
-                  <img
-                    src={user.photoURL}
-                    alt="Avatar"
-                    className="w-11 h-11 rounded-full border-2 border-emerald-700 group-hover:scale-105 transition-transform duration-200 shadow-sm"
-                  />
-                  <span className="absolute -bottom-0.5 -right-0.5 bg-emerald-800 text-white p-1 rounded-full text-[9px] shadow-sm flex items-center justify-center">
-                    <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </span>
-                </div>
-                <div className="min-w-0 w-full">
-                  <p className="text-xs font-bold text-stone-800 dark:text-stone-100 truncate">
-                    {user.displayName}
-                  </p>
-                </div>
-              </button>
-            )}
+            <button
+              onClick={() => setActiveView("landing")}
+              className={`w-full group p-2.5 rounded-2xl border transition-all duration-200 flex flex-col items-center gap-1.5 cursor-pointer text-center ${
+                activeView === "landing"
+                  ? "bg-emerald-100/70 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 shadow-sm"
+                  : "bg-stone-100/60 dark:bg-stone-800/60 border-stone-200/80 dark:border-stone-700/70 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:border-emerald-300 dark:hover:border-emerald-800"
+              }`}
+              title="Xem Trang giới thiệu (Landing Page)"
+            >
+              <div className="relative">
+                <img
+                  src={profile?.avatarUrl || user.photoURL || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
+                  alt="Avatar"
+                  className="w-11 h-11 rounded-full border-2 border-emerald-700 group-hover:scale-105 transition-transform duration-200 shadow-sm object-cover"
+                />
+                <span className="absolute -bottom-0.5 -right-0.5 bg-emerald-800 text-white p-1 rounded-full text-[9px] shadow-sm flex items-center justify-center">
+                  <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </span>
+              </div>
+              <div className="min-w-0 w-full">
+                <p className="text-xs font-bold text-stone-800 dark:text-stone-100 truncate">
+                  {profile?.fullName || user.displayName || "Nguyễn Huỳnh Phúc Khang"}
+                </p>
+                <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">
+                  Trang Giới Thiệu ↗
+                </p>
+              </div>
+            </button>
           </div>
 
-          {/* Mobile User/Login Info */}
+          {/* Mobile User Profile Button */}
           <div className="lg:hidden">
-            {user.isAnonymous ? (
-              <button
-                onClick={handleGoogleSignIn}
-                className="p-2.5 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700"
-                aria-label="Đăng nhập Google"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 48 48">
-                  <path
-                    fill="#EA4335"
-                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-                  ></path>
-                  <path
-                    fill="#4285F4"
-                    d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
-                  ></path>
-                  <path
-                    fill="#FBBC05"
-                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
-                  ></path>
-                  <path
-                    fill="#34A853"
-                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-                  ></path>
-                  <path fill="none" d="M0 0h48v48H0z"></path>
-                </svg>
-              </button>
-            ) : (
-              <button
-                onClick={() => setActiveView("landing")}
-                className="relative group p-0.5 rounded-full border-2 border-emerald-700 hover:scale-105 transition-transform cursor-pointer"
-                title="Trang giới thiệu"
-              >
-                <img
-                  src={user.photoURL}
-                  alt="Avatar"
-                  className="w-9 h-9 rounded-full"
-                />
-              </button>
-            )}
+            <button
+              onClick={() => setActiveView("landing")}
+              className="relative group p-0.5 rounded-full border-2 border-emerald-700 hover:scale-105 transition-transform cursor-pointer"
+              title="Trang giới thiệu"
+            >
+              <img
+                src={profile?.avatarUrl || user.photoURL || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
+                alt="Avatar"
+                className="w-9 h-9 rounded-full object-cover"
+              />
+            </button>
           </div>
         </div>
       )}

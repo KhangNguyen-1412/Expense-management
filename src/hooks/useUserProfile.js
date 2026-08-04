@@ -80,99 +80,85 @@ export const useUserProfile = (user) => {
   useEffect(() => {
     let unsubscribe;
 
-    if (!user) {
-      // For visitors without login, listen to public_showcase profile in Firestore
-      const publicDocRef = doc(db, "public_showcase", "profile");
-      unsubscribe = onSnapshot(
-        publicDocRef,
-        (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            setProfile((prev) => {
-              const merged = { ...prev, ...data };
-              localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(merged));
-              return merged;
-            });
-          }
-          setIsLoadingProfile(false);
-        },
-        (err) => {
-          console.warn("Public profile fetch warning:", err);
-          setIsLoadingProfile(false);
-        }
-      );
-      return () => {
-        if (unsubscribe) unsubscribe();
-      };
+    // For unauthenticated or anonymous users, rely on Master LocalStorage cache to avoid permission errors
+    if (!user || user.isAnonymous) {
+      const master = loadMasterProfile();
+      if (master) setProfile(master);
+      setIsLoadingProfile(false);
+      return;
     }
 
     const storageKey = getStorageKey();
     const docRef = doc(db, `users/${user.uid}/profile`, "info");
 
-    unsubscribe = onSnapshot(
-      docRef,
-      (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setProfile((prev) => {
-            const merged = {
-              fullName: data.fullName ?? user.displayName ?? "Nguyễn Huỳnh Phúc Khang",
-              dob: data.dob ?? "",
-              phoneNumber: data.phoneNumber ?? "",
-              idCardNumber: data.idCardNumber ?? "",
-              avatarUrl: data.avatarUrl ?? user.photoURL ?? "",
-              personalPhotos: data.personalPhotos || [],
-              itemPhotos: data.itemPhotos || [],
-              permanentAddress: data.permanentAddress || {
-                provinceCode: "",
-                wardCode: "",
-                streetDetail: "",
-                fullAddress: "",
-              },
-              temporaryAddress: data.temporaryAddress || {
-                isSameAsPermanent: false,
-                provinceCode: "",
-                wardCode: "",
-                streetDetail: "",
-                fullAddress: "",
-              },
-            };
-            localStorage.setItem(storageKey, JSON.stringify(merged));
-            localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(merged));
-            return merged;
-          });
-
-          // Also sync to public showcase for visitors
-          try {
-            setDoc(doc(db, "public_showcase", "profile"), data, { merge: true });
-          } catch (e) {
-            console.warn("Error syncing public profile:", e);
+    try {
+      unsubscribe = onSnapshot(
+        docRef,
+        (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setProfile((prev) => {
+              const merged = {
+                fullName: data.fullName ?? user.displayName ?? "Nguyễn Huỳnh Phúc Khang",
+                dob: data.dob ?? "",
+                phoneNumber: data.phoneNumber ?? "",
+                idCardNumber: data.idCardNumber ?? "",
+                avatarUrl: data.avatarUrl ?? user.photoURL ?? "",
+                personalPhotos: data.personalPhotos || [],
+                itemPhotos: data.itemPhotos || [],
+                permanentAddress: data.permanentAddress || {
+                  provinceCode: "",
+                  wardCode: "",
+                  streetDetail: "",
+                  fullAddress: "",
+                },
+                temporaryAddress: data.temporaryAddress || {
+                  isSameAsPermanent: false,
+                  provinceCode: "",
+                  wardCode: "",
+                  streetDetail: "",
+                  fullAddress: "",
+                },
+              };
+              localStorage.setItem(storageKey, JSON.stringify(merged));
+              localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(merged));
+              return merged;
+            });
+          } else {
+            const savedLocal = localStorage.getItem(storageKey);
+            if (savedLocal) {
+              try {
+                const parsed = JSON.parse(savedLocal);
+                setProfile(parsed);
+                localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(parsed));
+              } catch (err) {
+                console.error("Failed to parse local profile:", err);
+              }
+            } else {
+              setProfile((prev) => ({
+                ...prev,
+                fullName: user.displayName || prev.fullName || "Nguyễn Huỳnh Phúc Khang",
+                avatarUrl: user.photoURL || prev.avatarUrl || "",
+              }));
+            }
           }
-        } else {
-          const savedLocal = localStorage.getItem(storageKey);
+          setIsLoadingProfile(false);
+        },
+        (error) => {
+          console.warn("Firestore profile snapshot fallback:", error?.message || error);
+          const savedLocal = localStorage.getItem(storageKey) || localStorage.getItem(MASTER_PROFILE_STORAGE_KEY);
           if (savedLocal) {
             try {
-              const parsed = JSON.parse(savedLocal);
-              setProfile(parsed);
-              localStorage.setItem(MASTER_PROFILE_STORAGE_KEY, JSON.stringify(parsed));
-            } catch (err) {
-              console.error("Failed to parse local profile:", err);
-            }
-          } else {
-            setProfile((prev) => ({
-              ...prev,
-              fullName: user.displayName || prev.fullName || "Nguyễn Huỳnh Phúc Khang",
-              avatarUrl: user.photoURL || prev.avatarUrl || "",
-            }));
+              setProfile(JSON.parse(savedLocal));
+            } catch (e) {}
           }
+          setIsLoadingProfile(false);
         }
-        setIsLoadingProfile(false);
-      },
-      (error) => {
-        console.error("Error listening to profile updates:", error);
-        setIsLoadingProfile(false);
-      }
-    );
+      );
+    } catch (e) {
+      console.warn("Firestore profile subscription error:", e);
+      setIsLoadingProfile(false);
+    }
 
     return () => {
       if (unsubscribe) unsubscribe();
