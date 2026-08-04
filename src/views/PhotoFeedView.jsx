@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppContext } from "../context/AppContext";
-import { convertGoogleDriveUrl } from "../utils/imageUtils";
+import { convertGoogleDriveUrl, compressImage } from "../utils/imageUtils";
 
 export const PhotoFeedView = () => {
   const {
@@ -140,27 +140,26 @@ export const PhotoFeedView = () => {
     if (showToast) showToast("Đã thêm ảnh vào bài đăng!", "success");
   };
 
-  // Handle image upload from multiple files
-  const handleMultipleFileUpload = (e) => {
+  // Handle image upload from multiple files with auto-compression
+  const handleMultipleFileUpload = async (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    let added = 0;
-    files.forEach((file) => {
-      if (file.size > 2 * 1024 * 1024) {
-        if (showToast) showToast(`File ${file.name} vượt quá 2MB`, "error");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImageUrls((prev) => [...prev, reader.result]);
-      };
-      reader.readAsDataURL(file);
-      added++;
-    });
+    if (showToast) showToast("Đang tối ưu và nén dung lượng ảnh...", "info");
 
-    if (added > 0 && showToast) {
-      showToast(`Đã tải lên ${added} ảnh!`, "success");
+    let count = 0;
+    for (const file of files) {
+      try {
+        const compressedDataUrl = await compressImage(file, 1000, 0.7);
+        setImageUrls((prev) => [...prev, compressedDataUrl]);
+        count++;
+      } catch (err) {
+        console.error("Lỗi khi nén ảnh:", err);
+      }
+    }
+
+    if (count > 0 && showToast) {
+      showToast(`Đã tối ưu và thêm ${count} ảnh thành công!`, "success");
     }
   };
 
@@ -1050,14 +1049,14 @@ export const PhotoFeedView = () => {
                   </div>
                 </div>
 
-                {/* Photo Input (Multi-photo Google Drive Link / Upload) */}
-                <div className="space-y-2.5 pt-1">
+                {/* Photo Input (Google Drive Link / Upload) */}
+                <div className="space-y-3 pt-1">
                   <div className="flex items-center justify-between">
                     <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                       <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                      <span>Hình ảnh bài viết (Đã chọn {imageUrls.length} ảnh)</span>
+                      <span>Hình ảnh bài viết Google Drive (Đã chọn {imageUrls.length} ảnh)</span>
                     </label>
 
                     {driveFolderUrl && (
@@ -1065,7 +1064,7 @@ export const PhotoFeedView = () => {
                         href={driveFolderUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
+                        className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -1075,19 +1074,34 @@ export const PhotoFeedView = () => {
                     )}
                   </div>
 
+                  {/* Google Drive Guide Box */}
+                  <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-xs space-y-1 text-emerald-800 dark:text-emerald-300">
+                    <div className="font-bold flex items-center gap-1.5">
+                      <svg className="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Cách lưu ảnh trên Google Drive:</span>
+                    </div>
+                    <ol className="list-decimal list-inside text-[11px] space-y-0.5 opacity-90 pl-1 leading-relaxed">
+                      <li>Bấm <b>"Mở Kho Google Drive"</b> ở trên để xem kho ảnh.</li>
+                      <li>Tải ảnh lên Google Drive ➔ Bấm <b>Chia sẻ</b> ➔ Chọn <i>'Bất kỳ ai có liên kết'</i>.</li>
+                      <li><b>Sao chép liên kết</b> và Dán vào ô bên dưới ➔ Bấm <b>+ Thêm ảnh</b>.</li>
+                    </ol>
+                  </div>
+
                   {/* Add URL field + button */}
                   <div className="flex items-center gap-2">
                     <input
                       type="url"
                       value={newUrlInput}
                       onChange={(e) => setNewUrlInput(e.target.value)}
-                      placeholder="Dán Link Google Drive hoặc Link ảnh..."
-                      className="flex-1 px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Dán Link Google Drive (hoặc Link ảnh trực tiếp)..."
+                      className="flex-1 px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                     <button
                       type="button"
                       onClick={handleAddUrlPhoto}
-                      className="px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-all shrink-0 shadow-sm"
+                      className="px-3.5 py-2.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shrink-0 shadow-sm"
                     >
                       + Thêm ảnh
                     </button>

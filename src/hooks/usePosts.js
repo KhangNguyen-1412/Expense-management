@@ -8,47 +8,70 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
+import { compressImage } from "../utils/imageUtils";
 
-const LOCAL_STORAGE_POSTS_KEY = "user_posts_feed_v2_";
+const MASTER_POSTS_STORAGE_KEY = "master_photo_feed_posts_v4";
+
+// Helper: Safely load posts from master local storage
+const loadLocalPosts = () => {
+  if (typeof window === "undefined" || !window.localStorage) return [];
+  try {
+    const masterSaved = localStorage.getItem(MASTER_POSTS_STORAGE_KEY);
+    if (masterSaved) {
+      const parsed = JSON.parse(masterSaved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+
+    // Fallback: check legacy keys
+    const fallbackSaved =
+      localStorage.getItem("user_posts_feed_v3_guest") ||
+      localStorage.getItem("user_posts_feed_v2_guest");
+    if (fallbackSaved) {
+      const parsed = JSON.parse(fallbackSaved);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {
+    console.error("Error reading local posts:", e);
+  }
+  return [];
+};
+
+// Helper: Safely write posts to LocalStorage without quota overflow
+const saveLocalPosts = (data) => {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  try {
+    localStorage.setItem(MASTER_POSTS_STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn("LocalStorage quota exceeded, pruning old posts...", e);
+    try {
+      const pruned = data.slice(0, 25);
+      localStorage.setItem(MASTER_POSTS_STORAGE_KEY, JSON.stringify(pruned));
+    } catch (err) {
+      console.error("Failed to write to LocalStorage:", err);
+    }
+  }
+};
 
 export const usePosts = (user) => {
-  const getStorageKey = useCallback(() => {
-    return LOCAL_STORAGE_POSTS_KEY + (user?.uid || "guest");
-  }, [user]);
-
-  const [posts, setPosts] = useState(() => {
-    const storageKey = LOCAL_STORAGE_POSTS_KEY + (user?.uid || "guest");
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error("Error parsing local posts", e);
-      }
-    }
-    // Fallback: check guest storage
-    const guestSaved = localStorage.getItem(LOCAL_STORAGE_POSTS_KEY + "guest");
-    if (guestSaved) {
-      try {
-        return JSON.parse(guestSaved);
-      } catch (e) {}
-    }
-    return [];
-  });
-
+  // Simple, safe initial state
+  const [posts, setPosts] = useState([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
-  // Sync posts from Firestore if user exists
+  // 1. Initial synchronous load from LocalStorage on mount
   useEffect(() => {
-    const storageKey = getStorageKey();
+    const local = loadLocalPosts();
+    if (local.length > 0) {
+      setPosts(local);
+    }
+  }, []);
 
+  // 2. Sync posts from Firestore if user exists
+  useEffect(() => {
     if (!user) {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
-        try {
-          setPosts(JSON.parse(saved));
-        } catch (e) {}
-      }
+      const local = loadLocalPosts();
+      setPosts(local);
       setIsLoadingPosts(false);
       return;
     }
@@ -63,50 +86,58 @@ export const usePosts = (user) => {
           id: docSnap.id,
         }));
 
-        // Sort descending by createdAt date
-        fetchedPosts.sort(
+        // Always read current local posts to avoid wiping offline/draft posts
+        const currentLocal = loadLocalPosts();
+        const firestoreMap = new Map(fetchedPosts.map((p) => [p.id, p]));
+
+        const merged = [...fetchedPosts];
+
+        // Retain any local post not yet synced to Firestore
+        currentLocal.forEach((localPost) => {
+          if (!firestoreMap.has(localPost.id)) {
+            merged.push(localPost);
+          }
+        });
+
+        // Sort descending by createdAt
+        merged.sort(
           (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
         );
 
-        setPosts((prev) => {
-          // Merge with any offline/local posts not yet in Firestore
-          const firestoreMap = new Map(fetchedPosts.map((p) => [p.id, p]));
-          const merged = [...fetchedPosts];
-
-          prev.forEach((localPost) => {
-            if (!firestoreMap.has(localPost.id)) {
-              merged.push(localPost);
-            }
-          });
-
-          merged.sort(
-            (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
-          );
-
-          localStorage.setItem(storageKey, JSON.stringify(merged));
-          return merged;
-        });
-
+        setPosts(merged);
+        saveLocalPosts(merged);
         setIsLoadingPosts(false);
       },
       (error) => {
-        console.error("Error listening to posts updates:", error);
+        console.error("Error listening to Firestore posts:", error);
         setIsLoadingPosts(false);
       }
     );
 
     return () => unsubscribe();
-  }, [user, getStorageKey]);
+  }, [user]);
 
   // Add a new post
   const addPost = useCallback(
     async (postData) => {
       const newId = `post_${Date.now()}`;
+
+      // Compress all images to prevent Firestore 1MB document limit error
+      let compressedImages = [];
+      if (postData.imageUrls && Array.isArray(postData.imageUrls) && postData.imageUrls.length > 0) {
+        compressedImages = await Promise.all(
+          postData.imageUrls.map((img) => compressImage(img, 800, 0.6))
+        );
+      } else if (postData.imageUrl) {
+        const compressed = await compressImage(postData.imageUrl, 800, 0.6);
+        compressedImages = [compressed];
+      }
+
       const newPost = {
         id: newId,
         caption: postData.caption || "",
-        imageUrl: postData.imageUrls?.[0] || postData.imageUrl || "",
-        imageUrls: postData.imageUrls || (postData.imageUrl ? [postData.imageUrl] : []),
+        imageUrl: compressedImages[0] || "",
+        imageUrls: compressedImages,
         location: postData.location || "",
         layoutStyle: postData.layoutStyle || "frame",
         likesCount: 0,
@@ -116,34 +147,32 @@ export const usePosts = (user) => {
         authorAvatar: postData.authorAvatar || user?.photoURL || "",
       };
 
-      const storageKey = getStorageKey();
-
+      // 1. Immediately update React State & Master LocalStorage synchronously
       setPosts((prev) => {
         const updated = [newPost, ...prev.filter((p) => p.id !== newId)];
-        localStorage.setItem(storageKey, JSON.stringify(updated));
+        saveLocalPosts(updated);
         return updated;
       });
 
+      // 2. Async save to Cloud Firestore if logged in
       if (user) {
         try {
           const docRef = doc(db, `users/${user.uid}/posts`, newId);
           await setDoc(docRef, newPost);
         } catch (err) {
-          console.error("Failed to add post to Firestore:", err);
+          console.error("Failed to save post to Firestore:", err);
         }
       }
     },
-    [user, getStorageKey]
+    [user]
   );
 
   // Delete a post
   const deletePost = useCallback(
     async (postId) => {
-      const storageKey = getStorageKey();
-
       setPosts((prev) => {
         const updated = prev.filter((p) => p.id !== postId);
-        localStorage.setItem(storageKey, JSON.stringify(updated));
+        saveLocalPosts(updated);
         return updated;
       });
 
@@ -156,14 +185,13 @@ export const usePosts = (user) => {
         }
       }
     },
-    [user, getStorageKey]
+    [user]
   );
 
   // Toggle Like on a post
   const toggleLikePost = useCallback(
     async (postId) => {
       let updatedPost = null;
-      const storageKey = getStorageKey();
 
       setPosts((prev) => {
         const updated = prev.map((p) => {
@@ -176,7 +204,7 @@ export const usePosts = (user) => {
           return p;
         });
 
-        localStorage.setItem(storageKey, JSON.stringify(updated));
+        saveLocalPosts(updated);
         return updated;
       });
 
@@ -192,7 +220,7 @@ export const usePosts = (user) => {
         }
       }
     },
-    [user, getStorageKey]
+    [user]
   );
 
   return { posts, isLoadingPosts, addPost, deletePost, toggleLikePost };
