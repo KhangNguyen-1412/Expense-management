@@ -268,28 +268,44 @@ export const LandingPageView = () => {
               </p>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3.5">
+              <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-4">
+                {/* Button 1: Xem Thư Viện Polaroid */}
                 <button
                   onClick={() => {
                     const el = document.getElementById("photo-gallery-section");
                     if (el) el.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="px-6 py-3 rounded-2xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center gap-2"
+                  className="group relative px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl hover:shadow-emerald-900/30 border border-emerald-600/40 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
                 >
-                  <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <div className="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <span className="font-bold text-sm sm:text-base tracking-wide whitespace-nowrap">
+                    Xem Thư Viện Polaroid
+                  </span>
+                  <svg className="w-4 h-4 text-emerald-200 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
                   </svg>
-                  <span>Xem Thư Viện Polaroid</span>
                 </button>
 
+                {/* Button 2: Vào Giao Diện Quản Lý */}
                 <button
                   onClick={() => setActiveView("dashboard")}
-                  className="px-6 py-3 rounded-2xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700 font-bold text-xs sm:text-sm transition-all flex items-center gap-2"
+                  className="group relative px-6 py-3.5 rounded-2xl bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700/90 text-stone-800 dark:text-stone-100 shadow-md hover:shadow-lg border border-stone-300/80 dark:border-stone-700/80 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
                 >
-                  <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  <div className="w-8 h-8 rounded-xl bg-stone-200/80 dark:bg-stone-700/80 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <svg className="w-4.5 h-4.5 text-stone-700 dark:text-stone-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                  </div>
+                  <span className="font-bold text-sm sm:text-base tracking-wide whitespace-nowrap">
+                    Vào Giao Diện Quản Lý
+                  </span>
+                  <svg className="w-4 h-4 text-stone-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
-                  <span>Vào Giao Diện Quản Lý</span>
                 </button>
               </div>
             </div>
@@ -657,7 +673,7 @@ export const LandingPageView = () => {
         <section className="relative rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-950 text-white border border-emerald-800/60 shadow-xl text-center space-y-6">
           <div className="max-w-2xl mx-auto space-y-3">
             <h3 className="text-2xl sm:text-4xl font-serif font-extrabold text-emerald-400">
-              Trợ Lý Quản Lý Chi Tiêu Cá Nhân
+              LifeHub - Trợ Lý Sống & Tài Chính Cá Nhân
             </h3>
             <p className="text-xs sm:text-sm text-stone-300 font-light leading-relaxed">
               Theo dõi số dư tài khoản, tự động tính toán thuế TNCN 7 bậc, định giá phòng trọ và thiết lập mục tiêu tiết kiệm dễ dàng.

@@ -72,15 +72,20 @@ export const Sidebar = () => {
 
   return (
     <aside className="hidden lg:flex w-64 h-screen sticky top-0 bg-stone-50 dark:bg-stone-900 border-r border-stone-200/60 dark:border-stone-800 flex-shrink-0 p-5 flex-col items-stretch shadow-md dark:shadow-none transition-all duration-300 overflow-y-auto z-20">
-      <div className="flex items-center gap-2.5 mb-4 shrink-0 cursor-pointer" onClick={() => setActiveView("dashboard")}>
+      <div className="flex items-center gap-3 mb-5 shrink-0 cursor-pointer" onClick={() => setActiveView("dashboard")}>
         <img
           src="/app-logo-3d.png"
-          alt="Trợ lý Chi tiêu Logo"
+          alt="LifeHub Logo"
           className="w-10 h-10 rounded-xl shadow-md object-contain hover:scale-105 transition-transform"
         />
-        <h1 className="text-xl font-serif font-extrabold text-emerald-800 dark:text-emerald-400 hidden lg:block tracking-tight">
-          Trợ lý Chi tiêu
-        </h1>
+        <div className="hidden lg:block">
+          <h1 className="text-xl font-serif font-extrabold text-emerald-800 dark:text-emerald-400 tracking-tight leading-none">
+            LifeHub
+          </h1>
+          <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 tracking-wider uppercase block mt-0.5">
+            Sống & Tài Chính
+          </span>
+        </div>
       </div>
 
       {user && (
