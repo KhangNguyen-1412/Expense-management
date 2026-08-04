@@ -231,57 +231,52 @@ export const PhotoFeedView = () => {
 
     const style = post.layoutStyle || "frame";
 
-    // 1. Dạng Cột (Vertical Column Layout)
+    // 1. Dạng Cột (Triển Lãm Tranh Nghệ Thuật - Museum Art Gallery Exhibition Layout)
     if (style === "column") {
+      const isGrid = photos.length <= 3;
       return (
-        <div className="flex flex-col gap-1.5 bg-slate-950 p-2 overflow-hidden">
-          {photos.map((url, idx) => (
-            <div
-              key={idx}
-              onClick={() => openLightbox(photos, idx, post.caption)}
-              className="relative w-full max-h-[500px] overflow-hidden bg-slate-900 rounded-xl cursor-pointer group flex items-center justify-center"
-            >
-              <img
-                src={url}
-                alt={`Photo ${idx + 1}`}
-                className="w-full h-auto object-contain max-h-[500px] group-hover:scale-[1.01] transition-transform duration-300"
-              />
-              {photos.length > 1 && (
-                <span className="absolute top-2 right-2 bg-slate-900/80 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full backdrop-blur-xs shadow-md">
-                  {idx + 1} / {photos.length}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    }
+        <div className="relative bg-neutral-950 p-4 sm:p-6 border-t border-b border-neutral-800/80 overflow-hidden rounded-b-2xl">
+          {/* Museum Overhead Spotlight Glow */}
+          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-amber-400/15 via-amber-400/5 to-transparent pointer-events-none" />
 
-    // 2. Dạng Cổ điển (Vintage Polaroid Layout)
-    if (style === "classic") {
-      return (
-        <div className="p-4 sm:p-6 bg-gradient-to-b from-amber-50/50 to-orange-50/30 dark:from-slate-950/90 dark:to-slate-900/80 border-t border-b border-amber-200/40 dark:border-slate-800">
-          <div className={`grid gap-5 ${photos.length === 1 ? "grid-cols-1 max-w-sm mx-auto" : "grid-cols-1 sm:grid-cols-2"}`}>
+          <div
+            className={
+              isGrid
+                ? `grid gap-6 ${
+                    photos.length === 1
+                      ? "grid-cols-1 max-w-lg mx-auto"
+                      : photos.length === 2
+                      ? "grid-cols-2"
+                      : "grid-cols-3"
+                  }`
+                : "flex flex-row gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-amber-600/40 snap-x snap-mandatory"
+            }
+          >
             {photos.map((url, idx) => (
               <div
                 key={idx}
                 onClick={() => openLightbox(photos, idx, post.caption)}
-                className={`bg-white dark:bg-slate-900 p-3 pt-3.5 pb-6 rounded-lg shadow-md hover:shadow-xl border border-slate-200/90 dark:border-slate-800 cursor-pointer transform ${
-                  idx % 2 === 0 ? "-rotate-1 hover:rotate-0" : "rotate-1 hover:rotate-0"
-                } transition-all duration-300 relative group`}
+                className={`relative group cursor-pointer transition-all duration-300 transform hover:-translate-y-1.5 ${
+                  !isGrid ? "shrink-0 w-64 sm:w-80 snap-center" : "w-full"
+                }`}
               >
-                {/* Washi Tape Accent */}
-                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-14 h-5 bg-amber-200/80 dark:bg-amber-700/50 backdrop-blur-xs rotate-2 shadow-xs rounded-xs border border-amber-300/40 pointer-events-none z-10" />
+                {/* Museum Framed Artwork Container */}
+                <div className="bg-stone-900 border-[6px] border-amber-900/60 dark:border-stone-800 p-3 sm:p-4 rounded-lg shadow-2xl shadow-black/80 flex flex-col items-center">
+                  {/* Inner Picture Matting (Pass-partout) */}
+                  <div className="w-full bg-stone-100 dark:bg-stone-950 p-2 sm:p-3 rounded-xs border border-stone-300 dark:border-stone-800 shadow-inner flex items-center justify-center min-h-[220px] max-h-[360px]">
+                    <img
+                      src={url}
+                      alt={`Artwork ${idx + 1}`}
+                      className="w-full h-auto object-contain max-h-[340px] shadow-sm group-hover:scale-[1.02] transition-transform duration-300 rounded-xs"
+                    />
+                  </div>
 
-                <div className="overflow-hidden rounded-xs bg-slate-950 max-h-[340px] flex items-center justify-center">
-                  <img
-                    src={url}
-                    alt={`Classic photo ${idx + 1}`}
-                    className="w-full h-auto object-cover max-h-[340px] sepia-[0.12] contrast-[1.02] group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="mt-2.5 text-center text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 tracking-widest uppercase">
-                  ✦ MEMORY #{idx + 1} ✦
+                  {/* Brass Museum Plaque Tag */}
+                  <div className="mt-3 px-3 py-1 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 text-stone-900 rounded border border-amber-400/80 shadow-md font-serif text-[10px] font-extrabold tracking-widest uppercase flex items-center gap-1.5 shrink-0">
+                    <span className="text-[8px] opacity-70">✦</span>
+                    <span>TÁC PHẨM #{idx + 1}</span>
+                    <span className="text-[8px] opacity-70">✦</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -290,19 +285,52 @@ export const PhotoFeedView = () => {
       );
     }
 
-    // 3. Dạng Khung / Lưới (Modern Grid Frame Layout - Default)
+    // 2. Dạng Cổ điển (Vintage Polaroid Layout)
+    if (style === "classic") {
+      return (
+        <div className="p-4 sm:p-6 bg-gradient-to-b from-amber-50/50 to-orange-50/30 dark:from-slate-950/90 dark:to-slate-900/80 border-t border-b border-amber-200/40 dark:border-slate-800">
+          <div className={`grid gap-6 ${photos.length === 1 ? "grid-cols-1 max-w-md mx-auto" : "grid-cols-1 sm:grid-cols-2"}`}>
+            {photos.map((url, idx) => (
+              <div
+                key={idx}
+                onClick={() => openLightbox(photos, idx, post.caption)}
+                className={`bg-white dark:bg-slate-900 p-3 pt-4 pb-6 rounded-xl shadow-lg hover:shadow-2xl border border-slate-200/90 dark:border-slate-800 cursor-pointer transform ${
+                  idx % 2 === 0 ? "-rotate-1 hover:rotate-0" : "rotate-1 hover:rotate-0"
+                } transition-all duration-300 relative group`}
+              >
+                {/* Washi Tape Accent */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-amber-200/80 dark:bg-amber-700/50 backdrop-blur-xs rotate-2 shadow-xs rounded-xs border border-amber-300/40 pointer-events-none z-10" />
+
+                <div className="overflow-hidden rounded-md bg-slate-100 dark:bg-slate-950 flex items-center justify-center">
+                  <img
+                    src={url}
+                    alt={`Classic photo ${idx + 1}`}
+                    className="w-full h-auto block sepia-[0.08] contrast-[1.02] group-hover:scale-[1.02] transition-transform duration-300 rounded-md"
+                  />
+                </div>
+                <div className="mt-3 text-center text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 tracking-widest uppercase">
+                  ✦ KỶ NIỆM #{idx + 1} ✦
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // 3. Dạng Khung / Lưới (Modern Facebook Grid Layout)
     if (photos.length === 1) {
       return (
         <div
           onClick={() => openLightbox(photos, 0, post.caption)}
-          className="relative cursor-pointer bg-slate-950 flex items-center justify-center overflow-hidden max-h-[500px]"
+          className="relative cursor-pointer bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden"
         >
           <img
             src={photos[0]}
             alt="Post visual"
-            className="w-full h-auto object-contain max-h-[500px] hover:scale-[1.01] transition-transform duration-300"
+            className="w-full h-auto block hover:scale-[1.01] transition-transform duration-300"
             onError={(e) => {
-              e.target.src = "https://via.placeholder.com/600x400?text=L%E1%BB%97i+t%E1%BA%A3i+%E1%BA%A3nh";
+              e.target.src = "https://via.placeholder.com/600x400?text=L%E1%BB%97i+t%E1%BA%A3nh";
             }}
           />
         </div>
@@ -311,12 +339,12 @@ export const PhotoFeedView = () => {
 
     if (photos.length === 2) {
       return (
-        <div className="grid grid-cols-2 gap-1 bg-slate-950 overflow-hidden">
+        <div className="grid grid-cols-2 gap-1 bg-slate-200 dark:bg-slate-950 overflow-hidden">
           {photos.map((url, idx) => (
             <div
               key={idx}
               onClick={() => openLightbox(photos, idx, post.caption)}
-              className="relative h-64 sm:h-80 overflow-hidden bg-slate-900 group cursor-pointer"
+              className="relative h-64 sm:h-96 overflow-hidden bg-slate-900 group cursor-pointer"
             >
               <img
                 src={url}
@@ -331,10 +359,10 @@ export const PhotoFeedView = () => {
 
     if (photos.length === 3) {
       return (
-        <div className="grid grid-cols-3 gap-1 bg-slate-950 overflow-hidden">
+        <div className="grid grid-cols-3 gap-1 bg-slate-200 dark:bg-slate-950 overflow-hidden">
           <div
             onClick={() => openLightbox(photos, 0, post.caption)}
-            className="col-span-2 h-64 sm:h-80 overflow-hidden bg-slate-900 group relative cursor-pointer"
+            className="col-span-2 h-64 sm:h-96 overflow-hidden bg-slate-900 group relative cursor-pointer"
           >
             <img
               src={photos[0]}
@@ -342,7 +370,7 @@ export const PhotoFeedView = () => {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </div>
-          <div className="grid grid-rows-2 gap-1 h-64 sm:h-80">
+          <div className="grid grid-rows-2 gap-1 h-64 sm:h-96">
             {photos.slice(1, 3).map((url, idx) => (
               <div
                 key={idx}
@@ -361,17 +389,17 @@ export const PhotoFeedView = () => {
       );
     }
 
-    // 4 or more photos (2x2 grid layout)
+    // 4 or more photos (Facebook 2x2 grid layout)
     const displayPhotos = photos.slice(0, 4);
     const extraCount = photos.length - 4;
 
     return (
-      <div className="grid grid-cols-2 gap-1 bg-slate-950 overflow-hidden">
+      <div className="grid grid-cols-2 gap-1 bg-slate-200 dark:bg-slate-950 overflow-hidden">
         {displayPhotos.map((url, idx) => (
           <div
             key={idx}
             onClick={() => openLightbox(photos, idx, post.caption)}
-            className="relative h-44 sm:h-56 overflow-hidden bg-slate-900 group cursor-pointer"
+            className="relative h-48 sm:h-72 overflow-hidden bg-slate-900 group cursor-pointer"
           >
             <img
               src={url}
@@ -379,7 +407,7 @@ export const PhotoFeedView = () => {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {idx === 3 && extraCount > 0 && (
-              <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center text-white font-extrabold text-2xl group-hover:bg-slate-950/60 transition-colors">
+              <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center text-white font-extrabold text-2xl group-hover:bg-slate-950/65 transition-colors">
                 +{extraCount}
               </div>
             )}
