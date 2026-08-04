@@ -5,15 +5,17 @@ import {
   setDoc,
   deleteDoc,
   onSnapshot,
-  query,
-  orderBy,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 
-const LOCAL_STORAGE_POSTS_KEY = "user_posts_feed_";
+const LOCAL_STORAGE_POSTS_KEY = "user_posts_feed_v2_";
 
 export const usePosts = (user) => {
+  const getStorageKey = useCallback(() => {
+    return LOCAL_STORAGE_POSTS_KEY + (user?.uid || "guest");
+  }, [user]);
+
   const [posts, setPosts] = useState(() => {
     const storageKey = LOCAL_STORAGE_POSTS_KEY + (user?.uid || "guest");
     const saved = localStorage.getItem(storageKey);
@@ -24,34 +26,67 @@ export const usePosts = (user) => {
         console.error("Error parsing local posts", e);
       }
     }
+    // Fallback: check guest storage
+    const guestSaved = localStorage.getItem(LOCAL_STORAGE_POSTS_KEY + "guest");
+    if (guestSaved) {
+      try {
+        return JSON.parse(guestSaved);
+      } catch (e) {}
+    }
     return [];
   });
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
-  const getStorageKey = useCallback(() => {
-    return LOCAL_STORAGE_POSTS_KEY + (user?.uid || "guest");
-  }, [user]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
   // Sync posts from Firestore if user exists
   useEffect(() => {
+    const storageKey = getStorageKey();
+
     if (!user) {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          setPosts(JSON.parse(saved));
+        } catch (e) {}
+      }
       setIsLoadingPosts(false);
       return;
     }
 
-    const storageKey = getStorageKey();
     const postsColRef = collection(db, `users/${user.uid}/posts`);
-    const q = query(postsColRef, orderBy("createdAt", "desc"));
 
     const unsubscribe = onSnapshot(
-      q,
+      postsColRef,
       (snapshot) => {
         const fetchedPosts = snapshot.docs.map((docSnap) => ({
           ...docSnap.data(),
           id: docSnap.id,
         }));
-        setPosts(fetchedPosts);
-        localStorage.setItem(storageKey, JSON.stringify(fetchedPosts));
+
+        // Sort descending by createdAt date
+        fetchedPosts.sort(
+          (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+        );
+
+        setPosts((prev) => {
+          // Merge with any offline/local posts not yet in Firestore
+          const firestoreMap = new Map(fetchedPosts.map((p) => [p.id, p]));
+          const merged = [...fetchedPosts];
+
+          prev.forEach((localPost) => {
+            if (!firestoreMap.has(localPost.id)) {
+              merged.push(localPost);
+            }
+          });
+
+          merged.sort(
+            (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+          );
+
+          localStorage.setItem(storageKey, JSON.stringify(merged));
+          return merged;
+        });
+
         setIsLoadingPosts(false);
       },
       (error) => {
@@ -81,10 +116,13 @@ export const usePosts = (user) => {
         authorAvatar: postData.authorAvatar || user?.photoURL || "",
       };
 
-      setPosts((prev) => [newPost, ...prev]);
       const storageKey = getStorageKey();
-      const updated = [newPost, ...posts];
-      localStorage.setItem(storageKey, JSON.stringify(updated));
+
+      setPosts((prev) => {
+        const updated = [newPost, ...prev.filter((p) => p.id !== newId)];
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+        return updated;
+      });
 
       if (user) {
         try {
@@ -95,16 +133,19 @@ export const usePosts = (user) => {
         }
       }
     },
-    [user, posts, getStorageKey]
+    [user, getStorageKey]
   );
 
   // Delete a post
   const deletePost = useCallback(
     async (postId) => {
-      setPosts((prev) => prev.filter((p) => p.id !== postId));
       const storageKey = getStorageKey();
-      const updated = posts.filter((p) => p.id !== postId);
-      localStorage.setItem(storageKey, JSON.stringify(updated));
+
+      setPosts((prev) => {
+        const updated = prev.filter((p) => p.id !== postId);
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+        return updated;
+      });
 
       if (user) {
         try {
@@ -115,15 +156,17 @@ export const usePosts = (user) => {
         }
       }
     },
-    [user, posts, getStorageKey]
+    [user, getStorageKey]
   );
 
   // Toggle Like on a post
   const toggleLikePost = useCallback(
     async (postId) => {
       let updatedPost = null;
-      setPosts((prev) =>
-        prev.map((p) => {
+      const storageKey = getStorageKey();
+
+      setPosts((prev) => {
+        const updated = prev.map((p) => {
           if (p.id === postId) {
             const isLiked = !p.isLiked;
             const likesCount = isLiked ? (p.likesCount || 0) + 1 : Math.max(0, (p.likesCount || 1) - 1);
@@ -131,8 +174,11 @@ export const usePosts = (user) => {
             return updatedPost;
           }
           return p;
-        })
-      );
+        });
+
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+        return updated;
+      });
 
       if (user && updatedPost) {
         try {
@@ -146,7 +192,7 @@ export const usePosts = (user) => {
         }
       }
     },
-    [user]
+    [user, getStorageKey]
   );
 
   return { posts, isLoadingPosts, addPost, deletePost, toggleLikePost };
