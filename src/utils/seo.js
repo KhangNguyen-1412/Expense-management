@@ -51,6 +51,11 @@ export const VIEW_URL_MAP = {
     title: "Nhật ký Ảnh & Mạng xã hội Khoảnh khắc | Trợ lý Chi tiêu",
     description: "Lưu giữ nhật ký khoảnh khắc, hình ảnh và bài viết kết nối với kho Google Drive cá nhân.",
   },
+  landing: {
+    slug: "/trang-gioi-thieu",
+    title: "Trang Giới Thiệu & Nhật Ký Ảnh | Nguyễn Huỳnh Phúc Khang",
+    description: "Trang giới thiệu cá nhân thể hiện khoảnh khắc nhật ký ảnh và tổng quan thông tin cá nhân.",
+  },
 };
 
 // Map slug to viewId
@@ -63,14 +68,14 @@ export const SLUG_VIEW_MAP = Object.entries(VIEW_URL_MAP).reduce((acc, [viewId, 
 export const getViewFromPath = (path) => {
   const cleanPath = path.replace(/\/$/, "");
   if (!cleanPath || cleanPath === "" || cleanPath === "/") {
-    return "dashboard";
+    return "landing";
   }
-  return SLUG_VIEW_MAP[cleanPath] || "dashboard";
+  return SLUG_VIEW_MAP[cleanPath] || "landing";
 };
 
 // Update Document Head SEO Meta Tags dynamically
 export const updateSEOMeta = (viewId) => {
-  const meta = VIEW_URL_MAP[viewId] || VIEW_URL_MAP.dashboard;
+  const meta = VIEW_URL_MAP[viewId] || VIEW_URL_MAP.landing;
 
   // Title
   document.title = meta.title;

@@ -37,7 +37,7 @@ export const AppProvider = ({ children }) => {
   // Custom Navigation function that syncs Friendly URL and SEO Meta
   const setActiveView = useCallback((viewId) => {
     setActiveViewState(viewId);
-    const meta = VIEW_URL_MAP[viewId] || VIEW_URL_MAP.dashboard;
+    const meta = VIEW_URL_MAP[viewId] || VIEW_URL_MAP.landing;
     if (window.location.pathname !== meta.slug) {
       window.history.pushState({ viewId }, "", meta.slug);
     }

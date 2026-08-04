@@ -12,10 +12,21 @@ import { DeleteDataDialog } from "./DeleteDataDialog";
 import { SetPinDialog } from "./SetPinDialog";
 import { PinLockScreen } from "./PinLockScreen";
 
+import { LandingPageView } from "../views/LandingPageView";
+
 export const AppLayout = () => {
-  const { isAppLocked } = useAppContext();
+  const { isAppLocked, activeView } = useAppContext();
 
   if (isAppLocked) return <PinLockScreen />;
+
+  // Render standalone public Landing Page outside the app admin/dashboard layout
+  if (activeView === "landing") {
+    return (
+      <div className="min-h-screen w-full bg-stone-100 dark:bg-stone-950 text-stone-800 dark:text-stone-100 overflow-y-auto font-sans transition-colors duration-300">
+        <LandingPageView />
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-stone-100 dark:bg-stone-950 font-serif">

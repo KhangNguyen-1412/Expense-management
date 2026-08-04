@@ -115,13 +115,13 @@ export const Sidebar = () => {
               </button>
             ) : (
               <button
-                onClick={() => setActiveView("profile")}
+                onClick={() => setActiveView("landing")}
                 className={`w-full group p-2.5 rounded-2xl border transition-all duration-200 flex flex-col items-center gap-1.5 cursor-pointer text-center ${
-                  activeView === "profile"
+                  activeView === "landing"
                     ? "bg-emerald-100/70 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 shadow-sm"
                     : "bg-stone-100/60 dark:bg-stone-800/60 border-stone-200/80 dark:border-stone-700/70 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:border-emerald-300 dark:hover:border-emerald-800"
                 }`}
-                title="Xem Trang cá nhân"
+                title="Xem Trang giới thiệu (Landing Page)"
               >
                 <div className="relative">
                   <img
@@ -139,9 +139,6 @@ export const Sidebar = () => {
                   <p className="text-xs font-bold text-stone-800 dark:text-stone-100 truncate">
                     {user.displayName}
                   </p>
-                  <span className="text-[10px] font-bold text-emerald-800 dark:text-emerald-400 group-hover:underline inline-flex items-center gap-0.5 mt-0.5 tracking-wide">
-                    Trang cá nhân →
-                  </span>
                 </div>
               </button>
             )}
@@ -177,9 +174,9 @@ export const Sidebar = () => {
               </button>
             ) : (
               <button
-                onClick={() => setActiveView("profile")}
+                onClick={() => setActiveView("landing")}
                 className="relative group p-0.5 rounded-full border-2 border-emerald-700 hover:scale-105 transition-transform cursor-pointer"
-                title="Trang cá nhân"
+                title="Trang giới thiệu"
               >
                 <img
                   src={user.photoURL}
