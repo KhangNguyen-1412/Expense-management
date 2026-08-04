@@ -55,7 +55,7 @@ export const BottomNav = () => {
   ];
 
   return (
-    <nav aria-label="Điều hướng di động" className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-800 px-3 py-1.5 flex items-center justify-around shadow-2xl">
+    <nav aria-label="Điều hướng di động" className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-stone-50/95 dark:bg-stone-900/95 backdrop-blur-lg border-t border-stone-200/80 dark:border-stone-800 px-3 py-1.5 flex items-center justify-around shadow-2xl">
       {navItems.map((item) => {
         const isActive = activeView === item.id;
 
@@ -67,10 +67,10 @@ export const BottomNav = () => {
               className="relative -mt-7 group flex flex-col items-center cursor-pointer"
               aria-label="Thêm mới giao dịch"
             >
-              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/40 border-4 border-slate-100 dark:border-slate-950 active:scale-95 group-hover:scale-105 transition-all">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-emerald-800 via-emerald-700 to-stone-800 text-white flex items-center justify-center shadow-lg shadow-emerald-900/30 border-4 border-stone-100 dark:border-stone-950 active:scale-95 group-hover:scale-105 transition-all">
                 {item.icon}
               </div>
-              <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 mt-0.5">
+              <span className="text-[10px] font-bold text-emerald-800 dark:text-emerald-400 mt-0.5 tracking-wide">
                 {item.label}
               </span>
             </button>
@@ -83,14 +83,14 @@ export const BottomNav = () => {
             onClick={() => setActiveView(item.id)}
             className={`flex flex-col items-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
               isActive
-                ? "text-indigo-600 dark:text-indigo-400 font-bold"
-                : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-semibold"
+                ? "text-emerald-800 dark:text-emerald-400 font-bold"
+                : "text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 font-semibold"
             }`}
           >
-            <div className={`p-1 rounded-lg ${isActive ? "bg-indigo-50 dark:bg-indigo-950/60" : ""}`}>
+            <div className={`p-1 rounded-lg ${isActive ? "bg-emerald-100/70 dark:bg-emerald-950/60" : ""}`}>
               {item.icon}
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">{item.label}</span>
+            <span className="text-[10px] mt-0.5 tracking-tight font-serif">{item.label}</span>
           </button>
         );
       })}

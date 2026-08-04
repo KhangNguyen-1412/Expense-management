@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useAppContext } from "../context/AppContext";
 import { VoiceGuideDialog } from "../components/VoiceGuideDialog";
+import { CATEGORY_ICON_PATHS } from "../components/TransactionIcon";
 import "../styles/AddTransactionView.css";
 
 export const AddTransactionView = () => {
@@ -54,18 +55,18 @@ export const AddTransactionView = () => {
     ? ["Cà phê", "Ăn sáng", "Ăn trưa", "Xăng xe", "Đi chợ", "Mua sắm", "Tiền điện/nước"]
     : ["Lương tháng", "Thưởng", "Bán hàng", "Tiền lãi", "Được cho/tặng"];
 
-  // Category Icon & Color Mapping
+  // Category Icon & Color Mapping (Vector SVG Icons matching Sidebar Theme)
   const categoryMeta = {
-    "Ăn uống": { icon: "🍔", bg: "bg-orange-100 text-orange-600 dark:bg-orange-950/60 dark:text-orange-400" },
-    "Đi lại": { icon: "🚗", bg: "bg-blue-100 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400" },
-    "Hóa đơn": { icon: "🧾", bg: "bg-purple-100 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400" },
-    "Mua sắm": { icon: "🛍️", bg: "bg-pink-100 text-pink-600 dark:bg-pink-950/60 dark:text-pink-400" },
-    "Giải trí": { icon: "🎬", bg: "bg-indigo-100 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400" },
-    "Sức khỏe": { icon: "💊", bg: "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400" },
-    "Giáo dục": { icon: "📚", bg: "bg-cyan-100 text-cyan-600 dark:bg-cyan-950/60 dark:text-cyan-400" },
-    "Gia đình": { icon: "🏠", bg: "bg-amber-100 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400" },
-    "Tiết kiệm": { icon: "💰", bg: "bg-teal-100 text-teal-600 dark:bg-teal-950/60 dark:text-teal-400" },
-    "Khác": { icon: "📦", bg: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400" },
+    "Ăn uống": { bg: "bg-amber-100/80 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300" },
+    "Đi lại": { bg: "bg-blue-100/80 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300" },
+    "Hóa đơn": { bg: "bg-purple-100/80 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300" },
+    "Mua sắm": { bg: "bg-pink-100/80 text-pink-800 dark:bg-pink-950/60 dark:text-pink-300" },
+    "Giải trí": { bg: "bg-indigo-100/80 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300" },
+    "Sức khỏe": { bg: "bg-emerald-100/80 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300" },
+    "Giáo dục": { bg: "bg-cyan-100/80 text-cyan-800 dark:bg-cyan-950/60 dark:text-cyan-300" },
+    "Gia đình": { bg: "bg-stone-200/80 text-stone-800 dark:bg-stone-800 dark:text-stone-300" },
+    "Tiết kiệm": { bg: "bg-teal-100/80 text-teal-800 dark:bg-teal-950/60 dark:text-teal-300" },
+    "Khác": { bg: "bg-stone-200/60 text-stone-700 dark:bg-stone-800 dark:text-stone-300" },
   };
 
   const handleSubmit = (e) => {
@@ -258,8 +259,9 @@ export const AddTransactionView = () => {
                   <label className="input-field-label">Hạng mục chi tiêu</label>
                   <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5 mt-2">
                     {SPENDING_CATEGORIES.map((cat) => {
-                      const meta = categoryMeta[cat] || { icon: "📌", bg: "bg-slate-100 text-slate-600" };
+                      const meta = categoryMeta[cat] || { bg: "bg-stone-100 text-stone-600" };
                       const isSelected = category === cat;
+                      const path = CATEGORY_ICON_PATHS[cat] || "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z";
 
                       return (
                         <button
@@ -273,7 +275,9 @@ export const AddTransactionView = () => {
                           }`}
                         >
                           <span className={`category-card-icon ${meta.bg}`}>
-                            {meta.icon}
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                              <path d={path} />
+                            </svg>
                           </span>
                           <span className="category-card-label">{cat}</span>
                         </button>
@@ -326,18 +330,26 @@ export const AddTransactionView = () => {
               </span>
             </div>
 
-            <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
+            <div className="p-4 bg-stone-100/50 dark:bg-stone-900/60 rounded-xl border border-stone-200/60 dark:border-stone-700/60">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-11 h-11 rounded-2xl flex items-center justify-center text-xl shrink-0 ${
+                  <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${
                     transactionType === "expense"
-                      ? (categoryMeta[category]?.bg || "bg-slate-200")
-                      : "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400"
+                      ? (categoryMeta[category]?.bg || "bg-stone-200/60 text-stone-700")
+                      : "bg-emerald-100/80 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                   }`}>
-                    {transactionType === "expense" ? (categoryMeta[category]?.icon || "💸") : "💵"}
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d={
+                          transactionType === "expense"
+                            ? (CATEGORY_ICON_PATHS[category] || "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z")
+                            : "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"
+                        }
+                      />
+                    </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-800 dark:text-slate-100 text-base">
+                    <h4 className="font-serif font-bold text-stone-800 dark:text-stone-100 text-base">
                       {text.trim() || "Tên giao dịch..."}
                     </h4>
                     <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">

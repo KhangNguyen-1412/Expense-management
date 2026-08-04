@@ -343,8 +343,8 @@ export const HistoryView = () => {
           </button>
         </div>
       )}
-      {/* Table Container with scroll */}
-      <div className="page-card p-4 overflow-x-auto">
+      {/* Table Container with scroll (Desktop only) */}
+      <div className="hidden sm:block page-card p-4 overflow-x-auto">
         <table className="history-table">
           <thead className="table-header">
             <tr>
@@ -368,6 +368,7 @@ export const HistoryView = () => {
                   transaction={t}
                   isSelected={selectedIds.has(t.id)}
                   onToggleSelection={handleToggleSelection}
+                  viewMode="table"
                 />
               ))
             ) : (
@@ -380,8 +381,8 @@ export const HistoryView = () => {
           </tbody>
         </table>
       </div>
-      {/* Mobile Card List */}
-      <div className="mobile-list-container">
+      {/* Mobile Card List (Mobile only) */}
+      <div className="sm:hidden space-y-3 mt-4">
         {isLoadingData ? (
           Array(5)
             .fill(0)
@@ -393,10 +394,11 @@ export const HistoryView = () => {
               transaction={t}
               isSelected={selectedIds.has(t.id)}
               onToggleSelection={handleToggleSelection}
+              viewMode="card"
             />
           ))
         ) : (
-          <p className="no-data-text">
+          <p className="no-data-text text-center py-8 text-stone-500 italic">
             Không có giao dịch nào phù hợp với bộ lọc.
           </p>
         )}

@@ -1,14 +1,14 @@
-/* Profile View Styling */
+/* Profile View Styling — Olive Editorial */
 .profile-hero-card {
-  @apply bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden;
+  @apply bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-950 text-white rounded-2xl p-7 sm:p-10 shadow-xl relative overflow-hidden;
 }
 
 .profile-hero-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 60%),
-              radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+  background: radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.2) 0%, transparent 60%),
+              radial-gradient(circle at 20% 80%, rgba(120, 113, 108, 0.15) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -21,9 +21,9 @@
 }
 
 .profile-badge-icon {
-  @apply absolute bottom-0 right-0 bg-emerald-500 text-white p-1.5 rounded-full shadow-md border-2 border-slate-900;
+  @apply absolute bottom-0 right-0 bg-emerald-700 text-white p-1.5 rounded-full shadow-md border-2 border-stone-900;
 }
 
 .profile-quick-link {
-  @apply flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 border border-slate-200/60 dark:border-slate-700/60 hover:border-indigo-200 dark:hover:border-indigo-800 rounded-xl transition-all cursor-pointer;
+  @apply flex items-center justify-between p-3.5 bg-stone-100/50 dark:bg-stone-800/40 hover:bg-emerald-100/40 dark:hover:bg-emerald-950/40 border border-stone-200/60 dark:border-stone-700/60 hover:border-emerald-300 dark:hover:border-emerald-800 rounded-xl transition-all cursor-pointer;
 }

@@ -1,20 +1,20 @@
-/* Settings — Editorial Design Styles */
+/* Settings — Olive Editorial Design Styles */
 .settings-container {
   @apply max-w-5xl mx-auto pb-8 space-y-7;
 }
 
 /* Header Banner */
 .settings-header-card {
-  @apply bg-white dark:bg-slate-800/90 backdrop-blur shadow-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl p-6 sm:p-8 transition-all;
+  @apply bg-stone-50 dark:bg-stone-900/90 backdrop-blur shadow-sm border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-6 sm:p-8 transition-all;
 }
 
 /* Section Card */
 .settings-section {
-  @apply bg-white dark:bg-slate-800/90 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-sm overflow-hidden;
+  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl shadow-sm overflow-hidden;
 }
 
 .settings-section-header {
-  @apply flex items-center gap-3.5 px-6 py-4 bg-slate-50/60 dark:bg-slate-700/20 border-b border-slate-200/50 dark:border-slate-700/50;
+  @apply flex items-center gap-3.5 px-6 py-4 bg-stone-100/60 dark:bg-stone-800/30 border-b border-stone-200/50 dark:border-stone-700/50;
 }
 
 .settings-section-icon {
@@ -22,24 +22,24 @@
 }
 
 .settings-section-title {
-  @apply text-sm font-serif font-bold text-slate-800 dark:text-slate-100 tracking-wide;
+  @apply text-sm font-serif font-bold text-stone-800 dark:text-stone-100 tracking-wide;
 }
 
 .settings-section-desc {
-  @apply text-[11px] text-slate-400 dark:text-slate-500 italic;
+  @apply text-[11px] text-stone-400 dark:text-stone-500 italic;
 }
 
 /* Setting Row */
 .setting-row {
-  @apply flex items-center justify-between px-6 py-4 border-b border-slate-100/60 dark:border-slate-700/40 last:border-b-0 hover:bg-slate-50/40 dark:hover:bg-slate-700/15 transition-colors;
+  @apply flex items-center justify-between px-6 py-4 border-b border-stone-100/60 dark:border-stone-700/40 last:border-b-0 hover:bg-stone-100/30 dark:hover:bg-stone-800/15 transition-colors;
 }
 
 .setting-info-title {
-  @apply text-sm font-semibold text-slate-700 dark:text-slate-200 tracking-wide;
+  @apply text-sm font-semibold text-stone-700 dark:text-stone-200 tracking-wide;
 }
 
 .setting-info-description {
-  @apply text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 leading-relaxed;
+  @apply text-[11px] text-stone-400 dark:text-stone-500 mt-0.5 leading-relaxed;
 }
 
 /* Toggle Switch */
@@ -48,15 +48,15 @@
 }
 
 .toggle-switch-on {
-  @apply bg-slate-800 dark:bg-slate-200;
+  @apply bg-emerald-700 dark:bg-emerald-600;
 }
 
 .toggle-switch-off {
-  @apply bg-slate-300 dark:bg-slate-600;
+  @apply bg-stone-300 dark:bg-stone-600;
 }
 
 .toggle-knob {
-  @apply inline-block w-5 h-5 transform bg-white dark:bg-slate-800 rounded-full transition-transform shadow-md;
+  @apply inline-block w-5 h-5 transform bg-white rounded-full transition-transform shadow-md;
 }
 
 .toggle-knob-on {
@@ -69,7 +69,7 @@
 
 /* Select */
 .settings-select {
-  @apply w-48 p-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-slate-400 outline-none transition-shadow disabled:opacity-50 disabled:cursor-not-allowed tracking-wide;
+  @apply w-48 p-2.5 text-sm border border-stone-200 dark:border-stone-600 rounded-xl bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 focus:ring-2 focus:ring-emerald-600/50 outline-none transition-shadow disabled:opacity-50 disabled:cursor-not-allowed tracking-wide;
 }
 
 /* Danger Zone */
@@ -82,7 +82,7 @@
 }
 
 .danger-btn {
-  @apply w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm transition-all active:scale-[0.98] shadow-sm shadow-rose-300/20 dark:shadow-rose-900/20 tracking-wide;
+  @apply w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-semibold text-sm transition-all active:scale-[0.98] shadow-sm shadow-rose-300/20 dark:shadow-rose-900/20 tracking-wide;
 }
 
 .danger-note {

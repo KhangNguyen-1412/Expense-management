@@ -1,23 +1,9 @@
 import React, { useMemo } from "react";
 import { BudgetStatus } from "../components/BudgetStatus";
 import { AnalysisResult } from "../components/AnalysisResult";
+import { TransactionIcon } from "../components/TransactionIcon";
 import { useAppContext } from "../context/AppContext";
 import "../styles/DashboardView.css";
-
-const CATEGORY_EMOJIS = {
-  "Ăn uống": "🍜",
-  "Đi lại": "🚗",
-  "Hóa đơn": "📄",
-  "Mua sắm": "🛍️",
-  "Giải trí": "🎮",
-  "Sức khỏe": "💊",
-  "Giáo dục": "📚",
-  "Gia đình": "👨‍👩‍👧",
-  "Khác": "📦",
-  "Tiết kiệm": "💰",
-  "Lương": "💵",
-  "Thu nhập": "💰",
-};
 
 export const DashboardView = () => {
   const {
@@ -202,8 +188,8 @@ export const DashboardView = () => {
                 {recentTransactions.map((tx) => (
                   <div key={tx.id} className="recent-tx-item">
                     <div className="flex items-center gap-3 min-w-0 flex-1">
-                      <div className={`recent-tx-icon ${tx.amount >= 0 ? "bg-emerald-100 dark:bg-emerald-900/30" : "bg-slate-100 dark:bg-slate-700/50"}`}>
-                        {CATEGORY_EMOJIS[tx.category] || "📦"}
+                      <div className={`recent-tx-icon ${tx.amount >= 0 ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400" : "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300"}`}>
+                        <TransactionIcon category={tx.category} className="w-5 h-5 mr-0" />
                       </div>
                       <div className="min-w-0">
                         <span className="recent-tx-name block">{tx.text}</span>

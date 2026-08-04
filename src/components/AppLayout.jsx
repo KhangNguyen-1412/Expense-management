@@ -18,7 +18,7 @@ export const AppLayout = () => {
   if (isAppLocked) return <PinLockScreen />;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-100 dark:bg-slate-950 font-sans">
+    <div className="flex h-screen overflow-hidden bg-stone-100 dark:bg-stone-950 font-serif">
       <Sidebar />
       <main className="flex-1 p-4 sm:p-6 lg:p-10 overflow-y-auto pb-24 lg:pb-10">
         <MainContent />

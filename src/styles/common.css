@@ -1,7 +1,7 @@
 /* ==========================================================================
-   SHARED LAYOUT SYSTEM — Editorial Design Language
-   All rounded corners preserved. Typography: Playfair Display (serif headings)
-   + Inter (sans body). Generous whitespace. Refined palette.
+   SHARED LAYOUT SYSTEM — Olive Editorial Design Language
+   Palette: emerald-800/stone-800 accent, stone-50 backgrounds, amber-600 highlights
+   All rounded corners preserved. Font: Playfair Display everywhere.
    ========================================================================== */
 
 /* 1. Page Container */
@@ -11,24 +11,24 @@
 
 /* 2. Page Header Banner */
 .page-header {
-  @apply bg-white dark:bg-slate-800/90 backdrop-blur shadow-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl p-6 sm:p-8 transition-all;
+  @apply bg-stone-50 dark:bg-stone-900/90 backdrop-blur shadow-sm border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-6 sm:p-8 transition-all;
 }
 
 .page-title {
-  @apply text-3xl font-serif font-bold text-slate-900 dark:text-slate-50 tracking-tight leading-snug;
+  @apply text-3xl font-serif font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-snug;
 }
 
 .page-subtitle {
-  @apply text-sm text-slate-500 dark:text-slate-400 mt-1.5 italic font-light tracking-wide;
+  @apply text-sm text-stone-500 dark:text-stone-400 mt-1.5 italic font-light tracking-wide;
 }
 
 /* 3. Content Cards */
 .page-card {
-  @apply bg-white dark:bg-slate-800/90 shadow-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl transition-all;
+  @apply bg-stone-50 dark:bg-stone-900/90 shadow-sm border border-stone-200/60 dark:border-stone-700/60 rounded-2xl transition-all;
 }
 
 .page-card-title {
-  @apply text-base sm:text-lg font-serif font-bold text-slate-800 dark:text-slate-100 tracking-tight;
+  @apply text-base sm:text-lg font-serif font-bold text-stone-800 dark:text-stone-100 tracking-tight;
 }
 
 /* 4. KPI / Summary Cards Grid */
@@ -41,7 +41,7 @@
 }
 
 .kpi-card {
-  @apply bg-white dark:bg-slate-800/90 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl p-5 sm:p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-5 sm:p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 .kpi-icon {
@@ -49,7 +49,7 @@
 }
 
 .kpi-label {
-  @apply text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400 dark:text-slate-500 block;
+  @apply text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-stone-400 dark:text-stone-500 block;
 }
 
 .kpi-value {
@@ -58,11 +58,11 @@
 
 /* 5. Section Card (Settings-style grouped cards) */
 .section-card {
-  @apply bg-white dark:bg-slate-800/90 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-sm overflow-hidden;
+  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl shadow-sm overflow-hidden;
 }
 
 .section-header {
-  @apply flex items-center gap-3.5 px-6 py-4 bg-slate-50/60 dark:bg-slate-700/20 border-b border-slate-200/50 dark:border-slate-700/50;
+  @apply flex items-center gap-3.5 px-6 py-4 bg-stone-100/60 dark:bg-stone-800/30 border-b border-stone-200/50 dark:border-stone-700/50;
 }
 
 .section-icon {
@@ -70,20 +70,20 @@
 }
 
 .section-title {
-  @apply text-sm font-serif font-bold text-slate-800 dark:text-slate-100 tracking-wide;
+  @apply text-sm font-serif font-bold text-stone-800 dark:text-stone-100 tracking-wide;
 }
 
 .section-desc {
-  @apply text-[11px] text-slate-400 dark:text-slate-500 italic;
+  @apply text-[11px] text-stone-400 dark:text-stone-500 italic;
 }
 
 /* 6. Form Elements (Shared) */
 .field-label {
-  @apply block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-[0.12em];
+  @apply block text-xs font-semibold text-stone-600 dark:text-stone-300 mb-1.5 uppercase tracking-[0.12em];
 }
 
 .field-input {
-  @apply w-full py-3 pl-4 pr-8 bg-slate-50 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-800 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-500 focus:bg-white dark:focus:bg-slate-700 transition-all;
+  @apply w-full py-3 pl-4 pr-8 bg-stone-100/50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-600 rounded-xl text-stone-800 dark:text-stone-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600/50 dark:focus:ring-emerald-500/50 focus:bg-white dark:focus:bg-stone-800 transition-all;
 }
 
 /* 7. Toggle Switch */
@@ -92,15 +92,15 @@
 }
 
 .toggle-switch-on {
-  @apply bg-slate-800 dark:bg-slate-200;
+  @apply bg-emerald-700 dark:bg-emerald-600;
 }
 
 .toggle-switch-off {
-  @apply bg-slate-300 dark:bg-slate-600;
+  @apply bg-stone-300 dark:bg-stone-600;
 }
 
 .toggle-knob {
-  @apply inline-block w-5 h-5 transform bg-white dark:bg-slate-800 rounded-full transition-transform shadow-md;
+  @apply inline-block w-5 h-5 transform bg-white rounded-full transition-transform shadow-md;
 }
 
 .toggle-knob-on {
@@ -117,20 +117,20 @@
 }
 
 .filter-pill-active {
-  @apply bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 border-slate-800 dark:border-slate-100 shadow-sm;
+  @apply bg-emerald-800 dark:bg-emerald-700 text-white border-emerald-800 dark:border-emerald-700 shadow-sm;
 }
 
 .filter-pill-inactive {
-  @apply bg-white dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700;
+  @apply bg-stone-50 dark:bg-stone-800/50 text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-700;
 }
 
 /* 9. Progress Bars */
 .progress-bar-bg {
-  @apply w-full bg-slate-200/80 dark:bg-slate-700/80 rounded-full h-2 overflow-hidden;
+  @apply w-full bg-stone-200/80 dark:bg-stone-700/80 rounded-full h-2 overflow-hidden;
 }
 
 .progress-bar-bg-thick {
-  @apply w-full bg-slate-200/80 dark:bg-slate-700/80 rounded-full h-3 overflow-hidden;
+  @apply w-full bg-stone-200/80 dark:bg-stone-700/80 rounded-full h-3 overflow-hidden;
 }
 
 .progress-bar-fg {
@@ -139,28 +139,28 @@
 
 /* 10. Counter Controls */
 .counter-btn {
-  @apply w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-lg flex items-center justify-center transition-all active:scale-95 cursor-pointer shrink-0;
+  @apply w-9 h-9 rounded-xl bg-stone-100 dark:bg-stone-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-stone-700 dark:text-stone-200 font-bold text-lg flex items-center justify-center transition-all active:scale-95 cursor-pointer shrink-0;
 }
 
 .counter-input {
-  @apply w-14 py-1.5 text-center bg-slate-50 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 outline-none;
+  @apply w-14 py-1.5 text-center bg-stone-100/50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-600 rounded-xl text-sm font-bold text-stone-800 dark:text-stone-100 outline-none;
 }
 
 /* 11. Empty States */
 .empty-state {
-  @apply text-center py-16 bg-white dark:bg-slate-800/90 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl;
+  @apply text-center py-16 bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl;
 }
 
 .empty-icon {
-  @apply w-16 h-16 mx-auto text-slate-300 dark:text-slate-600 mb-5;
+  @apply w-16 h-16 mx-auto text-stone-300 dark:text-stone-600 mb-5;
 }
 
 .empty-title {
-  @apply text-xl font-serif font-bold text-slate-600 dark:text-slate-300;
+  @apply text-xl font-serif font-bold text-stone-600 dark:text-stone-300;
 }
 
 .empty-desc {
-  @apply text-sm text-slate-400 dark:text-slate-500 mt-1.5 italic;
+  @apply text-sm text-stone-400 dark:text-stone-500 mt-1.5 italic;
 }
 
 /* 12. Setting Row */
@@ -169,18 +169,18 @@
 }
 
 .setting-info-title {
-  @apply text-sm font-semibold text-slate-700 dark:text-slate-200 tracking-wide;
+  @apply text-sm font-semibold text-stone-700 dark:text-stone-200 tracking-wide;
 }
 
 .setting-info-description {
-  @apply text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 leading-relaxed;
+  @apply text-[11px] text-stone-400 dark:text-stone-500 mt-0.5 leading-relaxed;
 }
 
 /* ==========================================================================
    LEGACY — Keeping old common classes for backward compatibility
    ========================================================================== */
 .card {
-  @apply bg-white dark:bg-slate-800 shadow-lg shadow-slate-200/40 dark:shadow-none rounded-xl p-6;
+  @apply bg-stone-50 dark:bg-stone-900 shadow-lg shadow-stone-200/40 dark:shadow-none rounded-xl p-6;
 }
 
 .btn {
@@ -192,15 +192,15 @@
 }
 
 .btn-primary {
-  @apply bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-900 dark:hover:bg-white focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-700;
+  @apply bg-emerald-800 dark:bg-emerald-700 text-white hover:bg-emerald-900 dark:hover:bg-emerald-600 focus:ring-4 focus:ring-emerald-300/40 dark:focus:ring-emerald-800/40;
 }
 
 .btn-secondary {
-  @apply bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600;
+  @apply bg-stone-100 dark:bg-stone-700 text-stone-800 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-600;
 }
 
 .btn-danger {
-  @apply bg-red-600 text-white hover:bg-red-700;
+  @apply bg-red-700 text-white hover:bg-red-800;
 }
 
 .btn-success {
@@ -208,11 +208,11 @@
 }
 
 .form-input {
-  @apply w-full p-3 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-400 transition-shadow;
+  @apply w-full p-3 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition-shadow;
 }
 
 .form-label {
-  @apply block text-slate-700 dark:text-slate-300 mb-1.5 font-semibold tracking-wide;
+  @apply block text-stone-700 dark:text-stone-300 mb-1.5 font-semibold tracking-wide;
 }
 
 .form-select {
@@ -220,7 +220,7 @@
 }
 
 .view-title {
-  @apply text-3xl font-serif font-bold text-slate-800 dark:text-slate-200 tracking-tight;
+  @apply text-3xl font-serif font-bold text-stone-800 dark:text-stone-200 tracking-tight;
 }
 
 /* ==========================================================================
@@ -229,40 +229,40 @@
 
 /* 🌅 Sunset (Hoàng Hôn) Theme */
 html[data-theme="sunset"] body {
-  background: linear-gradient(135deg, #161224 0%, #291a34 40%, #1e172e 100%) !important;
-  color: #f5f3ff !important;
+  background: linear-gradient(135deg, #1a1510 0%, #2a1f14 40%, #1e1810 100%) !important;
+  color: #faf5ef !important;
 }
 
 html[data-theme="sunset"] .page-header,
 html[data-theme="sunset"] .page-card,
 html[data-theme="sunset"] .section-card,
 html[data-theme="sunset"] .kpi-card {
-  background: rgba(38, 30, 54, 0.92) !important;
-  border-color: rgba(236, 72, 153, 0.25) !important;
-  box-shadow: 0 4px 20px -2px rgba(219, 39, 119, 0.15) !important;
+  background: rgba(42, 36, 28, 0.92) !important;
+  border-color: rgba(180, 130, 60, 0.25) !important;
+  box-shadow: 0 4px 20px -2px rgba(180, 130, 60, 0.12) !important;
 }
 
 html[data-theme="sunset"] .section-header {
-  background: rgba(53, 42, 75, 0.6) !important;
-  border-color: rgba(236, 72, 153, 0.2) !important;
+  background: rgba(55, 48, 38, 0.6) !important;
+  border-color: rgba(180, 130, 60, 0.2) !important;
 }
 
 /* 🌄 Sunrise (Bình Minh) Theme */
 html[data-theme="sunrise"] body {
-  background: linear-gradient(135deg, #fffbeb 0%, #fff1f2 40%, #f0f9ff 100%) !important;
-  color: #1e293b !important;
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f0e8 40%, #f0ece4 100%) !important;
+  color: #292524 !important;
 }
 
 html[data-theme="sunrise"] .page-header,
 html[data-theme="sunrise"] .page-card,
 html[data-theme="sunrise"] .section-card,
 html[data-theme="sunrise"] .kpi-card {
-  background: rgba(255, 255, 255, 0.96) !important;
-  border-color: rgba(249, 115, 22, 0.25) !important;
-  box-shadow: 0 4px 20px -2px rgba(249, 115, 22, 0.1) !important;
+  background: rgba(255, 253, 250, 0.96) !important;
+  border-color: rgba(120, 100, 60, 0.2) !important;
+  box-shadow: 0 4px 20px -2px rgba(120, 100, 60, 0.08) !important;
 }
 
 html[data-theme="sunrise"] .section-header {
-  background: rgba(255, 247, 237, 0.8) !important;
-  border-color: rgba(249, 115, 22, 0.2) !important;
+  background: rgba(250, 245, 235, 0.8) !important;
+  border-color: rgba(120, 100, 60, 0.15) !important;
 }

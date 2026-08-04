@@ -1,32 +1,32 @@
-/* Savings Goals Premium Layout */
+/* Savings Goals Layout — Olive Editorial */
 .savings-goals-container {
-  @apply max-w-7xl mx-auto pb-6 space-y-6;
+  @apply max-w-7xl mx-auto pb-8 space-y-7;
 }
 
 /* Header Banner */
 .goals-header-card {
-  @apply bg-white dark:bg-slate-800/90 backdrop-blur shadow-sm border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-5 transition-all;
+  @apply bg-stone-50 dark:bg-stone-900/90 backdrop-blur shadow-sm border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-6 sm:p-8 transition-all;
 }
 
 /* KPI Summary */
 .goals-kpi-grid {
-  @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-5;
 }
 
 .goals-kpi-card {
-  @apply bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 flex items-center gap-3 shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-5 sm:p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 .goals-kpi-icon {
-  @apply w-11 h-11 rounded-xl flex items-center justify-center shrink-0;
+  @apply w-12 h-12 rounded-xl flex items-center justify-center shrink-0;
 }
 
 .goals-kpi-label {
-  @apply text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-400 block;
+  @apply text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-stone-400 dark:text-stone-500 block;
 }
 
 .goals-kpi-value {
-  @apply text-lg sm:text-xl font-bold tracking-tight mt-0.5;
+  @apply text-xl sm:text-2xl font-serif font-bold tracking-tight mt-0.5;
 }
 
 /* Goals Grid */
@@ -36,7 +36,7 @@
 
 /* Goal Card */
 .goal-card {
-  @apply bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 .goal-card-header {
@@ -44,11 +44,11 @@
 }
 
 .goal-name {
-  @apply text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 leading-snug;
+  @apply text-base sm:text-lg font-serif font-bold text-stone-800 dark:text-stone-100 leading-snug tracking-tight;
 }
 
 .goal-completed-badge {
-  @apply inline-flex items-center gap-1 px-2.5 py-0.5 text-[11px] font-bold text-white bg-emerald-500 rounded-full;
+  @apply inline-flex items-center gap-1 px-3 py-0.5 text-[11px] font-bold text-white bg-emerald-800 rounded-full tracking-wide;
 }
 
 /* Progress Section */
@@ -57,7 +57,7 @@
 }
 
 .goal-progress-bar-bg {
-  @apply w-full bg-slate-200/80 dark:bg-slate-700/80 rounded-full h-3 overflow-hidden;
+  @apply w-full bg-stone-200/80 dark:bg-stone-700/80 rounded-full h-3 overflow-hidden;
 }
 
 .goal-progress-bar-fg {
@@ -69,52 +69,35 @@
 }
 
 .goal-progress-text {
-  @apply text-xs font-semibold text-slate-500 dark:text-slate-400;
+  @apply text-xs font-semibold text-stone-500 dark:text-stone-400 italic;
 }
 
 .goal-progress-pct {
-  @apply text-xs font-bold;
+  @apply text-xs font-serif font-bold;
 }
 
 /* Action Buttons */
 .goal-actions {
-  @apply flex items-center gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50;
+  @apply flex items-center gap-2 mt-4 pt-3.5 border-t border-stone-100 dark:border-stone-700/50;
 }
 
 .goal-action-btn {
-  @apply flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl border transition-all active:scale-95 cursor-pointer;
+  @apply flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl border transition-all active:scale-95 cursor-pointer tracking-wide;
 }
 
 .goal-contribute-btn {
-  @apply bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed;
+  @apply bg-emerald-800 text-white border-emerald-800 hover:bg-emerald-900 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed;
 }
 
 .goal-edit-btn {
-  @apply bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700;
+  @apply bg-stone-100/60 dark:bg-stone-800/50 text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-600 hover:bg-stone-200 dark:hover:bg-stone-700;
 }
 
 .goal-delete-btn {
-  @apply bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800/50 hover:bg-rose-100 dark:hover:bg-rose-900/30;
+  @apply bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-800/50 hover:bg-rose-100 dark:hover:bg-rose-900/30;
 }
 
 /* Empty State */
-.goals-empty-state {
-  @apply text-center py-12 bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl;
-}
-
-.goals-empty-icon {
-  @apply w-16 h-16 mx-auto text-slate-300 dark:text-slate-600 mb-4;
-}
-
-.goals-empty-title {
-  @apply text-lg font-bold text-slate-600 dark:text-slate-300;
-}
-
-.goals-empty-desc {
-  @apply text-sm text-slate-400 dark:text-slate-500 mt-1;
-}
-
-/* Loading State */
-.goals-loading {
-  @apply text-center py-10 text-slate-500 dark:text-slate-400 animate-pulse font-medium;
+.empty-goals-card {
+  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-12 text-center;
 }
