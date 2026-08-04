@@ -41,7 +41,7 @@ export const PhotoFeedView = () => {
   const [previewPhoto, setPreviewPhoto] = useState(null);
 
   // Fallback to default Google Drive if no folder link configured yet
-  const targetDriveUrl = driveFolderUrl && driveFolderUrl.trim() ? driveFolderUrl.trim() : "https://drive.google.com";
+  const targetDriveUrl = driveFolderUrl && driveFolderUrl.trim() ? driveFolderUrl.trim() : "https://drive.google.com/drive/u/0/folders/1RuplhVRJ4cFtvjBAHkCgntAV98v5QLEp";
   const authorName = profile?.fullName || user?.displayName || (isGuest ? "Khách Vô Danh" : "Thành viên");
   const authorAvatar = profile?.avatarUrl || user?.photoURL || "https://via.placeholder.com/100";
 
