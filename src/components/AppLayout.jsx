@@ -12,6 +12,7 @@ import { DeleteDataDialog } from "./DeleteDataDialog";
 import { SetPinDialog } from "./SetPinDialog";
 import { PinLockScreen } from "./PinLockScreen";
 import { QuickAddFAB } from "./QuickAddFAB";
+import { MobileHeader } from "./MobileHeader";
 
 import { LandingPageView } from "../views/LandingPageView";
 
@@ -23,18 +24,21 @@ export const AppLayout = () => {
   // Render standalone public Landing Page outside the app admin/dashboard layout
   if (activeView === "landing") {
     return (
-      <div className="min-h-screen w-full bg-stone-100 dark:bg-stone-950 text-stone-800 dark:text-stone-100 overflow-y-auto font-sans transition-colors duration-300">
+      <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 overflow-y-auto font-sans transition-colors duration-300">
         <LandingPageView />
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-stone-100 dark:bg-stone-950 font-serif">
+    <div className="flex flex-col lg:flex-row h-screen overflow-hidden bg-slate-50 dark:bg-slate-950 font-sans">
       <Sidebar />
-      <main className="flex-1 p-4 sm:p-6 lg:p-10 overflow-y-auto pb-24 lg:pb-10">
-        <MainContent />
-      </main>
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        <MobileHeader />
+        <main className="flex-1 p-4 sm:p-6 lg:p-10 overflow-y-auto pb-24 lg:pb-10">
+          <MainContent />
+        </main>
+      </div>
       <BottomNav />
       <QuickAddFAB />
       <ConfirmDialog />
