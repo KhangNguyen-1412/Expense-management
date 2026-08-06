@@ -72,7 +72,7 @@ export const Sidebar = () => {
     "M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1.2-9.1c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 6.2c0 .66-.53 1.2-1.19 1.2s-1.2-.54-1.2-1.2V4.9zm6.3 6.2c0 .55.45 1 1 1s1-.45 1-1h-2zm-1.1 4.3c-2.76 0-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2.1c-.55 2.22-2.48 4-4.9 4zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9L19.73 21 21 19.73 4.27 3z";
 
   return (
-    <aside className="hidden lg:flex w-64 h-screen sticky top-0 bg-stone-50 dark:bg-stone-900 border-r border-stone-200/60 dark:border-stone-800 flex-shrink-0 p-5 flex-col items-stretch shadow-md dark:shadow-none transition-all duration-300 overflow-y-auto z-20">
+    <aside className="hidden lg:flex w-64 h-screen sticky top-0 bg-white/90 dark:bg-slate-900/95 border-r border-slate-200/80 dark:border-slate-800 flex-shrink-0 p-5 flex-col items-stretch shadow-md dark:shadow-none transition-all duration-300 overflow-y-auto z-20 backdrop-blur-md">
       <div className="flex items-center gap-3 mb-5 shrink-0 cursor-pointer" onClick={() => setActiveView("dashboard")}>
         <img
           src="/app-logo-3d.png"
@@ -80,10 +80,10 @@ export const Sidebar = () => {
           className="w-10 h-10 rounded-xl shadow-md object-contain hover:scale-105 transition-transform"
         />
         <div className="hidden lg:block">
-          <h1 className="text-xl font-serif font-extrabold text-emerald-800 dark:text-emerald-400 tracking-tight leading-none">
+          <h1 className="text-xl font-sans font-extrabold text-indigo-600 dark:text-indigo-400 tracking-tight leading-none">
             LifeHub
           </h1>
-          <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 tracking-wider uppercase block mt-0.5">
+          <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-wider uppercase block mt-0.5">
             Sống & Tài Chính
           </span>
         </div>
@@ -97,8 +97,8 @@ export const Sidebar = () => {
               onClick={() => setActiveView("landing")}
               className={`w-full group p-2.5 rounded-2xl border transition-all duration-200 flex flex-col items-center gap-1.5 cursor-pointer text-center ${
                 activeView === "landing"
-                  ? "bg-emerald-100/70 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 shadow-sm"
-                  : "bg-stone-100/60 dark:bg-stone-800/60 border-stone-200/80 dark:border-stone-700/70 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:border-emerald-300 dark:hover:border-emerald-800"
+                  ? "bg-indigo-50 dark:bg-indigo-950/60 border-indigo-300 dark:border-indigo-700 shadow-sm"
+                  : "bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700/70 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 hover:border-indigo-300 dark:hover:border-indigo-800"
               }`}
               title="Xem Trang giới thiệu (Landing Page)"
             >
@@ -106,19 +106,19 @@ export const Sidebar = () => {
                 <img
                   src={profile?.avatarUrl || user.photoURL || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
                   alt="Avatar"
-                  className="w-11 h-11 rounded-full border-2 border-emerald-700 group-hover:scale-105 transition-transform duration-200 shadow-sm object-cover"
+                  className="w-11 h-11 rounded-full border-2 border-indigo-600 group-hover:scale-105 transition-transform duration-200 shadow-sm object-cover"
                 />
-                <span className="absolute -bottom-0.5 -right-0.5 bg-emerald-800 text-white p-1 rounded-full text-[9px] shadow-sm flex items-center justify-center">
+                <span className="absolute -bottom-0.5 -right-0.5 bg-indigo-600 text-white p-1 rounded-full text-[9px] shadow-sm flex items-center justify-center">
                   <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </span>
               </div>
               <div className="min-w-0 w-full">
-                <p className="text-xs font-bold text-stone-800 dark:text-stone-100 truncate">
+                <p className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
                   {profile?.fullName || user.displayName || "Nguyễn Huỳnh Phúc Khang"}
                 </p>
-                <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">
+                <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold truncate">
                   Trang Giới Thiệu ↗
                 </p>
               </div>
@@ -129,7 +129,7 @@ export const Sidebar = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setActiveView("landing")}
-              className="relative group p-0.5 rounded-full border-2 border-emerald-700 hover:scale-105 transition-transform cursor-pointer"
+              className="relative group p-0.5 rounded-full border-2 border-indigo-600 hover:scale-105 transition-transform cursor-pointer"
               title="Trang giới thiệu"
             >
               <img
@@ -149,8 +149,8 @@ export const Sidebar = () => {
             onClick={() => setActiveView(item.id)}
             className={`flex items-center justify-center lg:justify-start text-sm font-semibold py-2.5 px-3.5 rounded-xl transition-all duration-200 transform hover:scale-[1.02] tracking-wide ${
               activeView === item.id
-                ? "bg-emerald-800 text-white shadow-md shadow-emerald-800/20 dark:bg-emerald-700"
-                : "text-stone-600 dark:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-stone-800"
+                ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-500/25 border border-indigo-400/30"
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80"
             }`}
           >
             <svg
@@ -166,11 +166,11 @@ export const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="mt-auto pt-3 border-t border-stone-200/60 dark:border-stone-800 w-full shrink-0">
+      <div className="mt-auto pt-3 border-t border-slate-200/80 dark:border-slate-800 w-full shrink-0">
         {!user?.isAnonymous && (
           <button
             onClick={handleSignOut}
-            className="flex w-full items-center justify-center lg:justify-start text-sm font-semibold py-2.5 px-3.5 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:text-rose-700 dark:hover:text-rose-400 transition-colors tracking-wide"
+            className="flex w-full items-center justify-center lg:justify-start text-sm font-semibold py-2.5 px-3.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:text-rose-700 dark:hover:text-rose-400 transition-colors tracking-wide"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

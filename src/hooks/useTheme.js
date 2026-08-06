@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 
 export const THEME_VARIANTS = {
+  FINTECH_INDIGO: "fintech_indigo",
   SUNRISE: "sunrise",
   SUNSET: "sunset",
   LIGHT: "light",
   DARK: "dark",
+  LUXURY_GOLD: "luxury_gold",
 };
 
 /**
@@ -23,18 +25,29 @@ export const getTimeBasedTheme = () => {
 };
 
 export const useTheme = () => {
+  // Theme Style Preset ("fintech_indigo", "luxury_gold", etc.)
+  const [themeStyle, setThemeStyleState] = useState(() => {
+    return localStorage.getItem("theme_style_preset") || THEME_VARIANTS.FINTECH_INDIGO;
+  });
+
   // Manual Dark Mode toggle
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem("theme_dark_manual") === "true";
+    const saved = localStorage.getItem("theme_dark_manual");
+    return saved !== null ? saved === "true" : true;
   });
 
   // Auto Time-based toggle (Sunrise / Sunset / Night / Day)
   const [isAutoTime, setIsAutoTime] = useState(() => {
     const saved = localStorage.getItem("theme_auto_time");
-    return saved !== null ? saved === "true" : true;
+    return saved !== null ? saved === "true" : false;
   });
 
-  const [activeTheme, setActiveTheme] = useState(THEME_VARIANTS.LIGHT);
+  const [activeTheme, setActiveTheme] = useState(THEME_VARIANTS.FINTECH_INDIGO);
+
+  const setThemeStyle = useCallback((styleName) => {
+    setThemeStyleState(styleName);
+    localStorage.setItem("theme_style_preset", styleName);
+  }, []);
 
   const toggleDarkMode = useCallback(() => {
     setIsDarkMode((prev) => {
@@ -54,9 +67,13 @@ export const useTheme = () => {
 
   useEffect(() => {
     const updateDOM = () => {
-      let currentTheme = THEME_VARIANTS.LIGHT;
+      let currentTheme = THEME_VARIANTS.FINTECH_INDIGO;
 
-      if (isDarkMode) {
+      if (themeStyle === THEME_VARIANTS.FINTECH_INDIGO) {
+        currentTheme = THEME_VARIANTS.FINTECH_INDIGO;
+      } else if (themeStyle === THEME_VARIANTS.LUXURY_GOLD) {
+        currentTheme = THEME_VARIANTS.LUXURY_GOLD;
+      } else if (isDarkMode) {
         currentTheme = THEME_VARIANTS.DARK;
       } else if (isAutoTime) {
         currentTheme = getTimeBasedTheme();
@@ -67,10 +84,19 @@ export const useTheme = () => {
       setActiveTheme(currentTheme);
 
       const root = document.documentElement;
-      root.classList.remove("dark", "theme-sunrise", "theme-sunset");
+      root.classList.remove("dark", "theme-sunrise", "theme-sunset", "theme-luxury-gold", "theme-fintech-indigo");
       root.removeAttribute("data-theme");
 
-      if (currentTheme === THEME_VARIANTS.DARK) {
+      if (currentTheme === THEME_VARIANTS.FINTECH_INDIGO) {
+        if (isDarkMode) {
+          root.classList.add("dark");
+        }
+        root.classList.add("theme-fintech-indigo");
+        root.setAttribute("data-theme", "fintech_indigo");
+      } else if (currentTheme === THEME_VARIANTS.LUXURY_GOLD) {
+        root.classList.add("dark", "theme-luxury-gold");
+        root.setAttribute("data-theme", "luxury_gold");
+      } else if (currentTheme === THEME_VARIANTS.DARK) {
         root.classList.add("dark");
         root.setAttribute("data-theme", "dark");
       } else if (currentTheme === THEME_VARIANTS.SUNSET) {
@@ -88,16 +114,18 @@ export const useTheme = () => {
 
     // Check time every minute if auto-time is active and dark mode is OFF
     const interval = setInterval(() => {
-      if (!isDarkMode && isAutoTime) {
+      if (!isDarkMode && isAutoTime && themeStyle !== THEME_VARIANTS.LUXURY_GOLD && themeStyle !== THEME_VARIANTS.FINTECH_INDIGO) {
         updateDOM();
       }
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [isDarkMode, isAutoTime]);
+  }, [isDarkMode, isAutoTime, themeStyle]);
 
   return {
     theme: activeTheme,
+    themeStyle,
+    setThemeStyle,
     isDarkMode,
     isAutoTime,
     toggleDarkMode,

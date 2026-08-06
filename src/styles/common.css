@@ -1,7 +1,7 @@
 /* ==========================================================================
-   SHARED LAYOUT SYSTEM — Olive Editorial Design Language
-   Palette: emerald-800/stone-800 accent, stone-50 backgrounds, amber-600 highlights
-   All rounded corners preserved. Font: Playfair Display everywhere.
+   SHARED LAYOUT SYSTEM — Fintech Modern Design Language
+   Palette: Indigo-600 & Sapphire Blue accent, Slate-950/Slate-900 dark, Slate-50/100 light
+   All rounded corners preserved with sleek glow effects and glassmorphism.
    ========================================================================== */
 
 /* 1. Page Container */
@@ -11,24 +11,24 @@
 
 /* 2. Page Header Banner */
 .page-header {
-  @apply bg-stone-50 dark:bg-stone-900/90 backdrop-blur shadow-sm border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-6 sm:p-8 transition-all;
+  @apply bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-6 sm:p-8 transition-all;
 }
 
 .page-title {
-  @apply text-3xl font-serif font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-snug;
+  @apply text-3xl font-sans font-bold text-slate-900 dark:text-white tracking-tight leading-snug;
 }
 
 .page-subtitle {
-  @apply text-sm text-stone-500 dark:text-stone-400 mt-1.5 italic font-light tracking-wide;
+  @apply text-sm text-slate-500 dark:text-slate-400 mt-1.5 font-normal tracking-wide;
 }
 
 /* 3. Content Cards */
 .page-card {
-  @apply bg-stone-50 dark:bg-stone-900/90 shadow-sm border border-stone-200/60 dark:border-stone-700/60 rounded-2xl transition-all;
+  @apply bg-white/90 dark:bg-slate-900/90 shadow-sm border border-slate-200/80 dark:border-slate-800/80 rounded-2xl transition-all;
 }
 
 .page-card-title {
-  @apply text-base sm:text-lg font-serif font-bold text-stone-800 dark:text-stone-100 tracking-tight;
+  @apply text-base sm:text-lg font-sans font-bold text-slate-800 dark:text-slate-100 tracking-tight;
 }
 
 /* 4. KPI / Summary Cards Grid */
@@ -41,7 +41,7 @@
 }
 
 .kpi-card {
-  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl p-5 sm:p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-5 sm:p-6 flex items-center gap-4 shadow-sm hover:shadow-md hover:border-indigo-500/30 dark:hover:border-indigo-500/40 transition-all duration-200;
 }
 
 .kpi-icon {
@@ -49,20 +49,20 @@
 }
 
 .kpi-label {
-  @apply text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-stone-400 dark:text-stone-500 block;
+  @apply text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400 dark:text-slate-500 block;
 }
 
 .kpi-value {
-  @apply text-xl sm:text-2xl font-serif font-bold tracking-tight mt-0.5;
+  @apply text-xl sm:text-2xl font-sans font-bold tracking-tight mt-0.5;
 }
 
 /* 5. Section Card (Settings-style grouped cards) */
 .section-card {
-  @apply bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl shadow-sm overflow-hidden;
+  @apply bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-sm overflow-hidden;
 }
 
 .section-header {
-  @apply flex items-center gap-3.5 px-6 py-4 bg-stone-100/60 dark:bg-stone-800/30 border-b border-stone-200/50 dark:border-stone-700/50;
+  @apply flex items-center gap-3.5 px-6 py-4 bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-200/60 dark:border-slate-800/60;
 }
 
 .section-icon {
@@ -70,20 +70,20 @@
 }
 
 .section-title {
-  @apply text-sm font-serif font-bold text-stone-800 dark:text-stone-100 tracking-wide;
+  @apply text-sm font-sans font-bold text-slate-800 dark:text-slate-100 tracking-wide;
 }
 
 .section-desc {
-  @apply text-[11px] text-stone-400 dark:text-stone-500 italic;
+  @apply text-[11px] text-slate-400 dark:text-slate-500;
 }
 
 /* 6. Form Elements (Shared) */
 .field-label {
-  @apply block text-xs font-semibold text-stone-600 dark:text-stone-300 mb-1.5 uppercase tracking-[0.12em];
+  @apply block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-[0.12em];
 }
 
 .field-input {
-  @apply w-full py-3 pl-4 pr-8 bg-stone-100/50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-600 rounded-xl text-stone-800 dark:text-stone-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600/50 dark:focus:ring-emerald-500/50 focus:bg-white dark:focus:bg-stone-800 transition-all;
+  @apply w-full py-3 pl-4 pr-8 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 dark:focus:border-indigo-400 focus:bg-white dark:focus:bg-slate-800 transition-all;
 }
 
 /* 7. Toggle Switch */
@@ -92,11 +92,11 @@
 }
 
 .toggle-switch-on {
-  @apply bg-emerald-700 dark:bg-emerald-600;
+  @apply bg-indigo-600 dark:bg-indigo-500;
 }
 
 .toggle-switch-off {
-  @apply bg-stone-300 dark:bg-stone-600;
+  @apply bg-slate-300 dark:bg-slate-700;
 }
 
 .toggle-knob {
@@ -117,20 +117,20 @@
 }
 
 .filter-pill-active {
-  @apply bg-emerald-800 dark:bg-emerald-700 text-white border-emerald-800 dark:border-emerald-700 shadow-sm;
+  @apply bg-indigo-600 dark:bg-indigo-600 text-white border-indigo-600 shadow-sm shadow-indigo-500/20;
 }
 
 .filter-pill-inactive {
-  @apply bg-stone-50 dark:bg-stone-800/50 text-stone-600 dark:text-stone-300 border-stone-200 dark:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-700;
+  @apply bg-white dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700;
 }
 
 /* 9. Progress Bars */
 .progress-bar-bg {
-  @apply w-full bg-stone-200/80 dark:bg-stone-700/80 rounded-full h-2 overflow-hidden;
+  @apply w-full bg-slate-200/80 dark:bg-slate-800 rounded-full h-2 overflow-hidden;
 }
 
 .progress-bar-bg-thick {
-  @apply w-full bg-stone-200/80 dark:bg-stone-700/80 rounded-full h-3 overflow-hidden;
+  @apply w-full bg-slate-200/80 dark:bg-slate-800 rounded-full h-3 overflow-hidden;
 }
 
 .progress-bar-fg {
@@ -139,28 +139,28 @@
 
 /* 10. Counter Controls */
 .counter-btn {
-  @apply w-9 h-9 rounded-xl bg-stone-100 dark:bg-stone-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-stone-700 dark:text-stone-200 font-bold text-lg flex items-center justify-center transition-all active:scale-95 cursor-pointer shrink-0;
+  @apply w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 text-slate-700 dark:text-slate-200 font-bold text-lg flex items-center justify-center transition-all active:scale-95 cursor-pointer shrink-0;
 }
 
 .counter-input {
-  @apply w-14 py-1.5 text-center bg-stone-100/50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-600 rounded-xl text-sm font-bold text-stone-800 dark:text-stone-100 outline-none;
+  @apply w-14 py-1.5 text-center bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 outline-none;
 }
 
 /* 11. Empty States */
 .empty-state {
-  @apply text-center py-16 bg-stone-50 dark:bg-stone-900/90 border border-stone-200/60 dark:border-stone-700/60 rounded-2xl;
+  @apply text-center py-16 bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl;
 }
 
 .empty-icon {
-  @apply w-16 h-16 mx-auto text-stone-300 dark:text-stone-600 mb-5;
+  @apply w-16 h-16 mx-auto text-slate-300 dark:text-slate-600 mb-5;
 }
 
 .empty-title {
-  @apply text-xl font-serif font-bold text-stone-600 dark:text-stone-300;
+  @apply text-xl font-sans font-bold text-slate-700 dark:text-slate-200;
 }
 
 .empty-desc {
-  @apply text-sm text-stone-400 dark:text-stone-500 mt-1.5 italic;
+  @apply text-sm text-slate-400 dark:text-slate-500 mt-1.5;
 }
 
 /* 12. Setting Row */
@@ -169,22 +169,22 @@
 }
 
 .setting-info-title {
-  @apply text-sm font-semibold text-stone-700 dark:text-stone-200 tracking-wide;
+  @apply text-sm font-semibold text-slate-700 dark:text-slate-200 tracking-wide;
 }
 
 .setting-info-description {
-  @apply text-[11px] text-stone-400 dark:text-stone-500 mt-0.5 leading-relaxed;
+  @apply text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 leading-relaxed;
 }
 
 /* ==========================================================================
-   LEGACY — Keeping old common classes for backward compatibility
+   BUTTONS & FORM INPUTS
    ========================================================================== */
 .card {
-  @apply bg-stone-50 dark:bg-stone-900 shadow-lg shadow-stone-200/40 dark:shadow-none rounded-xl p-6;
+  @apply bg-white dark:bg-slate-900 shadow-md shadow-slate-200/50 dark:shadow-none rounded-xl p-6 border border-slate-100 dark:border-slate-800;
 }
 
 .btn {
-  @apply inline-flex items-center justify-center font-semibold py-3 px-5 rounded-xl transition-all duration-300 text-base disabled:opacity-50 disabled:cursor-not-allowed tracking-wide;
+  @apply inline-flex items-center justify-center font-semibold py-3 px-5 rounded-xl transition-all duration-300 text-base disabled:opacity-50 disabled:cursor-not-allowed tracking-wide active:scale-[0.98];
 }
 
 .btn-sm {
@@ -192,27 +192,27 @@
 }
 
 .btn-primary {
-  @apply bg-emerald-800 dark:bg-emerald-700 text-white hover:bg-emerald-900 dark:hover:bg-emerald-600 focus:ring-4 focus:ring-emerald-300/40 dark:focus:ring-emerald-800/40;
+  @apply bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white shadow-md shadow-indigo-500/25 border border-indigo-400/30 focus:ring-4 focus:ring-indigo-500/30;
 }
 
 .btn-secondary {
-  @apply bg-stone-100 dark:bg-stone-700 text-stone-800 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-600;
+  @apply bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-700/60;
 }
 
 .btn-danger {
-  @apply bg-red-700 text-white hover:bg-red-800;
+  @apply bg-rose-600 text-white hover:bg-rose-700 shadow-sm shadow-rose-500/20;
 }
 
 .btn-success {
-  @apply bg-emerald-600 text-white hover:bg-emerald-700;
+  @apply bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm shadow-emerald-500/20;
 }
 
 .form-input {
-  @apply w-full p-3 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition-shadow;
+  @apply w-full p-3 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all;
 }
 
 .form-label {
-  @apply block text-stone-700 dark:text-stone-300 mb-1.5 font-semibold tracking-wide;
+  @apply block text-slate-700 dark:text-slate-300 mb-1.5 font-semibold tracking-wide text-sm;
 }
 
 .form-select {
@@ -220,12 +220,66 @@
 }
 
 .view-title {
-  @apply text-3xl font-serif font-bold text-stone-800 dark:text-stone-200 tracking-tight;
+  @apply text-3xl font-sans font-bold text-slate-900 dark:text-white tracking-tight;
 }
 
 /* ==========================================================================
-   TIME-BASED THEME PALETTES — Sunset & Sunrise
+   THEME PALETTES — Fintech Indigo, Sunset, Sunrise, Luxury Gold
    ========================================================================== */
+
+/* 💎 Fintech Indigo — Dark Mode */
+html.dark[data-theme="fintech_indigo"] body,
+html.dark.theme-fintech-indigo body {
+  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e1b4b 100%) !important;
+  color: #f8fafc !important;
+}
+
+html.dark[data-theme="fintech_indigo"] .page-header,
+html.dark[data-theme="fintech_indigo"] .page-card,
+html.dark[data-theme="fintech_indigo"] .section-card,
+html.dark[data-theme="fintech_indigo"] .kpi-card {
+  background: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(99, 102, 241, 0.25) !important;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.1) !important;
+}
+
+html.dark[data-theme="fintech_indigo"] .section-header {
+  background: rgba(30, 41, 59, 0.7) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+html.dark[data-theme="fintech_indigo"] .page-title,
+html.dark[data-theme="fintech_indigo"] .section-title,
+html.dark[data-theme="fintech_indigo"] .page-card-title {
+  color: #f8fafc !important;
+}
+
+/* 💎 Fintech Indigo — Light Mode */
+html:not(.dark)[data-theme="fintech_indigo"] body,
+html:not(.dark).theme-fintech-indigo body {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e0e7ff 100%) !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark)[data-theme="fintech_indigo"] .page-header,
+html:not(.dark)[data-theme="fintech_indigo"] .page-card,
+html:not(.dark)[data-theme="fintech_indigo"] .section-card,
+html:not(.dark)[data-theme="fintech_indigo"] .kpi-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(99, 102, 241, 0.18) !important;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.08) !important;
+}
+
+html:not(.dark)[data-theme="fintech_indigo"] .section-header {
+  background: rgba(241, 245, 249, 0.85) !important;
+  border-color: rgba(99, 102, 241, 0.12) !important;
+}
+
+html:not(.dark)[data-theme="fintech_indigo"] .page-title,
+html:not(.dark)[data-theme="fintech_indigo"] .section-title,
+html:not(.dark)[data-theme="fintech_indigo"] .page-card-title {
+  color: #0f172a !important;
+}
 
 /* 🌅 Sunset (Hoàng Hôn) Theme */
 html[data-theme="sunset"] body {
@@ -265,4 +319,42 @@ html[data-theme="sunrise"] .kpi-card {
 html[data-theme="sunrise"] .section-header {
   background: rgba(250, 245, 235, 0.8) !important;
   border-color: rgba(120, 100, 60, 0.15) !important;
+}
+
+/* 👑 Luxury Gold & Obsidian Charcoal Theme */
+html[data-theme="luxury_gold"] body,
+html.theme-luxury-gold body {
+  background: linear-gradient(135deg, #09090b 0%, #14120e 45%, #1c1813 100%) !important;
+  color: #fef3c7 !important;
+}
+
+html[data-theme="luxury_gold"] .page-header,
+html[data-theme="luxury_gold"] .page-card,
+html[data-theme="luxury_gold"] .section-card,
+html[data-theme="luxury_gold"] .kpi-card,
+html[data-theme="luxury_gold"] .calc-card {
+  background: rgba(24, 20, 16, 0.92) !important;
+  border-color: rgba(217, 119, 6, 0.35) !important;
+  box-shadow: 0 10px 30px -5px rgba(217, 119, 6, 0.12), 0 0 1px rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="luxury_gold"] .section-header,
+html[data-theme="luxury_gold"] .page-header {
+  background: linear-gradient(135deg, rgba(32, 26, 20, 0.95), rgba(20, 17, 14, 0.95)) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+
+html[data-theme="luxury_gold"] .field-input,
+html[data-theme="luxury_gold"] .form-input,
+html[data-theme="luxury_gold"] .calc-input {
+  background: rgba(36, 30, 24, 0.8) !important;
+  border-color: rgba(217, 119, 6, 0.3) !important;
+  color: #fef3c7 !important;
+}
+
+html[data-theme="luxury_gold"] .btn-primary {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(251, 191, 36, 0.4) !important;
+  box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3) !important;
 }

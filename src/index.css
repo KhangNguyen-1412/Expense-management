@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   EDITORIAL BASE TYPOGRAPHY — Playfair Display everywhere
+   FINTECH BASE STYLING & TYPOGRAPHY
    ========================================================================== */
 @layer base {
   body {
-    @apply font-serif antialiased text-stone-800 dark:text-stone-200 bg-stone-100 dark:bg-stone-950;
-    letter-spacing: 0.01em;
-    line-height: 1.65;
+    @apply font-sans antialiased text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-950;
+    letter-spacing: -0.01em;
+    line-height: 1.6;
   }
 }

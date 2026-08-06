@@ -11,6 +11,7 @@ import { BudgetWarningToast } from "./BudgetWarningToast";
 import { DeleteDataDialog } from "./DeleteDataDialog";
 import { SetPinDialog } from "./SetPinDialog";
 import { PinLockScreen } from "./PinLockScreen";
+import { QuickAddFAB } from "./QuickAddFAB";
 
 import { LandingPageView } from "../views/LandingPageView";
 
@@ -35,6 +36,7 @@ export const AppLayout = () => {
         <MainContent />
       </main>
       <BottomNav />
+      <QuickAddFAB />
       <ConfirmDialog />
       <UndoToast />
       <BudgetWarningToast />

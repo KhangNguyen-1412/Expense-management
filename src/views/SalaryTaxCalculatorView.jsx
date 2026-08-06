@@ -4,9 +4,9 @@ import { useAppContext } from "../context/AppContext";
 import "../styles/SalaryTaxCalculatorView.css";
 
 // Tax & Insurance Constants (VN Laws 2026)
-const PERSONAL_DEDUCTION = 11000000; // 11M VND personal deduction
-const DEPENDENT_REDUCTION = 4400000; // 4.4M VND per dependent
-const BASE_SALARY_2026 = 2340000; // Lương cơ sở 2026 (đang dự kiến)
+const PERSONAL_DEDUCTION = 15500000; // 15.5M VND giảm trừ bản thân (186M/năm)
+const DEPENDENT_REDUCTION = 6200000; // 6.2M VND giảm trừ cho mỗi người phụ thuộc
+const BASE_SALARY_2026 = 2340000; // Lương cơ sở 2026
 
 // PIT Progressive Tax Brackets
 const TAX_BRACKETS = [
@@ -450,6 +450,56 @@ export const SalaryTaxCalculatorView = () => {
                       placeholder="Mức đóng bảo hiểm..."
                       className="calc-input text-xs"
                     />
+                  </div>
+
+                  {/* PIT Tax Threshold Reference Grid */}
+                  <div className="sm:col-span-2 p-3.5 bg-indigo-50/60 dark:bg-indigo-950/30 rounded-2xl border border-indigo-200/80 dark:border-indigo-800/50 space-y-2 mt-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-indigo-900 dark:text-indigo-300 flex items-center gap-1.5">
+                        <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Mức thu nhập bắt đầu phải đóng Thuế TNCN (sau khi trừ BH bắt buộc):
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+                      <div className={`p-2 rounded-xl border text-center transition-all ${
+                        dependentsCount === 0 
+                          ? "bg-indigo-600 text-white font-bold border-indigo-600 shadow-xs" 
+                          : "bg-white/80 dark:bg-stone-800/80 border-indigo-100 dark:border-stone-700 text-stone-700 dark:text-stone-300"
+                      }`}>
+                        <span className="block opacity-80">0 người phụ thuộc</span>
+                        <span className="font-serif font-extrabold text-xs block mt-0.5">&gt; 15,5 Tr/tháng</span>
+                      </div>
+
+                      <div className={`p-2 rounded-xl border text-center transition-all ${
+                        dependentsCount === 1 
+                          ? "bg-indigo-600 text-white font-bold border-indigo-600 shadow-xs" 
+                          : "bg-white/80 dark:bg-stone-800/80 border-indigo-100 dark:border-stone-700 text-stone-700 dark:text-stone-300"
+                      }`}>
+                        <span className="block opacity-80">1 người phụ thuộc</span>
+                        <span className="font-serif font-extrabold text-xs block mt-0.5">&gt; 21,7 Tr/tháng</span>
+                      </div>
+
+                      <div className={`p-2 rounded-xl border text-center transition-all ${
+                        dependentsCount === 2 
+                          ? "bg-indigo-600 text-white font-bold border-indigo-600 shadow-xs" 
+                          : "bg-white/80 dark:bg-stone-800/80 border-indigo-100 dark:border-stone-700 text-stone-700 dark:text-stone-300"
+                      }`}>
+                        <span className="block opacity-80">2 người phụ thuộc</span>
+                        <span className="font-serif font-extrabold text-xs block mt-0.5">&gt; 27,9 Tr/tháng</span>
+                      </div>
+
+                      <div className={`p-2 rounded-xl border text-center transition-all ${
+                        dependentsCount >= 3 
+                          ? "bg-indigo-600 text-white font-bold border-indigo-600 shadow-xs" 
+                          : "bg-white/80 dark:bg-stone-800/80 border-indigo-100 dark:border-stone-700 text-stone-700 dark:text-stone-300"
+                      }`}>
+                        <span className="block opacity-80">3 người phụ thuộc</span>
+                        <span className="font-serif font-extrabold text-xs block mt-0.5">&gt; 34,1 Tr/tháng</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

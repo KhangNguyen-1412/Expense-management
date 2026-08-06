@@ -38,6 +38,8 @@ const ToggleSwitch = ({ checked, onChange, disabled = false }) => (
 export const SettingsView = () => {
   const {
     theme,
+    themeStyle,
+    setThemeStyle,
     isDarkMode,
     isAutoTime,
     toggleDarkMode,
@@ -60,6 +62,13 @@ export const SettingsView = () => {
     handleSelectVoice,
   } = useAppContext();
 
+  const themeOptions = [
+    { id: "fintech_indigo", label: "💎 Fintech Indigo", desc: "Xanh Indigo & Sapphire hiện đại" },
+    { id: "luxury_gold", label: "👑 Luxury Gold", desc: "Đen nhám & Vàng Hoàng Gia" },
+    { id: "sunset", label: "🌅 Sunset", desc: "Tông Hoàng Hôn ấm áp" },
+    { id: "sunrise", label: "🌄 Sunrise", desc: "Tông Bình Minh sáng dịu" },
+  ];
+
   return (
     <div className="page-container">
       {/* Header Banner */}
@@ -81,10 +90,36 @@ export const SettingsView = () => {
             </svg>
           </div>
           <div>
-            <h3 className="section-title">Giao diện & Chế độ Theo Thời Gian</h3>
-            <p className="section-desc">Quản lý giao diện tối cố định và tự động chuyển đổi theo Bình Minh & Hoàng Hôn</p>
+            <h3 className="section-title">Giao diện & Tông Màu Chủ Đạo</h3>
+            <p className="section-desc">Tùy chọn bộ màu ứng dụng, chế độ tối và tự động theo thời gian</p>
           </div>
         </div>
+
+        {/* Theme Preset Selection Row */}
+        <div className="p-6">
+          <h4 className="setting-info-title mb-1">Bộ màu giao diện chủ đạo</h4>
+          <p className="setting-info-description mb-3">Chọn phong cách màu hiển thị ưu thích cho ứng dụng</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {themeOptions.map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => setThemeStyle(opt.id)}
+                className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                  themeStyle === opt.id
+                    ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/20"
+                    : "bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                }`}
+              >
+                <div className="text-xs font-bold truncate">{opt.label}</div>
+                <div className={`text-[10px] mt-0.5 truncate ${themeStyle === opt.id ? "text-indigo-100" : "text-slate-400 dark:text-slate-400"}`}>
+                  {opt.desc}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-slate-200/60 dark:border-slate-700/60" />
 
         <SettingRow
           title="Giao diện tối cố định"
@@ -112,6 +147,55 @@ export const SettingsView = () => {
             <span>Chức năng <b>Tự động đổi giao diện theo thời gian</b> đã bị vô hiệu hóa do bạn đang bật cố định <b>Giao diện tối</b>.</span>
           </div>
         )}
+      </div>
+
+      {/* Section: PWA App Shortcuts & Install Guide */}
+      <div className="section-card">
+        <div className="section-header">
+          <div className="section-icon bg-blue-100 dark:bg-blue-900/30">
+            <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="section-title">Ứng dụng PWA & Phím Tắt Màn Hình Chính</h3>
+            <p className="section-desc">Cài đặt ứng dụng lên màn hình chính để mở nhanh bằng phím tắt</p>
+          </div>
+        </div>
+
+        <div className="p-6 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5 mb-1">
+                <span>➕</span> <span>Thêm Chi Tiêu</span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">Mở thẳng màn hình ghi chép giao dịch ngay khi giữ icon ứng dụng.</p>
+            </div>
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5 mb-1">
+                <span>📊</span> <span>Tổng Quan Số Dư</span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">Truy cập tức thì biểu đồ báo cáo và hạn mức ngân sách.</p>
+            </div>
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5 mb-1">
+                <span>📸</span> <span>Nhật Ký Ảnh</span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">Lưu nhanh hình ảnh khoảnh khắc lên kho Google Drive.</p>
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 text-indigo-900 dark:text-indigo-200 text-xs flex items-start gap-2.5">
+            <span className="text-base shrink-0 mt-0.5">💡</span>
+            <div className="space-y-1">
+              <p className="font-bold">Cách dùng phím tắt màn hình chính (App Shortcuts):</p>
+              <p className="text-[11px] leading-relaxed">
+                Trên Điện thoại (iOS Safari / Android Chrome): Nhấn chọn <b>Chia sẻ</b> hoặc Menu 3 chấm -&gt; Chọn <b>"Thêm vào Màn hình chính" (Add to Home Screen)</b>.
+                Sau khi cài đặt, <b>nhấn giữ biểu tượng ứng dụng LifeHub</b> trên màn hình chính để chọn mở nhanh tính năng mong muốn!
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Section: Google Drive Photo Storage */}

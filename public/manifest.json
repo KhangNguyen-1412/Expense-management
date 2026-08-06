@@ -17,8 +17,38 @@
     }
   ],
   "start_url": "/",
-  "background_color": "#1b4332",
-  "theme_color": "#1b4332",
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "shortcuts": [
+    {
+      "name": "Thêm Giao Dịch Mới",
+      "short_name": "Thêm Mới",
+      "description": "Ghi nhận thu chi cá nhân siêu tốc",
+      "url": "/them-moi",
+      "icons": [{ "src": "/app-logo-3d.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Xem Tổng Quan Tài Chính",
+      "short_name": "Tổng Quan",
+      "description": "Xem số dư và tình hình tài chính",
+      "url": "/tong-quan",
+      "icons": [{ "src": "/app-logo-3d.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Nhật Ký Ảnh",
+      "short_name": "Nhật Ký",
+      "description": "Xem dòng thời gian khoảnh khắc",
+      "url": "/nhat-ky-anh",
+      "icons": [{ "src": "/app-logo-3d.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Cài Đặt Hệ Thống",
+      "short_name": "Cài Đặt",
+      "description": "Tùy chỉnh giao diện và mã PIN",
+      "url": "/cai-dat",
+      "icons": [{ "src": "/app-logo-3d.png", "sizes": "192x192" }]
+    }
+  ]
 }
