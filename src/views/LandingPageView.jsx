@@ -169,23 +169,23 @@ export const LandingPageView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-stone-100 dark:bg-stone-950 text-stone-800 dark:text-stone-100 font-sans pb-20 transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-20 transition-colors duration-300">
       {/* Background Ambient Glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-30 dark:opacity-20">
-        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-emerald-300 dark:bg-emerald-600/30 rounded-full blur-[120px]" />
-        <div className="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-teal-300 dark:bg-indigo-600/30 rounded-full blur-[120px]" />
+        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-indigo-400 dark:bg-indigo-600/30 rounded-full blur-[120px]" />
+        <div className="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-blue-400 dark:bg-blue-600/30 rounded-full blur-[120px]" />
       </div>
 
       {/* TOP STANDALONE PUBLIC NAVBAR */}
-      <header className="sticky top-0 z-40 w-full bg-stone-50/90 dark:bg-stone-900/90 backdrop-blur-xl border-b border-stone-200/80 dark:border-stone-800 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-xs transition-colors duration-300">
+      <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-xs transition-colors duration-300">
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveView("dashboard")}>
           <img src="/app-logo-3d.png" alt="App Logo" className="w-10 h-10 rounded-xl shadow-md object-contain" />
           <div>
-            <h1 className="text-base sm:text-lg font-serif font-extrabold text-emerald-800 dark:text-emerald-400 tracking-tight flex items-center gap-2">
+            <h1 className="text-base sm:text-lg font-sans font-extrabold text-indigo-600 dark:text-indigo-400 tracking-tight flex items-center gap-2">
               {authorName}
-              <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-pulse" />
             </h1>
-            <p className="text-[11px] text-stone-500 dark:text-stone-400 font-mono tracking-wide">THƯ VIỆN ẢNH POLAROID KỶ NIỆM</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono tracking-wide">THƯ VIỆN ẢNH POLAROID KỶ NIỆM</p>
           </div>
         </div>
 
@@ -193,7 +193,7 @@ export const LandingPageView = () => {
           {/* Light / Dark Mode Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-xl bg-stone-200/70 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300/80 dark:hover:bg-stone-700 transition-colors"
+            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
             title="Đổi giao diện Sáng / Tối"
             aria-label="Toggle Theme"
           >
@@ -202,7 +202,7 @@ export const LandingPageView = () => {
                 <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" clipRule="evenodd" />
               </svg>
             ) : (
-              <svg className="w-4 h-4 text-stone-700" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 text-slate-700" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
               </svg>
             )}
@@ -213,7 +213,7 @@ export const LandingPageView = () => {
               const el = document.getElementById("photo-gallery-section");
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }}
-            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-stone-600 dark:text-stone-300 hover:text-emerald-800 dark:hover:text-emerald-400 transition-colors px-3 py-2"
+            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors px-3 py-2 cursor-pointer"
           >
             Ảnh Polaroid
           </button>
@@ -221,7 +221,7 @@ export const LandingPageView = () => {
           {isGuest ? (
             <button
               onClick={handleGoogleSignIn}
-              className="px-4 py-2 rounded-xl bg-white dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-100 font-bold text-xs shadow-sm border border-stone-300/80 dark:border-stone-700 transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs shadow-sm border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
             >
               <svg className="w-4 h-4" viewBox="0 0 48 48">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
@@ -235,7 +235,7 @@ export const LandingPageView = () => {
           ) : (
             <button
               onClick={() => setActiveView("dashboard")}
-              className="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2 active:scale-95"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-xs shadow-md shadow-indigo-500/25 border border-indigo-400/30 transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -248,21 +248,21 @@ export const LandingPageView = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-12">
         {/* HERO INTRO CARD */}
-        <section className="relative overflow-hidden rounded-3xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 p-6 sm:p-12 shadow-sm transition-colors duration-300">
+        <section className="relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-12 shadow-sm transition-colors duration-300">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-10">
             {/* Avatar & Badge */}
             <div className="relative shrink-0">
-              <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-full p-1.5 bg-gradient-to-tr from-emerald-600 via-teal-500 to-indigo-600 shadow-xl">
+              <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-full p-1.5 bg-gradient-to-tr from-indigo-600 via-blue-500 to-indigo-700 shadow-xl">
                 <img
                   src={authorAvatar}
                   alt={authorName}
-                  className="w-full h-full rounded-full object-cover border-4 border-white dark:border-stone-900 shadow-inner"
+                  className="w-full h-full rounded-full object-cover border-4 border-white dark:border-slate-900 shadow-inner"
                   onError={(e) => {
                     e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
                   }}
                 />
               </div>
-              <span className="absolute bottom-2 right-2 bg-emerald-800 text-white p-2.5 rounded-full shadow-lg font-bold text-xs flex items-center justify-center border-2 border-white dark:border-stone-900" title="Tài Khoản Đã Xác Thực">
+              <span className="absolute bottom-2 right-2 bg-indigo-600 text-white p-2.5 rounded-full shadow-lg font-bold text-xs flex items-center justify-center border-2 border-white dark:border-slate-900" title="Tài Khoản Đã Xác Thực">
                 <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                 </svg>
@@ -272,15 +272,15 @@ export const LandingPageView = () => {
             {/* Profile Info */}
             <div className="text-center md:text-left space-y-4 flex-1">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                <h2 className="text-3xl sm:text-4xl font-serif font-extrabold tracking-tight text-stone-800 dark:text-stone-100">
+                <h2 className="text-3xl sm:text-4xl font-sans font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
                   {authorName}
                 </h2>
-                <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-700/80">
+                <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                   Content Creator & Financial Planner
                 </span>
               </div>
 
-              <p className="text-stone-600 dark:text-stone-300 text-sm sm:text-base leading-relaxed font-light max-w-2xl">
+              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-light max-w-2xl">
                 Thư viện khoảnh khắc kỷ niệm & nhật ký ảnh Polaroid cuộc sống. Nơi lưu giữ những hình ảnh trải nghiệm thực tế cùng hành trình quản lý tài chính bền vững.
               </p>
 
@@ -292,7 +292,7 @@ export const LandingPageView = () => {
                     const el = document.getElementById("photo-gallery-section");
                     if (el) el.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="group relative px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl hover:shadow-emerald-900/30 border border-emerald-600/40 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
+                  className="group relative px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-700 hover:from-indigo-500 hover:to-blue-600 text-white shadow-lg hover:shadow-xl hover:shadow-indigo-900/30 border border-indigo-500/40 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
                 >
                   <div className="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                     <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -302,7 +302,7 @@ export const LandingPageView = () => {
                   <span className="font-bold text-sm sm:text-base tracking-wide whitespace-nowrap">
                     Xem Thư Viện Polaroid
                   </span>
-                  <svg className="w-4 h-4 text-emerald-200 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-indigo-200 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -311,9 +311,9 @@ export const LandingPageView = () => {
                 {isGuest ? (
                   <button
                     onClick={handleGoogleSignIn}
-                    className="group relative px-6 py-3.5 rounded-2xl bg-white dark:bg-stone-800 hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-100 shadow-md hover:shadow-lg border border-stone-300/80 dark:border-stone-700/80 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
+                    className="group relative px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-md hover:shadow-lg border border-slate-200 dark:border-slate-700 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
                   >
-                    <div className="w-8 h-8 rounded-xl bg-stone-100 dark:bg-stone-700 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                       <svg className="w-4.5 h-4.5" viewBox="0 0 48 48">
                         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
                         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
@@ -329,17 +329,17 @@ export const LandingPageView = () => {
                 ) : (
                   <button
                     onClick={() => setActiveView("dashboard")}
-                    className="group relative px-6 py-3.5 rounded-2xl bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700/90 text-stone-800 dark:text-stone-100 shadow-md hover:shadow-lg border border-stone-300/80 dark:border-stone-700/80 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
+                    className="group relative px-6 py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-md hover:shadow-lg border border-slate-200 dark:border-slate-700 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 cursor-pointer overflow-hidden"
                   >
-                    <div className="w-8 h-8 rounded-xl bg-stone-200/80 dark:bg-stone-700/80 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                      <svg className="w-4.5 h-4.5 text-stone-700 dark:text-stone-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-8 h-8 rounded-xl bg-slate-200/80 dark:bg-slate-700/80 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                      <svg className="w-4.5 h-4.5 text-slate-700 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                       </svg>
                     </div>
                     <span className="font-bold text-sm sm:text-base tracking-wide whitespace-nowrap">
                       Vào Giao Diện Quản Lý
                     </span>
-                    <svg className="w-4 h-4 text-stone-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </button>
@@ -349,31 +349,31 @@ export const LandingPageView = () => {
           </div>
 
           {/* Quick Metrics Bar */}
-          <div className="mt-8 pt-6 border-t border-stone-100 dark:border-stone-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div className="p-3.5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700/60">
-              <span className="text-xs text-stone-500 dark:text-stone-400 block font-medium">Tổng Số Ảnh Polaroid</span>
-              <span className="text-xl sm:text-2xl font-serif font-extrabold text-emerald-800 dark:text-emerald-400 mt-0.5 block">
+          <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+              <span className="text-xs text-slate-500 dark:text-slate-400 block font-medium">Tổng Số Ảnh Polaroid</span>
+              <span className="text-xl sm:text-2xl font-sans font-extrabold text-indigo-600 dark:text-indigo-400 mt-0.5 block">
                 {allFlattenedPhotos.length} Bức ảnh
               </span>
             </div>
 
-            <div className="p-3.5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700/60">
-              <span className="text-xs text-stone-500 dark:text-stone-400 block font-medium">Bài Đăng Khoảnh Khắc</span>
-              <span className="text-xl sm:text-2xl font-serif font-extrabold text-teal-700 dark:text-teal-400 mt-0.5 block">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+              <span className="text-xs text-slate-500 dark:text-slate-400 block font-medium">Bài Đăng Khoảnh Khắc</span>
+              <span className="text-xl sm:text-2xl font-sans font-extrabold text-blue-600 dark:text-blue-400 mt-0.5 block">
                 {allPosts.length} Bài viết
               </span>
             </div>
 
-            <div className="p-3.5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700/60">
-              <span className="text-xs text-stone-500 dark:text-stone-400 block font-medium">Mục Tiêu Tiết Kiệm</span>
-              <span className="text-xl sm:text-2xl font-serif font-extrabold text-indigo-700 dark:text-indigo-400 mt-0.5 block">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+              <span className="text-xs text-slate-500 dark:text-slate-400 block font-medium">Mục Tiêu Tiết Kiệm</span>
+              <span className="text-xl sm:text-2xl font-sans font-extrabold text-indigo-600 dark:text-indigo-400 mt-0.5 block">
                 {goals?.length || 0} Mục tiêu
               </span>
             </div>
 
-            <div className="p-3.5 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200/60 dark:border-stone-700/60">
-              <span className="text-xs text-stone-500 dark:text-stone-400 block font-medium">Số Dư Quản Lý</span>
-              <span className="text-xl sm:text-2xl font-serif font-extrabold text-amber-700 dark:text-amber-400 mt-0.5 block">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+              <span className="text-xs text-slate-500 dark:text-slate-400 block font-medium">Số Dư Quản Lý</span>
+              <span className="text-xl sm:text-2xl font-sans font-extrabold text-amber-600 dark:text-amber-400 mt-0.5 block">
                 {formatCurrency(total)}
               </span>
             </div>
@@ -381,91 +381,86 @@ export const LandingPageView = () => {
         </section>
 
         {/* PROFESSIONAL SKILLS & CV SHOWCASE CARD */}
-        <section className="rounded-3xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 p-6 sm:p-8 shadow-sm space-y-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-stone-100 dark:border-stone-800 pb-4">
+        <section className="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
             <div>
-              <span className="text-xs font-serif font-bold uppercase tracking-widest text-emerald-800 dark:text-emerald-400 block mb-1">
+              <span className="text-xs font-sans font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 block mb-1">
                 🎓 HỌC VẤN & HỒ SƠ CHUYÊN MÔN
               </span>
-              <h3 className="text-xl sm:text-2xl font-serif font-extrabold text-stone-800 dark:text-stone-100">
+              <h3 className="text-xl sm:text-2xl font-sans font-extrabold text-slate-800 dark:text-slate-100">
                 Kỹ Năng & Kinh Nghiệm Nghề Nghiệp
               </h3>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-stone-500 dark:text-stone-400">
-              <span className="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-                📍 An Hữu - Đồng Tháp ➔ KTX Sư Phạm
-              </span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Column 1: Academic & Certifications */}
-            <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/70 dark:border-stone-800 space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 flex items-center gap-1.5">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
                 <span>🎓 Học Vấn & Bằng Cấp</span>
               </h4>
-              <ul className="space-y-2 text-xs text-stone-600 dark:text-stone-300">
-                <li className="font-semibold text-stone-800 dark:text-stone-100">
+              <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                <li className="font-semibold text-slate-800 dark:text-slate-100">
                   • ĐH Sư Phạm TP.HCM (Tốt nghiệp 06/2026)
                 </li>
-                <li className="text-[11px] text-stone-500 font-mono">
+                <li className="text-[11px] text-slate-500 font-mono">
                   Email: 4801104066@student.hcmue.edu.vn
                 </li>
-                <li className="pt-1 border-t border-stone-200/60 dark:border-stone-700/60 font-medium">
+                <li className="pt-1 border-t border-slate-200/60 dark:border-slate-700/60 font-medium">
                   • Chứng chỉ Nghiệp vụ Sư phạm cho Giảng viên
                 </li>
-                <li className="text-[11px] text-emerald-700 dark:text-emerald-400 font-bold">
+                <li className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold">
                   • Mã số BHXH: 8222360105 (VssID)
                 </li>
               </ul>
             </div>
 
             {/* Column 2: Tech Skillsets */}
-            <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/70 dark:border-stone-800 space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400 flex items-center gap-1.5">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
                 <span>💻 Kỹ Năng Công Nghệ</span>
               </h4>
               <div className="flex flex-wrap gap-1.5">
                 {["ReactJS", "VueJS", "PHP", "Automation Tester", "Financial Planning"].map((skill, i) => (
-                  <span key={i} className="px-2.5 py-1 rounded-xl text-xs font-bold bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-700 shadow-2xs">
+                  <span key={i} className="px-2.5 py-1 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-2xs">
                     {skill}
                   </span>
                 ))}
               </div>
-              <div className="pt-2 text-xs text-stone-500 font-serif italic">
+              <div className="pt-2 text-xs text-slate-500 font-sans italic">
                 Sáng tạo giải pháp phần mềm tối ưu & tự động hóa quy trình test.
               </div>
             </div>
 
             {/* Column 3: Internship & Experiences */}
-            <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/70 dark:border-stone-800 space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
                 <span>🏢 Lịch Sử Thực Tập</span>
               </h4>
               <div className="space-y-2 text-xs">
-                <div className="p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-                  <span className="font-bold text-stone-800 dark:text-stone-100 block">Apps Cyclone</span>
-                  <span className="text-[11px] text-stone-500 block">Automation Engineer (2026-NAY)</span>
+                <div className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <span className="font-bold text-slate-800 dark:text-slate-100 block">Apps Cyclone</span>
+                  <span className="text-[11px] text-slate-500 block">Automation Engineer (2026-NAY)</span>
                 </div>
-                <div className="p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-                  <span className="font-bold text-stone-800 dark:text-stone-100 block">TMA Solutions</span>
-                  <span className="text-[11px] text-stone-500 block">Frontend Tester (2025-2026)</span>
+                <div className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <span className="font-bold text-slate-800 dark:text-slate-100 block">TMA Solutions</span>
+                  <span className="text-[11px] text-slate-500 block">Frontend Tester (2025-2026)</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Socials & Pets Pill Bar */}
-          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs border-t border-stone-100 dark:border-stone-800">
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs border-t border-slate-100 dark:border-slate-800">
             <div className="flex items-center gap-2 font-mono">
-              <span className="text-stone-500">Mạng xã hội:</span>
+              <span className="text-slate-500">Mạng xã hội:</span>
               <span className="px-2.5 py-1 rounded-full bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300 font-bold border border-pink-300 dark:border-pink-800">
                 Instagram: @pkhang1412
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-stone-500 font-mono">Thú cưng chăm sóc:</span>
+              <span className="text-slate-500 font-mono">Thú cưng chăm sóc:</span>
               <div className="flex items-center gap-1.5 font-bold">
                 <span className="px-2 py-0.5 rounded-lg bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700">Vịt 🦆</span>
                 <span className="px-2 py-0.5 rounded-lg bg-yellow-100 dark:bg-yellow-950 text-yellow-800 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700">Bắp 🌽</span>
@@ -478,19 +473,19 @@ export const LandingPageView = () => {
         {/* AUTHENTIC POLAROID GALLERY SECTION */}
         <section id="photo-gallery-section" className="space-y-6">
           {/* Section Header & View Options */}
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 border-b border-stone-200 dark:border-stone-800 pb-4">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
-              <span className="text-xs font-serif font-bold uppercase tracking-widest text-emerald-800 dark:text-emerald-400 block mb-1">
+              <span className="text-xs font-sans font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 block mb-1">
                 📸 BỘ SƯU TẬP ẢNH POLAROID KỶ NIỆM
               </span>
-              <h3 className="text-2xl sm:text-3xl font-serif font-extrabold text-stone-800 dark:text-stone-100">
+              <h3 className="text-2xl sm:text-3xl font-sans font-extrabold text-slate-800 dark:text-slate-100">
                 Thư Viện Ảnh Polaroid Cổ Điển
               </h3>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
               {/* Category Filters */}
-              <div className="flex items-center gap-1.5 p-1 bg-stone-200/60 dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 overflow-x-auto max-w-full">
+              <div className="flex items-center gap-1.5 p-1 bg-slate-200/60 dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-x-auto max-w-full">
                 {[
                   { id: "all", label: "Tất cả" },
                   { id: "life", label: "Cuộc sống" },
@@ -502,10 +497,10 @@ export const LandingPageView = () => {
                   <button
                     key={tag.id}
                     onClick={() => setSelectedTag(tag.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                       selectedTag === tag.id
-                        ? "bg-emerald-800 text-white shadow-sm"
-                        : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
+                        ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                     }`}
                   >
                     {tag.label}
@@ -514,13 +509,14 @@ export const LandingPageView = () => {
               </div>
 
               {/* View Mode Switcher */}
-              <div className="flex items-center gap-1 p-1 bg-stone-200/60 dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800">
+              {/* View Mode Switcher */}
+              <div className="flex items-center gap-1 p-1 bg-slate-200/60 dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800">
                 <button
                   onClick={() => setGalleryViewMode("polaroid")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                     galleryViewMode === "polaroid"
-                      ? "bg-emerald-800 text-white shadow-sm"
-                      : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
+                      ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                   }`}
                   title="Chế độ Polaroid Art Wall"
                 >
@@ -532,10 +528,10 @@ export const LandingPageView = () => {
 
                 <button
                   onClick={() => setGalleryViewMode("reel")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                     galleryViewMode === "reel"
-                      ? "bg-emerald-800 text-white shadow-sm"
-                      : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
+                      ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                   }`}
                   title="Chế độ Reel Lướt Ngang"
                 >
@@ -547,10 +543,10 @@ export const LandingPageView = () => {
 
                 <button
                   onClick={() => setGalleryViewMode("grid")}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                     galleryViewMode === "grid"
-                      ? "bg-emerald-800 text-white shadow-sm"
-                      : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
+                      ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                   }`}
                   title="Chế độ Lưới Thư Viện"
                 >
@@ -565,7 +561,7 @@ export const LandingPageView = () => {
 
           {/* MAIN MODE: AUTHENTIC POLAROID PHOTO GALLERY WALL */}
           {galleryViewMode === "polaroid" && (
-            <div className="p-4 sm:p-8 rounded-3xl bg-stone-200/50 dark:bg-stone-900/60 border border-stone-300/70 dark:border-stone-800/80 backdrop-blur-md shadow-inner">
+            <div className="p-4 sm:p-8 rounded-3xl bg-slate-200/50 dark:bg-slate-900/60 border border-slate-300/70 dark:border-slate-800/80 backdrop-blur-md shadow-inner">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 pt-2">
                 <AnimatePresence mode="popLayout">
                   {allFlattenedPhotos.map((photoItem, gIdx) => {
